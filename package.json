@@ -73,7 +73,7 @@
     "kcd-scripts": "^6.7.0",
     "lint-staged": "^10.5.1",
     "path": "^0.12.7",
-    "react-test-renderer": "^17.0.1",
+    "react-test-renderer": "^16.14.0",
     "storybook-addon-react-docgen": "^1.2.42",
     "webpack": "^5.0.0-rc.6",
     "webpack-cli": "^4.0.0-rc.1"
