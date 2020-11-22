@@ -196,7 +196,10 @@ function Popover(
       _.fromPairs(
         _.filter(
           [
-            ['onClick', trigger === POPOVER_TRIGGER_TYPES.click && handleClick],
+            [
+              'onMouseDown',
+              trigger === POPOVER_TRIGGER_TYPES.click && handleClick,
+            ],
             [
               'onMouseEnter',
               trigger === POPOVER_TRIGGER_TYPES.hover && handleMouseEnter,

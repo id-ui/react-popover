@@ -65,11 +65,11 @@ export default ({
       }
     };
 
-    document.addEventListener('click', remoteClickListener);
+    document.addEventListener('mousedown', remoteClickListener);
     document.addEventListener('keydown', keyDownListener);
 
     return () => {
-      document.removeEventListener('click', remoteClickListener);
+      document.removeEventListener('mousedown', remoteClickListener);
       document.removeEventListener('keydown', keyDownListener);
     };
   }, [isOpen, closeOnRemoteClick, close, closeOnEscape, closeOnEnter]);
