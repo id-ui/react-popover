@@ -65,7 +65,7 @@ describe('Popover', () => {
     await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
     const button = document.createElement('button');
     document.body.appendChild(button);
-    fireEvent.click(button, { which: 1 });
+    fireEvent.mouseDown(button, { which: 1 });
     await waitFor(() =>
       expect(queryByTestId('content')).not.toBeInTheDocument()
     );
