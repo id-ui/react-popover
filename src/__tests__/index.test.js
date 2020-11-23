@@ -1,8 +1,14 @@
 import React from 'react';
+import _ from 'lodash';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import Popover from 'components/Popover';
+import { renderHook, act } from '@testing-library/react-hooks';
+import { useOpen } from 'components/Popover/hooks';
+import { POPOVER_TRIGGER_TYPES } from 'components/Popover/constants';
+import placementsConfig from 'components/Popover/placementsConfig';
+import { checkConstraints } from 'components/Popover/helpers';
 
 describe('Popover', () => {
   it('accessible', async () => {
@@ -24,14 +30,170 @@ describe('Popover', () => {
     expect(getByTestId('button')).toBeInTheDocument();
   });
 
-  it('opens on click (basic case)', async () => {
+  it('opens and closes on click', async () => {
     const { getByTestId, queryByTestId } = render(
-      <Popover content={<span data-testid="content">Hi!</span>}>
+      <Popover
+        trigger={POPOVER_TRIGGER_TYPES.click}
+        content={<span data-testid="content">Hi!</span>}
+      >
         <button data-testid="button">Open</button>
       </Popover>
     );
     expect(queryByTestId('content')).not.toBeInTheDocument();
     user.click(getByTestId('button'));
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+    user.click(getByTestId('button'));
+    await waitFor(() =>
+      expect(queryByTestId('content')).not.toBeInTheDocument()
+    );
+  });
+
+  it('isOpenControlled: able to be controlled from outside', async () => {
+    const { queryByTestId, getByTestId, rerender } = render(
+      <Popover
+        trigger={POPOVER_TRIGGER_TYPES.click}
+        isOpenControlled
+        content={<span data-testid="content">Hi!</span>}
+      >
+        <button data-testid="button">Open</button>
+      </Popover>
+    );
+    expect(queryByTestId('content')).not.toBeInTheDocument();
+    user.click(getByTestId('button'));
+    await waitFor(() =>
+      expect(queryByTestId('content')).not.toBeInTheDocument()
+    );
+    rerender(
+      <Popover
+        trigger={POPOVER_TRIGGER_TYPES.click}
+        isOpenControlled
+        isOpen
+        content={<span data-testid="content">Hi!</span>}
+      >
+        <button data-testid="button">Open</button>
+      </Popover>
+    );
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+    rerender(
+      <Popover
+        trigger={POPOVER_TRIGGER_TYPES.click}
+        isOpenControlled
+        content={<span data-testid="content">Hi!</span>}
+      >
+        <button data-testid="button">Open</button>
+      </Popover>
+    );
+    await waitFor(() =>
+      expect(queryByTestId('content')).not.toBeInTheDocument()
+    );
+  });
+
+  it('opens on hover', async () => {
+    const { getByTestId, queryByTestId } = render(
+      <Popover
+        trigger={POPOVER_TRIGGER_TYPES.hover}
+        mouseEnterDelay={0}
+        content={<span data-testid="content">Hi!</span>}
+      >
+        <button data-testid="button">Open</button>
+      </Popover>
+    );
+    expect(queryByTestId('content')).not.toBeInTheDocument();
+    fireEvent.mouseEnter(getByTestId('button'));
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+  });
+
+  it('waits for delay before opening', async () => {
+    const { getByTestId, queryByTestId } = render(
+      <Popover
+        trigger={POPOVER_TRIGGER_TYPES.hover}
+        mouseEnterDelay={300}
+        content={<span data-testid="content">Hi!</span>}
+      >
+        <button data-testid="button">Open</button>
+      </Popover>
+    );
+    expect(queryByTestId('content')).not.toBeInTheDocument();
+    fireEvent.mouseEnter(getByTestId('button'));
+    await waitFor(() =>
+      expect(queryByTestId('content')).not.toBeInTheDocument()
+    );
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+  });
+
+  it('waits for delay before closing', async () => {
+    const { getByTestId, queryByTestId } = render(
+      <Popover
+        trigger={POPOVER_TRIGGER_TYPES.hover}
+        mouseEnterDelay={0}
+        mouseLeaveDelay={300}
+        content={<span data-testid="content">Hi!</span>}
+      >
+        <button data-testid="button">Open</button>
+      </Popover>
+    );
+    expect(queryByTestId('content')).not.toBeInTheDocument();
+    fireEvent.mouseEnter(getByTestId('button'));
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+    fireEvent.mouseLeave(getByTestId('button'));
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+    await waitFor(() =>
+      expect(queryByTestId('content')).not.toBeInTheDocument()
+    );
+  });
+
+  it('does not close if mouse returned to trigger', async () => {
+    const { getByTestId, queryByTestId } = render(
+      <Popover
+        trigger={POPOVER_TRIGGER_TYPES.hover}
+        mouseEnterDelay={100}
+        mouseLeaveDelay={2000}
+        content={<span data-testid="content">Hi!</span>}
+      >
+        <button data-testid="button">Open</button>
+      </Popover>
+    );
+    expect(queryByTestId('content')).not.toBeInTheDocument();
+    fireEvent.mouseEnter(getByTestId('button'));
+    fireEvent.mouseLeave(getByTestId('button'));
+    await waitFor(
+      () => {
+        expect(getByTestId('content')).toBeInTheDocument();
+        fireEvent.mouseEnter(getByTestId('button'));
+      },
+      { duration: 1000 }
+    );
+    // popover did not close after mouseLeaveDelay, e.g it was cancelled
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument(), {
+      duration: 2500,
+    });
+  });
+
+  it('opens on focus', async () => {
+    const { getByTestId, queryByTestId } = render(
+      <Popover
+        trigger={POPOVER_TRIGGER_TYPES.focus}
+        content={<span data-testid="content">Hi!</span>}
+      >
+        <input type="text" data-testid="input" />
+      </Popover>
+    );
+    expect(queryByTestId('content')).not.toBeInTheDocument();
+    fireEvent.focus(getByTestId('input'));
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+  });
+
+  it('opens on contextMenu', async () => {
+    const { getByTestId, queryByTestId } = render(
+      <Popover
+        trigger={POPOVER_TRIGGER_TYPES.contextMenu}
+        content={<span data-testid="content">{'Hi!'}</span>}
+      >
+        <button data-testid="button">Open</button>
+      </Popover>
+    );
+    expect(queryByTestId('content')).not.toBeInTheDocument();
+    fireEvent.contextMenu(getByTestId('button'));
     await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
   });
 
@@ -100,5 +262,134 @@ describe('Popover', () => {
     await waitFor(() =>
       expect(queryByTestId('content')).not.toBeInTheDocument()
     );
+  });
+
+  it('considers trigger motion', async () => {
+    const { getByTestId } = render(
+      <Popover
+        closeOnEnter={true}
+        content={<span data-testid="content">Hi!</span>}
+        considerTriggerMotion
+        trigger="click"
+        // for coverage
+        ref={{}}
+      >
+        <button
+          data-testid="button"
+          style={{ position: 'absolute', left: '10px' }}
+        >
+          Open
+        </button>
+      </Popover>
+    );
+    const button = getByTestId('button');
+    user.click(button);
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+    //const initialContentLeft = getByTestId('content').getBoundingClientRect().left
+    button.style.left = '100px';
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+    // const currentContentLeft = getByTestId('content').getBoundingClientRect().left
+    // expect(currentContentLeft).not.toBe(initialContentLeft)
+  });
+
+  it('resize listener coverage', async () => {
+    const { getByTestId } = render(
+      <Popover
+        closeOnEnter={true}
+        content={<span data-testid="content">Hi!</span>}
+        trigger="click"
+        // for coverage
+        triggerContainerDisplay="inline"
+        triggerContainerTag="div"
+        ref={_.noop}
+      >
+        <button
+          data-testid="button"
+          style={{ position: 'absolute', left: '10px' }}
+        >
+          Open
+        </button>
+      </Popover>
+    );
+    const button = getByTestId('button');
+    user.click(button);
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+    fireEvent(window, new Event('resize'));
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+  });
+
+  it('useOpen: toggle, open, close', async () => {
+    const { result } = renderHook(useOpen, {
+      initialProps: {
+        onClose: _.noop,
+        closeOnRemoteClick: true,
+        closeOnEscape: true,
+        closeOnEnter: false,
+        onChangeOpen: _.noop,
+      },
+    });
+    expect(result.current.isOpen).toBe(false);
+    act(() => result.current.toggle());
+    expect(result.current.isOpen).toBe(true);
+    act(() => result.current.toggle());
+    expect(result.current.isOpen).toBe(false);
+    act(() => result.current.open());
+    expect(result.current.isOpen).toBe(true);
+    act(() => result.current.close());
+    expect(result.current.isOpen).toBe(false);
+  });
+
+  it('useOpen: controlled visibility', async () => {
+    const { result } = renderHook(useOpen, {
+      initialProps: {
+        onClose: _.noop,
+        onChangeOpen: _.noop,
+        isOpenControlled: true,
+      },
+    });
+    expect(result.current.isOpen).toBe(false);
+    act(() => result.current.toggle());
+    expect(result.current.isOpen).toBe(false);
+  });
+
+  it('placementsConfig: contains all popover placements', async () => {
+    expect(_.keys(placementsConfig)).toStrictEqual([
+      'top',
+      'topLeft',
+      'topRight',
+      'bottom',
+      'bottomLeft',
+      'bottomRight',
+      'left',
+      'leftTop',
+      'leftBottom',
+      'right',
+      'rightTop',
+      'rightBottom',
+    ]);
+  });
+  it('placementsConfig: each placement config contains style and motion props', async () => {
+    _.values(placementsConfig).forEach((item) => {
+      expect(
+        _.keys(
+          item(
+            {},
+            {
+              offset: [0, 0],
+              animation: { initial: {}, animate: {}, exit: {} },
+            }
+          )
+        )
+      ).toStrictEqual(['style', 'initial', 'animate', 'exit']);
+    });
+  });
+
+  it('checkConstraints: replaces position to opposite if there is no room', async () => {
+    expect(
+      checkConstraints('topLeft', ['top', 200, 100], ['bottom', 300, 400])
+    ).toBe('bottomLeft');
+    expect(
+      checkConstraints('bottomLeft', ['top', 100, 200], ['bottom', 300, 400])
+    ).toBe('topLeft');
   });
 });

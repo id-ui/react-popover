@@ -6,9 +6,6 @@ export default (callback) => {
   const previousRect = useRef();
 
   const check = useCallback(() => {
-    if (!elementRef.current) {
-      return;
-    }
     const {
       left,
       right,
