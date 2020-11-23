@@ -1,6 +1,6 @@
 {
   "name": "@kaprisa57/react-popover",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React Popover Component",
   "author": "kaprisa57@gmail.com",
   "license": "MIT",
@@ -20,7 +20,8 @@
     "test": "jest",
     "test:watch": "npm run test -- --watch",
     "test:coverage": "yarn test -- --coverage",
-    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
+    "build-and-publish": "yarn run build && npm version patch && npm publish"
   },
   "eslintConfig": {
     "extends": "react-app"
