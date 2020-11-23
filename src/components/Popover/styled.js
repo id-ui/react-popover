@@ -10,9 +10,9 @@ export const Container = styled(motion.div)`
     0 0.9rem 1.5rem 0.9rem rgba(0, 0, 0, 0.05);
   z-index: 3;
   background-color: #ffffff;
-  padding: 0.5rem;
   border-radius: 0.3rem;
   cursor: default;
+  padding: 0.5rem;
   ${prop('positionStyles')};
   ${ifProp(
     'withArrow',
@@ -27,6 +27,22 @@ export const Container = styled(motion.div)`
       }
     `
   )}
+`;
+
+export const Inner = styled.div`
+  ${ifProp(
+    'maxHeight',
+    css`
+      max-height: ${prop('maxHeight')}!important;
+    `
+  )}
+  ${ifProp(
+    'maxWidth',
+    css`
+      max-width: ${prop('maxWidth')}!important;
+    `
+  )}
+  overflow: auto;
 `;
 
 export const CheckTargetDimensionsHelper = styled.div`

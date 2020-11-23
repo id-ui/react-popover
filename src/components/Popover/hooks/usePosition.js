@@ -10,6 +10,8 @@ export default ({
   offset,
   withArrow,
   guessBetterPosition,
+  animation,
+  animationTranslateDistance,
 }) => {
   const [containerProps, setContainerProps] = useState({});
 
@@ -46,20 +48,31 @@ export default ({
       const rightConstraint = scrollWidth - targetWidth - EDGE_PADDING;
       const leftConstraint = targetWidth;
 
-      actualPlacement = checkConstraints(
-        placement,
-        ['bottom', params.bottom, bottomConstraint],
-        ['top', params.top, topConstraint]
-      );
-      actualPlacement = checkConstraints(
-        actualPlacement,
-        ['right', params.right, rightConstraint],
-        ['left', params.left, leftConstraint]
-      );
+      // two times to avoid wrong position replacement (second time returns old placement in wrong case)
+      for (let i = 0; i < 2; i++) {
+        actualPlacement = checkConstraints(
+          actualPlacement,
+          ['bottom', params.bottom, bottomConstraint],
+          ['top', params.top, topConstraint]
+        );
+      }
+
+      for (let i = 0; i < 2; i++) {
+        actualPlacement = checkConstraints(
+          actualPlacement,
+          ['right', params.right, rightConstraint],
+          ['left', params.left, leftConstraint]
+        );
+      }
     }
 
     setContainerProps(
-      popoverPropsGetters[actualPlacement](params, { offset, withArrow })
+      popoverPropsGetters[actualPlacement](params, {
+        offset,
+        withArrow,
+        animation,
+        animationTranslateDistance,
+      })
     );
   }, [
     triggerElementRef,

@@ -16,7 +16,7 @@ import {
   useNodeDimensions,
   useElementMotion,
 } from './hooks';
-import { CheckTargetDimensionsHelper, Container } from './styled';
+import { CheckTargetDimensionsHelper, Container, Inner } from './styled';
 import popoverPropsGetters from './placementsConfig';
 import { POPOVER_TRIGGER_TYPES } from './constants';
 import useResizeListener from './hooks/useResizeListener';
@@ -41,10 +41,14 @@ function Popover(
     closeOnRemoteClick: providedCloseOnRemoteClick,
     guessBetterPosition,
     onFocus,
-    onBlur,
     mouseEnterDelay,
     mouseLeaveDelay,
     triggerContainerDisplay,
+    triggerContainerTag,
+    maxHeight,
+    maxWidth,
+    animation,
+    animationTranslateDistance,
     ...wrapperProps
   },
   ref
@@ -52,10 +56,7 @@ function Popover(
   const { target, isOpen, setOpen, open, close, toggle } = useOpen({
     onClose,
     closeOnRemoteClick:
-      providedCloseOnRemoteClick ||
-      [POPOVER_TRIGGER_TYPES.click, POPOVER_TRIGGER_TYPES.contextMenu].includes(
-        trigger
-      ),
+      providedCloseOnRemoteClick || trigger !== POPOVER_TRIGGER_TYPES.hover,
     closeOnEscape,
     closeOnEnter,
     isOpen: providedIsOpen,
@@ -80,6 +81,8 @@ function Popover(
     offset,
     withArrow,
     guessBetterPosition,
+    animation,
+    animationTranslateDistance,
   });
 
   const updatePositionIfOpen = useCallback(() => {
@@ -142,7 +145,6 @@ function Popover(
     handleMouseEnter,
     handleMouseLeave,
     handleFocus,
-    handleBlur,
   } = useHandlers({
     isOpen,
     openDebounced,
@@ -150,7 +152,6 @@ function Popover(
     showContent,
     setOpen,
     onFocus,
-    onBlur,
   });
 
   const setContainerRef = useCallback(
@@ -219,6 +220,8 @@ function Popover(
     [handleClick, handleMouseEnter, handleMouseLeave, trigger]
   );
 
+  const TriggerContainer = triggerContainerTag;
+
   return (
     <Fragment>
       {isCheckingTargetDimensions && (
@@ -240,7 +243,9 @@ function Popover(
               onMouseLeave={triggerProps.onMouseLeave}
               className={className}
             >
-              {transformedContent}
+              <Inner maxHeight={maxHeight} maxWidth={maxWidth}>
+                {transformedContent}
+              </Inner>
             </Container>
           )}
         </AnimatePresence>,
@@ -255,17 +260,20 @@ function Popover(
           ),
           {
             onFocus: handleFocus,
-            onBlur: handleBlur,
             ref: setContainerRef,
             ...wrapperProps,
           }
         )
       ) : (
-        <span {...triggerProps} ref={setContainerRef} {...wrapperProps}>
+        <TriggerContainer
+          {...triggerProps}
+          ref={setContainerRef}
+          {...wrapperProps}
+        >
           {_.isFunction(children)
             ? children({ isOpen, open, close, toggle })
             : children}
-        </span>
+        </TriggerContainer>
       )}
     </Fragment>
   );
@@ -281,7 +289,7 @@ PopoverWithRef.propTypes = {
   placement: PropTypes.oneOf(Object.keys(popoverPropsGetters)),
   /**
    * Event name, on which popover should change visibility
-   * If trigger is 'focus' and you want to listen for onFocus/onBlur on child then provide popover with these listeners
+   * If trigger is 'focus' and you want to listen for onFocus on child then provide popover with this listener
    * If trigger is 'focus' then root child should accept event onFocus, use forwardRef to choose another child
    * @default hover
    */
@@ -291,11 +299,6 @@ PopoverWithRef.propTypes = {
    * @default _.noop
    */
   onFocus: PropTypes.func,
-  /**
-   * onBlur event of child component, triggered if trigger === 'focus'
-   * @default _.noop
-   */
-  onBlur: PropTypes.func,
   /**
    * Whether show popover arrow or not
    * @default true
@@ -365,7 +368,7 @@ PopoverWithRef.propTypes = {
   closeOnEnter: PropTypes.bool,
   /**
    * Whether close on remote click or not
-   * @default trigger === 'click' || trigger === 'contextMenu'
+   * @default trigger !== 'hover'
    */
   closeOnRemoteClick: PropTypes.bool,
   /**
@@ -388,6 +391,35 @@ PopoverWithRef.propTypes = {
    * @default display of root child
    */
   triggerContainerDisplay: PropTypes.string,
+  /**
+   * tag of popover trigger container
+   * @default span
+   */
+  triggerContainerTag: PropTypes.string,
+  /**
+   * max content width
+   * @default available space - 25
+   */
+  maxWidth: PropTypes.string,
+  /**
+   * max content height
+   * @default available space - 25
+   */
+  maxHeight: PropTypes.string,
+  /**
+   * framer-motion props for opening/closing content animation {initial, animate, exit}
+   */
+  animation: PropTypes.shape({
+    initial: PropTypes.object,
+
+    animate: PropTypes.object,
+
+    exit: PropTypes.object,
+  }),
+  /**
+   * distance in % that content should slide during opening
+   */
+  animationTranslateDistance: PropTypes.number,
 };
 
 PopoverWithRef.defaultProps = {
@@ -406,7 +438,25 @@ PopoverWithRef.defaultProps = {
   mouseEnterDelay: 100,
   mouseLeaveDelay: 300,
   onFocus: _.noop,
-  onBlur: _.noop,
+  triggerContainerTag: 'span',
+  animation: {
+    initial: {
+      opacity: 0,
+      scale: 0.9,
+    },
+
+    animate: {
+      opacity: 1,
+      scale: 1,
+    },
+
+    exit: {
+      opacity: 0,
+      scale: 0.9,
+      transition: { duration: 0.2 },
+    },
+  },
+  animationTranslateDistance: 30,
 };
 
 export default PopoverWithRef;

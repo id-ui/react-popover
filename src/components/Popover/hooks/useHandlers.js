@@ -7,7 +7,6 @@ export default ({
   showContent,
   setOpen,
   onFocus,
-  onBlur,
 }) => {
   const handleMouseEnter = useCallback(() => {
     if (isOpen) {
@@ -33,14 +32,6 @@ export default ({
     [isOpen, onFocus, showContent]
   );
 
-  const handleBlur = useCallback(
-    (e) => {
-      setOpen(false);
-      onBlur(e);
-    },
-    [onBlur, setOpen]
-  );
-
   const handleClick = useCallback(
     (e) => {
       e.stopPropagation();
@@ -61,6 +52,5 @@ export default ({
     handleMouseEnter,
     handleMouseLeave,
     handleFocus,
-    handleBlur,
   };
 };
