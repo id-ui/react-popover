@@ -367,20 +367,18 @@ export function popoverWithCustomAnimation(props) {
     <Popover
       {...props}
       content={longContent}
+      animationTranslateDistance={0}
       animation={{
         initial: {
           opacity: 0,
-          scale: 0.5,
         },
 
         animate: {
           opacity: 1,
-          scale: 1,
         },
 
         exit: {
           opacity: 0,
-          scale: 0.5,
           transition: { duration: 0.1 },
         },
       }}
