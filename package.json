@@ -1,6 +1,6 @@
 {
   "name": "@kaprisa57/react-popover",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "React Popover Component",
   "author": "kaprisa57@gmail.com",
   "license": "MIT",
@@ -73,7 +73,9 @@
     "react-test-renderer": "^16.14.0",
     "storybook-addon-react-docgen": "^1.2.42",
     "webpack": "^5.0.0-rc.6",
-    "webpack-cli": "^4.0.0-rc.1"
+    "webpack-cli": "^4.0.0-rc.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
   },
   "files": [
     "dist"
@@ -82,8 +84,6 @@
     "framer-motion": "^1.11.1",
     "lodash": "^4.17.20",
     "prop-types": "^15.7.2",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
     "styled-components": "^5.2.1",
     "styled-tools": "^1.7.2"
   },
