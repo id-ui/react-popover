@@ -355,17 +355,17 @@ describe('Popover', () => {
   it('placementsConfig: contains all popover placements', async () => {
     expect(_.keys(placementsConfig)).toStrictEqual([
       'top',
-      'topLeft',
       'topRight',
+      'topLeft',
       'bottom',
-      'bottomLeft',
       'bottomRight',
+      'bottomLeft',
       'left',
-      'leftTop',
       'leftBottom',
+      'leftTop',
       'right',
-      'rightTop',
       'rightBottom',
+      'rightTop',
     ]);
   });
   it('placementsConfig: each placement config contains style and motion props', async () => {

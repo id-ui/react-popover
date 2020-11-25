@@ -1,10 +1,5 @@
 import { css } from 'styled-components';
-import {
-  ARROW_OFFSET,
-  SIDE_OVERFLOW,
-  ARROW_SIZE,
-  MIN_SPARE_SPACE,
-} from './constants';
+import { ARROW_OFFSET, ARROW_SIZE, MIN_SPARE_SPACE } from './constants';
 import { Inner } from './styled';
 
 export const getDefaultOffset = (withArrow) => (withArrow ? ARROW_SIZE : 0) + 5;
@@ -45,19 +40,19 @@ export default {
       x: '-50%',
     },
   }),
-  topLeft: (
-    { top, left },
+  topRight: (
+    { top, right },
     { offset, withArrow, animation, animationTranslateDistance }
   ) => ({
     style: css`
       top: ${top + offset[1] - getDefaultOffset(withArrow)}px;
-      left: ${left + SIDE_OVERFLOW + offset[0]}px;
+      left: ${right + offset[0]}px;
       ${Inner} {
         max-height: ${top +
         offset[1] -
         getDefaultOffset(withArrow) -
         MIN_SPARE_SPACE}px;
-        max-width: ${left + SIDE_OVERFLOW + offset[0] - MIN_SPARE_SPACE}px;
+        max-width: ${right + offset[0] - MIN_SPARE_SPACE}px;
       }
       &:before {
         top: calc(100% - 0.4rem);
@@ -80,20 +75,20 @@ export default {
       x: '-100%',
     },
   }),
-  topRight: (
-    { top, right },
+  topLeft: (
+    { top, left },
     { offset, withArrow, animation, animationTranslateDistance }
   ) => ({
     style: css`
       top: ${top + offset[1] - getDefaultOffset(withArrow)}px;
-      left: ${right - SIDE_OVERFLOW + offset[0]}px;
+      left: ${left + offset[0]}px;
       ${Inner} {
         max-height: ${top +
         offset[1] -
         getDefaultOffset(withArrow) -
         MIN_SPARE_SPACE}px;
         max-width: ${window.innerWidth -
-        (MIN_SPARE_SPACE + right - SIDE_OVERFLOW + offset[0])}px;
+        (MIN_SPARE_SPACE + left + offset[0])}px;
       }
       &:before {
         top: calc(100% - 0.4rem);
@@ -149,17 +144,17 @@ export default {
       x: '-50%',
     },
   }),
-  bottomLeft: (
-    { bottom, left },
+  bottomRight: (
+    { bottom, right },
     { offset, withArrow, animation, animationTranslateDistance }
   ) => ({
     style: css`
       top: ${bottom + offset[1] + getDefaultOffset(withArrow)}px;
-      left: ${left + SIDE_OVERFLOW + offset[0]}px;
+      left: ${right + offset[0]}px;
       ${Inner} {
         max-height: ${window.innerHeight -
         (MIN_SPARE_SPACE + bottom + offset[1] + getDefaultOffset(withArrow))}px;
-        max-width: ${left + SIDE_OVERFLOW + offset[0] - MIN_SPARE_SPACE}px;
+        max-width: ${right + offset[0] - MIN_SPARE_SPACE}px;
       }
       &:before {
         bottom: calc(100% - 0.4rem);
@@ -182,18 +177,18 @@ export default {
       x: '-100%',
     },
   }),
-  bottomRight: (
-    { bottom, right },
+  bottomLeft: (
+    { bottom, left },
     { offset, withArrow, animation, animationTranslateDistance }
   ) => ({
     style: css`
       top: ${bottom + offset[1] + getDefaultOffset(withArrow)}px;
-      left: ${right - SIDE_OVERFLOW + offset[0]}px;
+      left: ${left + offset[0]}px;
       ${Inner} {
         max-height: ${window.innerHeight -
         (MIN_SPARE_SPACE + bottom + offset[1] + getDefaultOffset(withArrow))}px;
         max-width: ${window.innerWidth -
-        (MIN_SPARE_SPACE + right - SIDE_OVERFLOW + offset[0])}px;
+        (MIN_SPARE_SPACE + left + offset[0])}px;
       }
       &:before {
         bottom: calc(100% - 0.4rem);
@@ -251,15 +246,15 @@ export default {
       y: '-50%',
     },
   }),
-  leftTop: (
-    { top, left },
+  leftBottom: (
+    { bottom, left },
     { offset, withArrow, animation, animationTranslateDistance }
   ) => ({
     style: css`
       left: ${left + offset[0] - getDefaultOffset(withArrow)}px;
-      top: ${top + offset[1] + SIDE_OVERFLOW}px;
+      top: ${bottom + offset[1]}px;
       ${Inner} {
-        max-height: ${top + offset[1] + SIDE_OVERFLOW - MIN_SPARE_SPACE}px;
+        max-height: ${bottom + offset[1] - MIN_SPARE_SPACE}px;
         max-width: ${left +
         offset[0] -
         getDefaultOffset(withArrow) -
@@ -286,16 +281,16 @@ export default {
       y: '-100%',
     },
   }),
-  leftBottom: (
-    { bottom, left },
+  leftTop: (
+    { top, left },
     { offset, withArrow, animation, animationTranslateDistance }
   ) => ({
     style: css`
       left: ${left + offset[0] - getDefaultOffset(withArrow)}px;
-      top: ${bottom + offset[1] - SIDE_OVERFLOW}px;
+      top: ${top + offset[1]}px;
       ${Inner} {
         max-height: ${window.innerHeight -
-        (MIN_SPARE_SPACE + bottom + offset[1] - SIDE_OVERFLOW)}px;
+        (MIN_SPARE_SPACE + top + offset[1])}px;
         max-width: ${left +
         offset[0] -
         getDefaultOffset(withArrow) -
@@ -355,15 +350,15 @@ export default {
       y: '-50%',
     },
   }),
-  rightTop: (
-    { top, right },
+  rightBottom: (
+    { bottom, right },
     { offset, withArrow, animation, animationTranslateDistance }
   ) => ({
     style: css`
       left: ${right + offset[0] + getDefaultOffset(withArrow)}px;
-      top: ${top + offset[1] + SIDE_OVERFLOW}px;
+      top: ${bottom + offset[1]}px;
       ${Inner} {
-        max-height: ${top + offset[1] + SIDE_OVERFLOW - MIN_SPARE_SPACE}px;
+        max-height: ${bottom + offset[1] - MIN_SPARE_SPACE}px;
         max-width: ${window.innerWidth -
         (MIN_SPARE_SPACE + right + offset[0] + getDefaultOffset(withArrow))}px;
       }
@@ -388,16 +383,16 @@ export default {
       y: '-100%',
     },
   }),
-  rightBottom: (
-    { bottom, right },
+  rightTop: (
+    { top, right },
     { offset, withArrow, animation, animationTranslateDistance }
   ) => ({
     style: css`
       left: ${right + offset[0] + getDefaultOffset(withArrow)}px;
-      top: ${bottom + offset[1] - SIDE_OVERFLOW}px;
+      top: ${top + offset[1]}px;
       ${Inner} {
         max-height: ${window.innerHeight -
-        (MIN_SPARE_SPACE + bottom + offset[1] - SIDE_OVERFLOW)}px;
+        (MIN_SPARE_SPACE + top + offset[1])}px;
         max-width: ${window.innerWidth -
         (MIN_SPARE_SPACE + right + offset[0] + getDefaultOffset(withArrow))}px;
       }

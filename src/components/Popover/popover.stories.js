@@ -362,7 +362,7 @@ export function popoverWithFocusTrigger(props) {
   );
 }
 
-export function popoverWithCustomAnimation(props) {
+export function popoverWithCustomSimpleAnimation(props) {
   return (
     <Popover
       {...props}

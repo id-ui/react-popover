@@ -21,6 +21,7 @@ yarn add @kaprisa57/react-popover
 - Able to change dimensions depending on available space (if maxHeight and maxWidth not specified).
 - Able to choose better placement if there is no room (if guessBetterPosition = true).
 - Able to follow trigger (if considerTriggerMotion = true, default false for better performance).
+- Considers window resizing.
 - Supports 12 different placements.
 - Able to close on remote click, enter and escape buttons press.
 - Able to open on hover, click, focus and contextMenu events. 
@@ -32,17 +33,60 @@ yarn add @kaprisa57/react-popover
 - Accepts custom trigger container display and tag.
 
 
+### See props in [Docs](https://kseniya57.github.io/react-popover/?path=/docs/popover--playground)
+
+
 ### Basic Example
 
 ```jsx
 import React from 'react'
-
 import Popover from '@kaprisa57/react-popover'
 
 function Example() {
   return <Popover content="Hi!">
     <button>Open</button>
   </Popover>
+}
+```
+
+### Consider Trigger Motion
+Popover can follow trigger if considerTriggerMotion = true.
+
+See example [here](https://kseniya57.github.io/react-popover/?path=/docs/popover--drag)
+
+### Custom Animation
+You can configure custom animation by defining framer-motion props. In this example used simple opacity animation, i.e. you won't see any jumping or movement. [Live Example](https://kseniya57.github.io/react-popover/?path=/docs/popover--popover-with-custom-simple-animation).
+
+```jsx
+import React from 'react'
+import Popover from '@kaprisa57/react-popover'
+
+const animation = {
+  initial: {
+      opacity: 0,
+  },
+   
+ animate: {
+  opacity: 1,
+ },
+   
+   exit: {
+     opacity: 0,
+     transition: { duration: 0.1 },
+   },
+ }
+
+function PopoverWithCustomAnimation() {
+  return <Popover
+      content="Hi!"
+      trigger="click"
+      // Popover won't move during opening
+      animationTranslateDistance={0}
+      // custom animation
+      animation={animation}
+     >
+       <button>Click to Open</button>
+     </Popover>
 }
 ```
 

@@ -45,7 +45,7 @@ export const Inner = styled.div`
   overflow: auto;
 `;
 
-export const CheckTargetDimensionsHelper = styled.div`
+export const CheckContentDimensionsHelper = styled.div`
   position: absolute;
   left: -99.9rem;
   top: -99.9rem;

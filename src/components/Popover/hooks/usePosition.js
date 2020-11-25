@@ -4,7 +4,7 @@ import { checkConstraints } from '../helpers';
 import popoverPropsGetters from '../placementsConfig';
 
 export default ({
-  targetDimensions,
+  contentDimensions,
   triggerElementRef,
   placement,
   offset,
@@ -16,7 +16,7 @@ export default ({
   const [containerProps, setContainerProps] = useState({});
 
   const updatePosition = useCallback(() => {
-    if (!triggerElementRef.current || !targetDimensions.current) {
+    if (!triggerElementRef.current || !contentDimensions.current) {
       return;
     }
 
@@ -28,7 +28,7 @@ export default ({
     const {
       height: targetHeight,
       width: targetWidth,
-    } = targetDimensions.current;
+    } = contentDimensions.current;
 
     const params = {
       bottom: scrollTop + rect.bottom,
@@ -79,8 +79,10 @@ export default ({
     guessBetterPosition,
     offset,
     placement,
-    targetDimensions,
+    contentDimensions,
     withArrow,
+    animation,
+    animationTranslateDistance,
   ]);
 
   return [containerProps, updatePosition];

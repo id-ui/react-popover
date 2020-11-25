@@ -16,7 +16,7 @@ import {
   useNodeDimensions,
   useElementMotion,
 } from './hooks';
-import { CheckTargetDimensionsHelper, Container, Inner } from './styled';
+import { CheckContentDimensionsHelper, Container, Inner } from './styled';
 import popoverPropsGetters from './placementsConfig';
 import { POPOVER_TRIGGER_TYPES } from './constants';
 import useResizeListener from './hooks/useResizeListener';
@@ -69,13 +69,13 @@ function Popover(
   const container = useMemo(() => getContainer(), [getContainer]);
 
   const [
-    targetDimensions,
-    checkTargetDimensions,
-    isCheckingTargetDimensions,
-    setCheckingTargetDimensions,
+    contentDimensions,
+    checkContentDimensions,
+    isCheckingContentDimensions,
+    setCheckingContentDimensions,
   ] = useNodeDimensions();
   const [containerProps, updatePosition] = usePosition({
-    targetDimensions,
+    contentDimensions,
     triggerElementRef,
     placement,
     offset,
@@ -112,8 +112,8 @@ function Popover(
         (customSetOpen || setOpen)(!isOpen, force);
       };
 
-      if (!targetDimensions.current) {
-        setCheckingTargetDimensions(true);
+      if (!contentDimensions.current) {
+        setCheckingContentDimensions(true);
         setTimeout(() => {
           show();
         }, 100);
@@ -122,11 +122,11 @@ function Popover(
       }
     },
     [
-      targetDimensions,
+      contentDimensions,
       updatePosition,
       setOpen,
       isOpen,
-      setCheckingTargetDimensions,
+      setCheckingContentDimensions,
     ]
   );
 
@@ -224,10 +224,10 @@ function Popover(
 
   return (
     <Fragment>
-      {isCheckingTargetDimensions && (
-        <CheckTargetDimensionsHelper ref={checkTargetDimensions}>
+      {isCheckingContentDimensions && (
+        <CheckContentDimensionsHelper ref={checkContentDimensions}>
           {transformedContent}
-        </CheckTargetDimensionsHelper>
+        </CheckContentDimensionsHelper>
       )}
       {createPortal(
         <AnimatePresence initial={null}>
