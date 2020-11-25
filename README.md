@@ -54,6 +54,54 @@ Popover can follow trigger if considerTriggerMotion = true.
 
 See example [here](https://kseniya57.github.io/react-popover/?path=/docs/popover--drag)
 
+
+### Custom styles. [Live Example](https://kseniya57.github.io/react-popover/?path=/docs/popover--styled-popover)
+
+> Note: if you use styled-components of different version use && for styles priority
+
+```jsx
+import React from 'react'
+import Popover from '@kaprisa57/react-popover'
+import styled from 'styled-components'
+
+const CustomPopover = styled(Popover)`
+  background-color: aquamarine;
+  border-radius: 30px;
+  border: 2px solid black;
+  box-shadow: none;
+  &:before { // arrow
+    border-left-color: black;
+    border-bottom-color: black;
+    box-shadow: none;
+  }
+`
+
+// if you use lower version of styled-components
+const CustomPopover2 = styled(Popover)`
+  && {
+    background-color: aquamarine;
+    border-radius: 30px;
+    border: 2px solid black;
+    box-shadow: none;
+    &:before { // arrow
+    border-left-color: black;
+    border-bottom-color: black;
+    box-shadow: none;
+    }
+ }
+`
+
+export function styledPopover(props) {
+  return (
+      <CustomPopover {...props} content="Hi!">
+        <button>Open</button>
+      </CustomPopover>
+  );
+}
+```
+
+> Also you can use className
+
 ### Custom Animation
 You can configure custom animation by defining framer-motion props. In this example used simple opacity animation, i.e. you won't see any jumping or movement. [Live Example](https://kseniya57.github.io/react-popover/?path=/docs/popover--popover-with-custom-simple-animation).
 

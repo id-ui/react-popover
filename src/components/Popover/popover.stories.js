@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { withPropsTable } from 'storybook-addon-react-docgen';
 import { motion } from 'framer-motion';
+import styled from 'styled-components';
 import Popover from './Popover';
 import { POPOVER_TRIGGER_TYPES } from './constants';
 import placementsConfig from './placementsConfig';
@@ -385,5 +386,26 @@ export function popoverWithCustomSimpleAnimation(props) {
     >
       <button>{props.trigger || 'hover'} to open</button>
     </Popover>
+  );
+}
+
+const CustomPopover = styled(Popover)`
+  background-color: aquamarine;
+  border-radius: 30px;
+  border: 2px solid black;
+  box-shadow: none;
+  &:before {
+    // arrow
+    border-left-color: black;
+    border-bottom-color: black;
+    box-shadow: none;
+  }
+`;
+
+export function styledPopover(props) {
+  return (
+    <CustomPopover {...props} content="Hi!">
+      <button>{props.trigger || 'hover'} to open</button>
+    </CustomPopover>
   );
 }
