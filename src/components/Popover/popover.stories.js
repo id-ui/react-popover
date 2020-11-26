@@ -190,6 +190,22 @@ export default {
       description:
         'framer-motion props for opening/closing content animation {initial, animate, exit}',
     },
+    zIndex: {
+      control: 'number',
+      description: 'popover content z-index',
+      defaultValue: 1000,
+      table: {
+        defaultValue: 1000,
+      },
+    },
+    spaceBetweenPopoverAndTarget: {
+      control: 'number',
+      description: 'space (px) between popover and target, including arrow',
+      defaultValue: 3,
+      table: {
+        defaultValue: 3,
+      },
+    },
   },
   decorators: [withPropsTable],
   parameters: {

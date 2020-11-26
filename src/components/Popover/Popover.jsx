@@ -49,6 +49,8 @@ function Popover(
     maxWidth,
     animation,
     animationTranslateDistance,
+    spaceBetweenPopoverAndTarget,
+    zIndex,
     ...wrapperProps
   },
   ref
@@ -83,6 +85,7 @@ function Popover(
     guessBetterPosition,
     animation,
     animationTranslateDistance,
+    spaceBetweenPopoverAndTarget,
   });
 
   const updatePositionIfOpen = useCallback(() => {
@@ -242,6 +245,7 @@ function Popover(
               onMouseEnter={triggerProps.onMouseEnter}
               onMouseLeave={triggerProps.onMouseLeave}
               className={className}
+              zIndex={zIndex}
             >
               <Inner maxHeight={maxHeight} maxWidth={maxWidth}>
                 {transformedContent}
@@ -420,6 +424,14 @@ PopoverWithRef.propTypes = {
    * distance in % that content should slide during opening
    */
   animationTranslateDistance: PropTypes.number,
+  /**
+   * popover content z-index
+   */
+  zIndex: PropTypes.number,
+  /**
+   * space (px) between popover and target
+   */
+  spaceBetweenPopoverAndTarget: PropTypes.number,
 };
 
 PopoverWithRef.defaultProps = {
@@ -457,6 +469,7 @@ PopoverWithRef.defaultProps = {
     },
   },
   animationTranslateDistance: 30,
+  spaceBetweenPopoverAndTarget: 3,
 };
 
 export default PopoverWithRef;

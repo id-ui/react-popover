@@ -12,6 +12,7 @@ export default ({
   guessBetterPosition,
   animation,
   animationTranslateDistance,
+  spaceBetweenPopoverAndTarget,
 }) => {
   const [containerProps, setContainerProps] = useState({});
 
@@ -72,6 +73,7 @@ export default ({
         withArrow,
         animation,
         animationTranslateDistance,
+        spaceBetweenPopoverAndTarget,
       })
     );
   }, [
@@ -83,6 +85,7 @@ export default ({
     withArrow,
     animation,
     animationTranslateDistance,
+    spaceBetweenPopoverAndTarget,
   ]);
 
   return [containerProps, updatePosition];

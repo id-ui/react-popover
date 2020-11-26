@@ -8,7 +8,7 @@ export const Container = styled(motion.div)`
   box-shadow: 0 0.4rem 0.8rem -0.4rem rgba(0, 0, 0, 0.11),
     0 0.8rem 1.6rem 0 rgba(0, 0, 0, 0.09),
     0 0.9rem 1.5rem 0.9rem rgba(0, 0, 0, 0.05);
-  z-index: 1030;
+  z-index: ${prop('zIndex', 1000)};
   background-color: #ffffff;
   border-radius: 0.3rem;
   cursor: default;
