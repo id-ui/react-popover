@@ -240,7 +240,7 @@ playground.args = {
   content: 'Hi!',
 };
 
-export function draggable() {
+export function draggable(props) {
   return (
     <div
       style={{
@@ -252,7 +252,7 @@ export function draggable() {
       }}
     >
       <div style={{ padding: '1rem' }}>Note: considerTriggerMotion = true</div>
-      <Popover content="Hi! I follow trigger)" considerTriggerMotion>
+      <Popover {...props} content="Hi! I follow trigger)" considerTriggerMotion>
         <motion.div
           style={{
             width: 100,

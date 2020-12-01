@@ -76,6 +76,7 @@ function Popover(
     isCheckingContentDimensions,
     setCheckingContentDimensions,
   ] = useNodeDimensions();
+
   const [containerProps, updatePosition] = usePosition({
     contentDimensions,
     triggerElementRef,

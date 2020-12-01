@@ -32,10 +32,10 @@ export default ({
     } = contentDimensions.current;
 
     const params = {
-      bottom: scrollTop + rect.bottom,
-      right: scrollLeft + rect.right,
-      top: scrollTop + rect.top,
-      left: scrollLeft + rect.left,
+      bottom: rect.bottom,
+      right: rect.right,
+      top: rect.top,
+      left: rect.left,
       width: rect.width,
       height: rect.height,
     };
@@ -43,31 +43,57 @@ export default ({
     let actualPlacement = placement;
 
     if (guessBetterPosition) {
-      const { scrollHeight, scrollWidth } = document.documentElement;
-      const topConstraint = MIN_SPARE_SPACE + targetHeight;
-      const bottomConstraint =
-        scrollHeight - targetHeight - MIN_SPARE_SPACE - EDGE_PADDING;
-      const rightConstraint =
-        scrollWidth - targetWidth - MIN_SPARE_SPACE - EDGE_PADDING;
-      const leftConstraint = MIN_SPARE_SPACE + targetWidth;
+      const { innerHeight, innerWidth } = window;
 
-      // two times to avoid wrong position replacement (second time returns old placement in wrong case)
-      for (let i = 0; i < 2; i++) {
-        actualPlacement = checkConstraints(
-          actualPlacement,
-          ['bottom', params.bottom, bottomConstraint],
-          ['top', params.top, topConstraint]
-        );
+      const topConstraint = MIN_SPARE_SPACE + EDGE_PADDING + targetHeight;
+      const bottomConstraint =
+        innerHeight - targetHeight - MIN_SPARE_SPACE - EDGE_PADDING;
+      const rightConstraint =
+        innerWidth - targetWidth - MIN_SPARE_SPACE - EDGE_PADDING;
+      const leftConstraint = MIN_SPARE_SPACE + EDGE_PADDING + targetWidth;
+
+      if (['top', 'bottom'].some((item) => actualPlacement.startsWith(item))) {
+        // two times to avoid wrong position replacement (second time returns old placement in wrong case)
+        for (let i = 0; i < 2; i++) {
+          actualPlacement = checkConstraints(
+            actualPlacement,
+            ['bottom', params.bottom, bottomConstraint],
+            ['top', params.top, topConstraint]
+          );
+        }
+      } else {
+        for (let i = 0; i < 2; i++) {
+          actualPlacement = checkConstraints(
+            actualPlacement,
+            ['top', params.top, bottomConstraint],
+            ['bottom', params.bottom, topConstraint]
+          );
+        }
       }
 
-      for (let i = 0; i < 2; i++) {
-        actualPlacement = checkConstraints(
-          actualPlacement,
-          ['right', params.right, rightConstraint],
-          ['left', params.left, leftConstraint]
-        );
+      if (['right', 'left'].some((item) => actualPlacement.startsWith(item))) {
+        for (let i = 0; i < 2; i++) {
+          actualPlacement = checkConstraints(
+            actualPlacement,
+            ['right', params.right, rightConstraint],
+            ['left', params.left, leftConstraint]
+          );
+        }
+      } else {
+        for (let i = 0; i < 2; i++) {
+          actualPlacement = checkConstraints(
+            actualPlacement,
+            ['left', params.left, rightConstraint],
+            ['right', params.right, leftConstraint]
+          );
+        }
       }
     }
+
+    params.top += scrollTop;
+    params.bottom += scrollTop;
+    params.right += scrollLeft;
+    params.left += scrollLeft;
 
     setContainerProps(
       popoverPropsGetters[actualPlacement](params, {
