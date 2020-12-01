@@ -91,7 +91,7 @@ export default {
       description: 'Function triggered when popover should change visibility',
     },
     className: {
-      control: 'string',
+      control: 'text',
       description: 'Popover content className',
     },
     considerTriggerMotion: {
@@ -150,11 +150,11 @@ export default {
       },
     },
     triggerContainerDisplay: {
-      control: 'string',
+      control: 'text',
       description: 'display of popover trigger container',
     },
     triggerContainerTag: {
-      control: 'string',
+      control: 'text',
       description: 'tag of popover trigger container',
       defaultValue: 'span',
       table: {
@@ -162,17 +162,15 @@ export default {
       },
     },
     maxWidth: {
-      control: 'string',
+      control: 'text',
       description: 'max content width',
-      defaultValue: 'available space - 25px',
       table: {
         defaultValue: { summary: 'available space - 25px' },
       },
     },
     maxHeight: {
-      control: 'string',
+      control: 'text',
       description: 'max content height',
-      defaultValue: 'available space - 25',
       table: {
         defaultValue: { summary: 'available space - 25px' },
       },

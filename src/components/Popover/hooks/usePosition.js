@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { EDGE_PADDING } from '../constants';
+import { EDGE_PADDING, MIN_SPARE_SPACE } from '../constants';
 import { checkConstraints } from '../helpers';
 import popoverPropsGetters from '../placementsConfig';
 
@@ -44,10 +44,12 @@ export default ({
 
     if (guessBetterPosition) {
       const { scrollHeight, scrollWidth } = document.documentElement;
-      const topConstraint = targetHeight;
-      const bottomConstraint = scrollHeight - targetHeight - EDGE_PADDING;
-      const rightConstraint = scrollWidth - targetWidth - EDGE_PADDING;
-      const leftConstraint = targetWidth;
+      const topConstraint = MIN_SPARE_SPACE + targetHeight;
+      const bottomConstraint =
+        scrollHeight - targetHeight - MIN_SPARE_SPACE - EDGE_PADDING;
+      const rightConstraint =
+        scrollWidth - targetWidth - MIN_SPARE_SPACE - EDGE_PADDING;
+      const leftConstraint = MIN_SPARE_SPACE + targetWidth;
 
       // two times to avoid wrong position replacement (second time returns old placement in wrong case)
       for (let i = 0; i < 2; i++) {

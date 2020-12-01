@@ -228,7 +228,11 @@ function Popover(
   return (
     <Fragment>
       {isCheckingContentDimensions && (
-        <CheckContentDimensionsHelper ref={checkContentDimensions}>
+        <CheckContentDimensionsHelper
+          maxHeight={maxHeight}
+          maxWidth={maxWidth}
+          ref={checkContentDimensions}
+        >
           {transformedContent}
         </CheckContentDimensionsHelper>
       )}
