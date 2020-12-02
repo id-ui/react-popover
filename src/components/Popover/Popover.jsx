@@ -92,6 +92,7 @@ function Popover(
     animation,
     animationTranslateDistance,
     spaceBetweenPopoverAndTarget,
+    getContainer,
   });
 
   const updatePositionIfOpen = useCallback(() => {

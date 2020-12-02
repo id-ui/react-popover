@@ -3,6 +3,17 @@ import { EDGE_PADDING, MIN_SPARE_SPACE } from '../constants';
 import { checkConstraints } from '../helpers';
 import popoverPropsGetters from '../placementsConfig';
 
+const findFirstRelativeElement = (element) => {
+  if (element.tagName === 'BODY') {
+    return element;
+  }
+  const style = window.getComputedStyle(element);
+  if (style.position === 'static') {
+    return findFirstRelativeElement(element.parentElement);
+  }
+  return element;
+};
+
 export default ({
   contentDimensions,
   triggerElementRef,
@@ -13,6 +24,7 @@ export default ({
   animation,
   animationTranslateDistance,
   spaceBetweenPopoverAndTarget,
+  getContainer,
 }) => {
   const [containerProps, setContainerProps] = useState({});
 
@@ -21,10 +33,16 @@ export default ({
       return;
     }
 
+    const container = getContainer();
+
+    if (!container) {
+      return;
+    }
+
+    const offsetContainer = findFirstRelativeElement(container);
+
     const rect = triggerElementRef.current.getBoundingClientRect();
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const scrollLeft =
-      window.pageXOffset || document.documentElement.scrollLeft;
+    const offsetContainerRect = offsetContainer.getBoundingClientRect();
 
     const {
       height: targetHeight,
@@ -32,10 +50,10 @@ export default ({
     } = contentDimensions.current;
 
     const params = {
-      bottom: rect.bottom,
-      right: rect.right,
-      top: rect.top,
-      left: rect.left,
+      bottom: rect.bottom - offsetContainerRect.top,
+      right: rect.right - offsetContainerRect.left,
+      top: rect.top - offsetContainerRect.top,
+      left: rect.left - offsetContainerRect.left,
       width: rect.width,
       height: rect.height,
     };
@@ -43,13 +61,13 @@ export default ({
     let actualPlacement = placement;
 
     if (guessBetterPosition) {
-      const { innerHeight, innerWidth } = window;
+      const containerRect = container.getBoundingClientRect();
 
       const topConstraint = MIN_SPARE_SPACE + EDGE_PADDING + targetHeight;
       const bottomConstraint =
-        innerHeight - targetHeight - MIN_SPARE_SPACE - EDGE_PADDING;
+        containerRect.height - targetHeight - MIN_SPARE_SPACE - EDGE_PADDING;
       const rightConstraint =
-        innerWidth - targetWidth - MIN_SPARE_SPACE - EDGE_PADDING;
+        containerRect.width - targetWidth - MIN_SPARE_SPACE - EDGE_PADDING;
       const leftConstraint = MIN_SPARE_SPACE + EDGE_PADDING + targetWidth;
 
       if (['top', 'bottom'].some((item) => actualPlacement.startsWith(item))) {
@@ -90,6 +108,10 @@ export default ({
       }
     }
 
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollLeft =
+      window.pageXOffset || document.documentElement.scrollLeft;
+
     params.top += scrollTop;
     params.bottom += scrollTop;
     params.right += scrollLeft;
@@ -114,6 +136,7 @@ export default ({
     animation,
     animationTranslateDistance,
     spaceBetweenPopoverAndTarget,
+    getContainer,
   ]);
 
   return [containerProps, updatePosition];

@@ -334,6 +334,42 @@ describe('Popover', () => {
     await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
   });
 
+  it('custom container: renders content', async () => {
+    const containerId = 'container';
+    const { getByTestId } = render(
+      <div style={{ position: 'relative' }}>
+        <div id={containerId} style={{ position: 'static' }}>
+          <Popover
+            isOpen={true}
+            content={<span data-testid="content">Hi!</span>}
+            getContainer={() => document.getElementById(containerId)}
+          >
+            <button data-testid="button">Open</button>
+          </Popover>
+        </div>
+      </div>
+    );
+
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+  });
+
+  it('custom container: do not render content if there is no container', async () => {
+    const containerId = 'container';
+    const { queryByTestId } = render(
+      <Popover
+        isOpen={true}
+        content={<span data-testid="content">Hi!</span>}
+        getContainer={() => document.getElementById(containerId)}
+      >
+        <button data-testid="button">Open</button>
+      </Popover>
+    );
+
+    await waitFor(() =>
+      expect(queryByTestId('content')).not.toBeInTheDocument()
+    );
+  });
+
   it('useOpen: toggle, open, close', async () => {
     const { result } = renderHook(useOpen, {
       initialProps: {
