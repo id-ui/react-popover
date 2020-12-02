@@ -75,8 +75,6 @@ function Popover(
 
   const triggerElementRef = useRef();
 
-  const container = useMemo(() => getContainer(), [getContainer]);
-
   const [
     contentDimensions,
     checkContentDimensions,
@@ -250,6 +248,8 @@ function Popover(
 
   const TriggerContainer = triggerContainerTag;
 
+  const container = getContainer();
+
   return (
     <Fragment>
       {isCheckingContentDimensions && (
@@ -261,29 +261,30 @@ function Popover(
           {transformedContent}
         </CheckContentDimensionsHelper>
       )}
-      {createPortal(
-        <AnimatePresence initial={null}>
-          {isOpen && containerProps.style && (
-            <Container
-              ref={setContentRef}
-              withArrow={withArrow}
-              positionStyles={containerProps.style}
-              initial={containerProps.initial}
-              animate={containerProps.animate}
-              exit={containerProps.exit}
-              onMouseEnter={triggerProps.onMouseEnter}
-              onMouseLeave={triggerProps.onMouseLeave}
-              className={className}
-              zIndex={zIndex}
-            >
-              <Inner maxHeight={maxHeight} maxWidth={maxWidth}>
-                {transformedContent}
-              </Inner>
-            </Container>
-          )}
-        </AnimatePresence>,
-        container
-      )}
+      {container &&
+        createPortal(
+          <AnimatePresence initial={null}>
+            {isOpen && containerProps.style && (
+              <Container
+                ref={setContentRef}
+                withArrow={withArrow}
+                positionStyles={containerProps.style}
+                initial={containerProps.initial}
+                animate={containerProps.animate}
+                exit={containerProps.exit}
+                onMouseEnter={triggerProps.onMouseEnter}
+                onMouseLeave={triggerProps.onMouseLeave}
+                className={className}
+                zIndex={zIndex}
+              >
+                <Inner maxHeight={maxHeight} maxWidth={maxWidth}>
+                  {transformedContent}
+                </Inner>
+              </Container>
+            )}
+          </AnimatePresence>,
+          container
+        )}
       {trigger === POPOVER_TRIGGER_TYPES.focus ? (
         React.cloneElement(
           React.Children.only(
