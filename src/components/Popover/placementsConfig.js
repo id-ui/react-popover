@@ -27,7 +27,7 @@ export default {
         getDefaultOffset(withArrow) -
         spaceBetweenPopoverAndTarget -
         MIN_SPARE_SPACE}px;
-        max-width: 99%;
+        max-width: 99vw;
       }
       &:before {
         top: calc(100% - 0.4rem);
@@ -164,7 +164,7 @@ export default {
           offset[1] +
           getDefaultOffset(withArrow) +
           spaceBetweenPopoverAndTarget)}px;
-        max-width: 99%;
+        max-width: 99vw;
       }
       &:before {
         bottom: calc(100% - 0.4rem);
@@ -297,7 +297,7 @@ export default {
       spaceBetweenPopoverAndTarget}px;
       top: ${top + height / 2 + offset[1]}px;
       ${Inner} {
-        max-height: 99%;
+        max-height: 99vh;
         max-width: ${left +
         offset[0] -
         getDefaultOffset(withArrow) -
@@ -433,7 +433,7 @@ export default {
       spaceBetweenPopoverAndTarget}px;
       top: ${top + height / 2 + offset[1]}px;
       ${Inner} {
-        max-height: 99%;
+        max-height: 99vh;
         max-width: ${window.innerWidth -
         (MIN_SPARE_SPACE +
           right +
