@@ -144,6 +144,22 @@ function Popover(
     }
   }, [isOpen, isOpenControlled, providedIsOpen, setOpen, showContent]);
 
+  useEffect(() => {
+    // open on mount
+    if (!isOpenControlled && providedIsOpen) {
+      setCheckingContentDimensions(true);
+      const timer = setTimeout(() => {
+        updatePosition();
+        setOpen(true, true);
+      }, 100);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+    // eslint-disable-next-line
+  }, []);
+
   const {
     handleClick,
     handleMouseEnter,
