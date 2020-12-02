@@ -48,6 +48,20 @@ describe('Popover', () => {
     );
   });
 
+  it('opens on init if isOpen = true', async () => {
+    const { getByTestId } = render(
+      <Popover
+        trigger={POPOVER_TRIGGER_TYPES.click}
+        isOpen
+        content={<span data-testid="content">Hi!</span>}
+      >
+        <button data-testid="button">Open</button>
+      </Popover>
+    );
+
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+  });
+
   it('isOpenControlled: able to be controlled from outside', async () => {
     const { queryByTestId, getByTestId, rerender } = render(
       <Popover
@@ -273,6 +287,7 @@ describe('Popover', () => {
         trigger="click"
         // for coverage
         ref={{}}
+        guessBetterPosition={false}
       >
         <button
           data-testid="button"
@@ -302,6 +317,7 @@ describe('Popover', () => {
         triggerContainerDisplay="inline"
         triggerContainerTag="div"
         ref={_.noop}
+        placement="right"
       >
         <button
           data-testid="button"
