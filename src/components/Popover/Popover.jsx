@@ -55,7 +55,7 @@ function Popover(
   },
   ref
 ) {
-  const { target, isOpen, setOpen, open, close, toggle } = useOpen({
+  const { addTarget, isOpen, setOpen, open, close, toggle } = useOpen({
     onClose,
     closeOnRemoteClick:
       providedCloseOnRemoteClick || trigger !== POPOVER_TRIGGER_TYPES.hover,
@@ -65,6 +65,13 @@ function Popover(
     isOpenControlled,
     onChangeOpen,
   });
+
+  const setContentRef = useCallback(
+    (node) => {
+      addTarget('content', node);
+    },
+    [addTarget]
+  );
 
   const triggerElementRef = useRef();
 
@@ -197,12 +204,14 @@ function Popover(
           ref.current = node;
         }
       }
+      addTarget('trigger', node);
     },
     [
       ref,
       considerTriggerMotion,
       triggerContainerDisplay,
       setupElementMotionObserver,
+      addTarget,
     ]
   );
 
@@ -256,7 +265,7 @@ function Popover(
         <AnimatePresence initial={null}>
           {isOpen && containerProps.style && (
             <Container
-              ref={target}
+              ref={setContentRef}
               withArrow={withArrow}
               positionStyles={containerProps.style}
               initial={containerProps.initial}

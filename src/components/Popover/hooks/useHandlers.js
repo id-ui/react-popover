@@ -34,8 +34,6 @@ export default ({
 
   const handleClick = useCallback(
     (e) => {
-      e.stopPropagation();
-      e.nativeEvent.stopImmediatePropagation();
       e.preventDefault();
 
       if (!isOpen) {

@@ -10,8 +10,12 @@ export default ({
   isOpenControlled,
   onChangeOpen,
 } = {}) => {
-  const target = useRef();
+  const targetsMap = useRef({});
   const parentNode = useRef(document.body);
+
+  const addTarget = useCallback((name, node) => {
+    targetsMap.current[name] = node;
+  }, []);
 
   const [isOpen, setOpen] = useState(() =>
     isOpenControlled ? false : providedIsOpen
@@ -45,10 +49,11 @@ export default ({
 
   useEffect(() => {
     const remoteClickListener = (e) => {
+      const targets = _.values(targetsMap.current).filter(Boolean);
       if (
         isOpen &&
         closeOnRemoteClick &&
-        (!target.current || !target.current.contains(e.target)) &&
+        !targets.find((item) => item.contains(e.target)) &&
         (e.which || e.button) === 1 &&
         (!parentNode.current || parentNode.current.contains(e.target))
       ) {
@@ -80,7 +85,7 @@ export default ({
     open,
     close,
     toggle,
-    target,
+    addTarget,
     parentNode,
   };
 };
