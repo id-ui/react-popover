@@ -75,7 +75,7 @@ function Popover(
     checkContentDimensions,
     isCheckingContentDimensions,
     setCheckingContentDimensions,
-  ] = useNodeDimensions();
+  ] = useNodeDimensions(providedIsOpen);
 
   const [containerProps, updatePosition] = usePosition({
     contentDimensions,
@@ -147,7 +147,6 @@ function Popover(
   useEffect(() => {
     // open on mount
     if (!isOpenControlled && providedIsOpen) {
-      setCheckingContentDimensions(true);
       const timer = setTimeout(() => {
         updatePosition();
         setOpen(true, true);
@@ -255,7 +254,7 @@ function Popover(
       )}
       {createPortal(
         <AnimatePresence initial={null}>
-          {isOpen && (
+          {isOpen && containerProps.style && (
             <Container
               ref={target}
               withArrow={withArrow}

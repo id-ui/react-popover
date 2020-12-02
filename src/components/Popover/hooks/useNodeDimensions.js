@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 
-export default () => {
-  const [isChecking, setChecking] = useState(false);
+export default (initialIsChecking) => {
+  const [isChecking, setChecking] = useState(initialIsChecking || false);
   const dimensions = useRef();
 
   const checkDimensions = useCallback((node) => {
