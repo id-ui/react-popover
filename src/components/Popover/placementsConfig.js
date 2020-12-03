@@ -1,57 +1,9 @@
 import { css } from 'styled-components';
-import {
-  MIN_SPARE_SPACE,
-  ARROW_PLACEMENT_TYPES,
-  ARROW_PLACEMENTS,
-} from './constants';
+import { MIN_SPARE_SPACE } from './constants';
 import { Inner } from './styled';
 
 export const getDefaultOffset = (withArrow, arrowSize) =>
   (withArrow ? arrowSize / 2 : 0) + 5;
-
-const arrowPlacementGetters = {
-  [ARROW_PLACEMENT_TYPES.vertical]: {
-    [ARROW_PLACEMENTS.center]: ({ angle }) => css`
-      top: 50%;
-      transform: translateY(-50%) rotate(${angle}deg);
-    `,
-    [ARROW_PLACEMENTS.top]: ({ angle, arrowOffset }) => css`
-      top: ${arrowOffset}px;
-      transform: rotate(${angle}deg);
-    `,
-    [ARROW_PLACEMENTS.bottom]: ({ angle, arrowOffset }) => css`
-      bottom: ${arrowOffset}px;
-      transform: rotate(${angle}deg);
-    `,
-  },
-  [ARROW_PLACEMENT_TYPES.horizontal]: {
-    [ARROW_PLACEMENTS.center]: ({ angle }) => css`
-      left: 50%;
-      transform: translateX(-50%) rotate(${angle}deg);
-    `,
-    [ARROW_PLACEMENTS.right]: ({ angle, arrowOffset }) => css`
-      right: ${arrowOffset}px;
-      transform: rotate(${angle}deg);
-    `,
-    [ARROW_PLACEMENTS.left]: ({ angle, arrowOffset }) => css`
-      left: ${arrowOffset}px;
-      transform: rotate(${angle}deg);
-    `,
-  },
-};
-
-const getArrowPlacement = ({
-  type,
-  angle,
-  arrowPlacement,
-  arrowOffset,
-  defaultPlacement,
-}) =>
-  arrowPlacementGetters[type][
-    arrowPlacementGetters[type][arrowPlacement]
-      ? arrowPlacement
-      : defaultPlacement
-  ]({ angle, arrowOffset });
 
 export default {
   top: (
@@ -63,8 +15,6 @@ export default {
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
       arrowSize,
-      arrowOffset,
-      arrowPlacement,
     }
   ) => ({
     style: css`
@@ -80,16 +30,6 @@ export default {
         spaceBetweenPopoverAndTarget -
         MIN_SPARE_SPACE}px;
         max-width: 99vw;
-      }
-      &:before {
-        top: calc(100% - ${arrowSize / 2}px);
-        ${getArrowPlacement({
-          type: ARROW_PLACEMENT_TYPES.horizontal,
-          arrowPlacement,
-          arrowOffset,
-          defaultPlacement: ARROW_PLACEMENTS.center,
-          angle: -45,
-        })};
       }
     `,
     initial: {
@@ -116,8 +56,6 @@ export default {
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
       arrowSize,
-      arrowOffset,
-      arrowPlacement,
     }
   ) => ({
     style: css`
@@ -133,16 +71,6 @@ export default {
         spaceBetweenPopoverAndTarget -
         MIN_SPARE_SPACE}px;
         max-width: ${right + offset[0] - MIN_SPARE_SPACE}px;
-      }
-      &:before {
-        top: calc(100% - ${arrowSize / 2}px);
-        ${getArrowPlacement({
-          type: ARROW_PLACEMENT_TYPES.horizontal,
-          arrowPlacement,
-          arrowOffset,
-          defaultPlacement: ARROW_PLACEMENTS.right,
-          angle: -45,
-        })};
       }
     `,
     initial: {
@@ -169,8 +97,6 @@ export default {
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
       arrowSize,
-      arrowOffset,
-      arrowPlacement,
     }
   ) => ({
     style: css`
@@ -187,16 +113,6 @@ export default {
         MIN_SPARE_SPACE}px;
         max-width: ${window.innerWidth -
         (MIN_SPARE_SPACE + left + offset[0])}px;
-      }
-      &:before {
-        top: calc(100% - ${arrowSize / 2}px);
-        ${getArrowPlacement({
-          type: ARROW_PLACEMENT_TYPES.horizontal,
-          arrowPlacement,
-          arrowOffset,
-          defaultPlacement: ARROW_PLACEMENTS.left,
-          angle: -45,
-        })};
       }
     `,
     initial: {
@@ -223,8 +139,6 @@ export default {
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
       arrowSize,
-      arrowOffset,
-      arrowPlacement,
     }
   ) => ({
     style: css`
@@ -241,16 +155,6 @@ export default {
           getDefaultOffset(withArrow, arrowSize) +
           spaceBetweenPopoverAndTarget)}px;
         max-width: 99vw;
-      }
-      &:before {
-        bottom: calc(100% - ${arrowSize / 2}px);
-        ${getArrowPlacement({
-          type: ARROW_PLACEMENT_TYPES.horizontal,
-          arrowPlacement,
-          arrowOffset,
-          defaultPlacement: ARROW_PLACEMENTS.center,
-          angle: 135,
-        })};
       }
     `,
     initial: {
@@ -277,8 +181,6 @@ export default {
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
       arrowSize,
-      arrowOffset,
-      arrowPlacement,
     }
   ) => ({
     style: css`
@@ -295,16 +197,6 @@ export default {
           getDefaultOffset(withArrow, arrowSize) +
           spaceBetweenPopoverAndTarget)}px;
         max-width: ${right + offset[0] - MIN_SPARE_SPACE}px;
-      }
-      &:before {
-        bottom: calc(100% - ${arrowSize / 2}px);
-        ${getArrowPlacement({
-          type: ARROW_PLACEMENT_TYPES.horizontal,
-          arrowPlacement,
-          arrowOffset,
-          defaultPlacement: ARROW_PLACEMENTS.right,
-          angle: 135,
-        })};
       }
     `,
     initial: {
@@ -331,8 +223,6 @@ export default {
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
       arrowSize,
-      arrowOffset,
-      arrowPlacement,
     }
   ) => ({
     style: css`
@@ -350,16 +240,6 @@ export default {
           spaceBetweenPopoverAndTarget)}px;
         max-width: ${window.innerWidth -
         (MIN_SPARE_SPACE + left + offset[0])}px;
-      }
-      &:before {
-        bottom: calc(100% - ${arrowSize / 2}px);
-        ${getArrowPlacement({
-          type: ARROW_PLACEMENT_TYPES.horizontal,
-          arrowPlacement,
-          arrowOffset,
-          defaultPlacement: ARROW_PLACEMENTS.left,
-          angle: 135,
-        })};
       }
     `,
     initial: {
@@ -386,8 +266,6 @@ export default {
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
       arrowSize,
-      arrowOffset,
-      arrowPlacement,
     }
   ) => ({
     style: css`
@@ -403,16 +281,6 @@ export default {
         getDefaultOffset(withArrow, arrowSize) -
         spaceBetweenPopoverAndTarget -
         MIN_SPARE_SPACE}px;
-      }
-      &:before {
-        left: calc(100% - ${arrowSize / 2}px);
-        ${getArrowPlacement({
-          type: ARROW_PLACEMENT_TYPES.vertical,
-          arrowPlacement,
-          arrowOffset,
-          defaultPlacement: ARROW_PLACEMENTS.center,
-          angle: -135,
-        })};
       }
     `,
     initial: {
@@ -439,8 +307,6 @@ export default {
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
       arrowSize,
-      arrowOffset,
-      arrowPlacement,
     }
   ) => ({
     style: css`
@@ -456,16 +322,6 @@ export default {
         getDefaultOffset(withArrow, arrowSize) -
         spaceBetweenPopoverAndTarget -
         MIN_SPARE_SPACE}px;
-      }
-      &:before {
-        left: calc(100% - ${arrowSize / 2}px);
-        ${getArrowPlacement({
-          type: ARROW_PLACEMENT_TYPES.vertical,
-          arrowPlacement,
-          arrowOffset,
-          defaultPlacement: ARROW_PLACEMENTS.bottom,
-          angle: -135,
-        })};
       }
     `,
     initial: {
@@ -492,8 +348,6 @@ export default {
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
       arrowSize,
-      arrowOffset,
-      arrowPlacement,
     }
   ) => ({
     style: css`
@@ -510,16 +364,6 @@ export default {
         getDefaultOffset(withArrow, arrowSize) -
         spaceBetweenPopoverAndTarget -
         MIN_SPARE_SPACE}px;
-      }
-      &:before {
-        left: calc(100% - ${arrowSize / 2}px);
-        ${getArrowPlacement({
-          type: ARROW_PLACEMENT_TYPES.vertical,
-          arrowPlacement,
-          arrowOffset,
-          defaultPlacement: ARROW_PLACEMENTS.top,
-          angle: -135,
-        })};
       }
     `,
     initial: {
@@ -546,8 +390,6 @@ export default {
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
       arrowSize,
-      arrowOffset,
-      arrowPlacement,
     }
   ) => ({
     style: css`
@@ -564,16 +406,6 @@ export default {
           offset[0] +
           getDefaultOffset(withArrow, arrowSize) +
           spaceBetweenPopoverAndTarget)}px;
-      }
-      &:before {
-        right: calc(100% - ${arrowSize / 2}px);
-        ${getArrowPlacement({
-          type: ARROW_PLACEMENT_TYPES.vertical,
-          arrowPlacement,
-          arrowOffset,
-          defaultPlacement: ARROW_PLACEMENTS.center,
-          angle: 45,
-        })};
       }
     `,
     initial: {
@@ -600,8 +432,6 @@ export default {
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
       arrowSize,
-      arrowOffset,
-      arrowPlacement,
     }
   ) => ({
     style: css`
@@ -618,16 +448,6 @@ export default {
           offset[0] +
           getDefaultOffset(withArrow, arrowSize) +
           spaceBetweenPopoverAndTarget)}px;
-      }
-      &:before {
-        right: calc(100% - ${arrowSize / 2}px);
-        ${getArrowPlacement({
-          type: ARROW_PLACEMENT_TYPES.vertical,
-          arrowPlacement,
-          arrowOffset,
-          defaultPlacement: ARROW_PLACEMENTS.bottom,
-          angle: 45,
-        })};
       }
     `,
     initial: {
@@ -654,8 +474,6 @@ export default {
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
       arrowSize,
-      arrowOffset,
-      arrowPlacement,
     }
   ) => ({
     style: css`
@@ -673,16 +491,6 @@ export default {
           offset[0] +
           getDefaultOffset(withArrow, arrowSize) +
           spaceBetweenPopoverAndTarget)}px;
-      }
-      &:before {
-        right: calc(100% - ${arrowSize / 2}px);
-        ${getArrowPlacement({
-          type: ARROW_PLACEMENT_TYPES.vertical,
-          arrowPlacement,
-          arrowOffset,
-          defaultPlacement: ARROW_PLACEMENTS.top,
-          angle: 45,
-        })};
       }
     `,
     initial: {

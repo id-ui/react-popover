@@ -26,6 +26,7 @@ export const Container = styled(motion.div)`
         border-right-color: transparent;
         border-top-color: transparent;
         box-shadow: -0.2rem 0.2rem 0.7rem rgba(0, 0, 0, 0.07);
+        ${prop('arrowStyles')};
       }
     `
   )}

@@ -7,7 +7,7 @@ import Popover from 'components/Popover';
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useOpen } from 'components/Popover/hooks';
 import { POPOVER_TRIGGER_TYPES } from 'components/Popover/constants';
-import placementsConfig from 'components/Popover/placementsConfig';
+import placementPropsGetters from 'components/Popover/placementsConfig';
 import { checkConstraints } from 'components/Popover/helpers';
 
 describe('Popover', () => {
@@ -23,7 +23,7 @@ describe('Popover', () => {
 
   it('renders children', () => {
     const { getByTestId } = render(
-      <Popover content="Hi!">
+      <Popover content="Hi!" placement="left">
         <button data-testid="button">Open</button>
       </Popover>
     );
@@ -33,6 +33,7 @@ describe('Popover', () => {
   it('opens and closes on click', async () => {
     const { getByTestId, queryByTestId } = render(
       <Popover
+        placement="bottomLeft"
         trigger={POPOVER_TRIGGER_TYPES.click}
         content={<span data-testid="content">Hi!</span>}
       >
@@ -53,6 +54,7 @@ describe('Popover', () => {
       <Popover
         trigger={POPOVER_TRIGGER_TYPES.click}
         isOpen
+        placement="bottomRight"
         content={<span data-testid="content">Hi!</span>}
       >
         <button data-testid="button">Open</button>
@@ -67,6 +69,7 @@ describe('Popover', () => {
       <Popover
         trigger={POPOVER_TRIGGER_TYPES.click}
         isOpenControlled
+        placement="bottom"
         content={<span data-testid="content">Hi!</span>}
       >
         <button data-testid="button">Open</button>
@@ -82,6 +85,7 @@ describe('Popover', () => {
         trigger={POPOVER_TRIGGER_TYPES.click}
         isOpenControlled
         isOpen
+        placement="topLeft"
         content={<span data-testid="content">Hi!</span>}
       >
         <button data-testid="button">Open</button>
@@ -92,6 +96,7 @@ describe('Popover', () => {
       <Popover
         trigger={POPOVER_TRIGGER_TYPES.click}
         isOpenControlled
+        placement="topRight"
         content={<span data-testid="content">Hi!</span>}
       >
         <button data-testid="button">Open</button>
@@ -107,6 +112,24 @@ describe('Popover', () => {
       <Popover
         trigger={POPOVER_TRIGGER_TYPES.hover}
         mouseEnterDelay={0}
+        placement="rightBottom"
+        content={<span data-testid="content">Hi!</span>}
+      >
+        <button data-testid="button">Open</button>
+      </Popover>
+    );
+    expect(queryByTestId('content')).not.toBeInTheDocument();
+    fireEvent.mouseEnter(getByTestId('button'));
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+  });
+
+  it('opens popover if usePortal is false', async () => {
+    const { getByTestId, queryByTestId } = render(
+      <Popover
+        trigger={POPOVER_TRIGGER_TYPES.hover}
+        mouseEnterDelay={0}
+        usePortal={false}
+        placement="rightTop"
         content={<span data-testid="content">Hi!</span>}
       >
         <button data-testid="button">Open</button>
@@ -242,7 +265,11 @@ describe('Popover', () => {
 
   it('closes on remote click if trigger === "click"', async () => {
     const { getByTestId, queryByTestId } = render(
-      <Popover trigger="click" content={<span data-testid="content">Hi!</span>}>
+      <Popover
+        trigger="click"
+        placement="leftTop"
+        content={<span data-testid="content">Hi!</span>}
+      >
         <button data-testid="button">Open</button>
       </Popover>
     );
@@ -258,7 +285,10 @@ describe('Popover', () => {
 
   it('closes on escape key press', async () => {
     const { getByTestId, queryByTestId } = render(
-      <Popover content={<span data-testid="content">Hi!</span>}>
+      <Popover
+        placement="leftBottom"
+        content={<span data-testid="content">Hi!</span>}
+      >
         <button data-testid="button">Open</button>
       </Popover>
     );
@@ -442,8 +472,8 @@ describe('Popover', () => {
     expect(result.current.isOpen).toBe(false);
   });
 
-  it('placementsConfig: contains all popover placements', async () => {
-    expect(_.keys(placementsConfig)).toStrictEqual([
+  it('placementPropsGetters: contains all popover placements', async () => {
+    expect(_.keys(placementPropsGetters)).toStrictEqual([
       'top',
       'topRight',
       'topLeft',
@@ -458,8 +488,8 @@ describe('Popover', () => {
       'rightTop',
     ]);
   });
-  it('placementsConfig: each placement config contains style and motion props', async () => {
-    _.values(placementsConfig).forEach((item) => {
+  it('placementPropsGetters: each placement config contains style and motion props', async () => {
+    _.values(placementPropsGetters).forEach((item) => {
       expect(
         _.keys(
           item(

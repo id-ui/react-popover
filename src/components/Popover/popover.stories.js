@@ -283,6 +283,15 @@ export default {
         defaultValue: { summary: false },
       },
     },
+    usePortal: {
+      control: 'boolean',
+      description:
+        'whether render popover into container = getContainer() or render where it is. Note: in this case you should position popover by yourself. Usage example: you want popover to scroll with target even if scroll parent is not window.',
+      defaultValue: true,
+      table: {
+        defaultValue: { summary: true },
+      },
+    },
   },
   decorators: [withPropsTable],
   parameters: {
@@ -523,4 +532,31 @@ customArrow.args = {
   arrowOffset: 195,
   placement: 'top',
   arrowPlacement: 'right',
+};
+
+const StyledPopover = styled(Popover)`
+  width: 100%;
+  top: 20px;
+  left: 0;
+  right: 0;
+`;
+
+export function renderOnPlace(props) {
+  return (
+    <div style={{ position: 'relative' }}>
+      <StyledPopover
+        {...props}
+        content="I don't use portal. Use this prop if you want popover to scroll with target even if scroll parent is not window."
+        trigger="focus"
+      >
+        <Input type="text" placeholder="Focus" />
+      </StyledPopover>
+    </div>
+  );
+}
+
+renderOnPlace.args = {
+  usePortal: false,
+  trigger: 'click',
+  placement: 'bottom',
 };

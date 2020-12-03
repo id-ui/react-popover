@@ -16,11 +16,12 @@ import {
   useHandlers,
   useNodeDimensions,
   useElementMotion,
+  useGlobalListener,
+  useArrow,
 } from './hooks';
 import { CheckContentDimensionsHelper, Container, Inner } from './styled';
-import popoverPropsGetters from './placementsConfig';
+import placementPropsGetters from './placementsConfig';
 import { POPOVER_TRIGGER_TYPES } from './constants';
-import useResizeListener from './hooks/useResizeListener';
 
 function Popover(
   {
@@ -59,10 +60,17 @@ function Popover(
     useTriggerHeight,
     width,
     height,
+    usePortal,
     ...wrapperProps
   },
   ref
 ) {
+  const [betterPlacement, setBetterPlacement] = useState(placement);
+
+  useEffect(() => {
+    setBetterPlacement(placement);
+  }, [placement]);
+
   const showTimer = useRef();
   useEffect(() => {
     return () => {
@@ -115,8 +123,8 @@ function Popover(
     spaceBetweenPopoverAndTarget,
     getContainer,
     arrowSize,
-    arrowOffset,
-    arrowPlacement,
+    setBetterPlacement,
+    canUpdate: usePortal,
   });
 
   const updatePositionIfOpen = useCallback(() => {
@@ -127,7 +135,8 @@ function Popover(
 
   const setupElementMotionObserver = useElementMotion(updatePosition);
 
-  useResizeListener(updatePositionIfOpen);
+  useGlobalListener('resize', updatePositionIfOpen);
+  useGlobalListener('scroll', updatePositionIfOpen);
 
   const showContent = useCallback(
     (force, customSetOpen) => {
@@ -194,7 +203,7 @@ function Popover(
     (node) => {
       if (node && node.children.length) {
         const child = node.children[0];
-        if (considerTriggerMotion) {
+        if (usePortal && considerTriggerMotion) {
           setupElementMotionObserver(child);
         }
         triggerElementRef.current = child;
@@ -230,6 +239,7 @@ function Popover(
       triggerContainerDisplay,
       setupElementMotionObserver,
       addTarget,
+      usePortal,
     ]
   );
 
@@ -266,9 +276,45 @@ function Popover(
     [handleClick, handleMouseEnter, handleMouseLeave, trigger]
   );
 
+  const arrowStyles = useArrow({
+    placement: betterPlacement,
+    arrowSize,
+    arrowPlacement,
+    arrowOffset,
+  });
+
   const TriggerContainer = triggerContainerTag;
 
   const container = getContainer();
+
+  const animationProps = usePortal ? containerProps : animation;
+
+  const popoverContent = (
+    <AnimatePresence initial={null}>
+      {isOpen && (!usePortal || containerProps.style) && (
+        <Container
+          ref={setContentRef}
+          withArrow={withArrow}
+          arrowStyles={arrowStyles}
+          positionStyles={containerProps.style}
+          initial={animationProps.initial}
+          animate={animationProps.animate}
+          exit={animationProps.exit}
+          onMouseEnter={triggerProps.onMouseEnter}
+          onMouseLeave={triggerProps.onMouseLeave}
+          className={className}
+          zIndex={zIndex}
+          arrowSize={arrowSize}
+          width={useTriggerWidth ? `${triggerDimensions.width}px` : width}
+          height={useTriggerHeight ? `${triggerDimensions.height}px` : height}
+        >
+          <Inner maxHeight={maxHeight} maxWidth={maxWidth}>
+            {transformedContent}
+          </Inner>
+        </Container>
+      )}
+    </AnimatePresence>
+  );
 
   return (
     <Fragment>
@@ -283,35 +329,9 @@ function Popover(
           {transformedContent}
         </CheckContentDimensionsHelper>
       )}
-      {container &&
-        createPortal(
-          <AnimatePresence initial={null}>
-            {isOpen && containerProps.style && (
-              <Container
-                ref={setContentRef}
-                withArrow={withArrow}
-                positionStyles={containerProps.style}
-                initial={containerProps.initial}
-                animate={containerProps.animate}
-                exit={containerProps.exit}
-                onMouseEnter={triggerProps.onMouseEnter}
-                onMouseLeave={triggerProps.onMouseLeave}
-                className={className}
-                zIndex={zIndex}
-                arrowSize={arrowSize}
-                width={useTriggerWidth ? `${triggerDimensions.width}px` : width}
-                height={
-                  useTriggerHeight ? `${triggerDimensions.height}px` : height
-                }
-              >
-                <Inner maxHeight={maxHeight} maxWidth={maxWidth}>
-                  {transformedContent}
-                </Inner>
-              </Container>
-            )}
-          </AnimatePresence>,
-          container
-        )}
+      {usePortal
+        ? container && createPortal(popoverContent, container)
+        : popoverContent}
       {trigger === POPOVER_TRIGGER_TYPES.focus ? (
         React.cloneElement(
           React.Children.only(
@@ -347,7 +367,7 @@ PopoverWithRef.propTypes = {
    * Where popover should show it's content
    * @default _.noop
    */
-  placement: PropTypes.oneOf(Object.keys(popoverPropsGetters)),
+  placement: PropTypes.oneOf(Object.keys(placementPropsGetters)),
   /**
    * Event name, on which popover should change visibility
    * If trigger is 'focus' and you want to listen for onFocus on child then provide popover with this listener
@@ -524,6 +544,11 @@ PopoverWithRef.propTypes = {
    * @default false
    */
   useTriggerHeight: PropTypes.bool,
+  /**
+   * whether render popover into container = getContainer() or render where it is
+   * @default true
+   */
+  usePortal: PropTypes.bool,
 };
 
 PopoverWithRef.defaultProps = {
@@ -568,6 +593,7 @@ PopoverWithRef.defaultProps = {
   useTriggerHeight: false,
   width: 'unset',
   height: 'unset',
+  usePortal: true,
 };
 
 export default PopoverWithRef;

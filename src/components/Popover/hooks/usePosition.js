@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { EDGE_PADDING, MIN_SPARE_SPACE } from '../constants';
 import { checkConstraints } from '../helpers';
-import popoverPropsGetters from '../placementsConfig';
+import placementPropsGetters from '../placementsConfig';
 
 const findFirstRelativeElement = (element) => {
   if (element.tagName === 'BODY') {
@@ -28,13 +28,17 @@ export default ({
   spaceBetweenPopoverAndTarget,
   getContainer,
   arrowSize,
-  arrowOffset,
-  arrowPlacement,
+  setBetterPlacement,
+  canUpdate,
 }) => {
   const [containerProps, setContainerProps] = useState({});
 
   const updatePosition = useCallback(() => {
-    if (!triggerElementRef.current || !contentDimensions.current) {
+    if (
+      !canUpdate ||
+      !triggerElementRef.current ||
+      !contentDimensions.current
+    ) {
       return;
     }
 
@@ -113,21 +117,23 @@ export default ({
       }
     }
 
+    if (actualPlacement !== placement) {
+      setBetterPlacement(actualPlacement);
+    }
+
     params.top -= offsetContainerRect.top;
     params.bottom -= offsetContainerRect.top;
     params.right -= offsetContainerRect.left;
     params.left -= offsetContainerRect.left;
 
     setContainerProps(
-      popoverPropsGetters[actualPlacement](params, {
+      placementPropsGetters[actualPlacement](params, {
         offset,
         withArrow,
         animation,
         animationTranslateDistance,
         spaceBetweenPopoverAndTarget,
         arrowSize,
-        arrowOffset,
-        arrowPlacement,
       })
     );
   }, [
@@ -142,8 +148,8 @@ export default ({
     spaceBetweenPopoverAndTarget,
     getContainer,
     arrowSize,
-    arrowOffset,
-    arrowPlacement,
+    canUpdate,
+    setBetterPlacement,
   ]);
 
   return [containerProps, updatePosition];
