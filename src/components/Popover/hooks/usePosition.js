@@ -7,10 +7,12 @@ const findFirstRelativeElement = (element) => {
   if (element.tagName === 'BODY') {
     return element;
   }
+
   const style = window.getComputedStyle(element);
   if (style.position === 'static') {
-    return findFirstRelativeElement(element.parentElement);
+    return element.offsetParent || element;
   }
+
   return element;
 };
 
@@ -25,6 +27,9 @@ export default ({
   animationTranslateDistance,
   spaceBetweenPopoverAndTarget,
   getContainer,
+  arrowSize,
+  arrowOffset,
+  arrowPlacement,
 }) => {
   const [containerProps, setContainerProps] = useState({});
 
@@ -50,10 +55,10 @@ export default ({
     } = contentDimensions.current;
 
     const params = {
-      bottom: rect.bottom - offsetContainerRect.top,
-      right: rect.right - offsetContainerRect.left,
-      top: rect.top - offsetContainerRect.top,
-      left: rect.left - offsetContainerRect.left,
+      bottom: rect.bottom,
+      right: rect.right,
+      top: rect.top,
+      left: rect.left,
       width: rect.width,
       height: rect.height,
     };
@@ -108,14 +113,10 @@ export default ({
       }
     }
 
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const scrollLeft =
-      window.pageXOffset || document.documentElement.scrollLeft;
-
-    params.top += scrollTop;
-    params.bottom += scrollTop;
-    params.right += scrollLeft;
-    params.left += scrollLeft;
+    params.top -= offsetContainerRect.top;
+    params.bottom -= offsetContainerRect.top;
+    params.right -= offsetContainerRect.left;
+    params.left -= offsetContainerRect.left;
 
     setContainerProps(
       popoverPropsGetters[actualPlacement](params, {
@@ -124,6 +125,9 @@ export default ({
         animation,
         animationTranslateDistance,
         spaceBetweenPopoverAndTarget,
+        arrowSize,
+        arrowOffset,
+        arrowPlacement,
       })
     );
   }, [
@@ -137,6 +141,9 @@ export default ({
     animationTranslateDistance,
     spaceBetweenPopoverAndTarget,
     getContainer,
+    arrowSize,
+    arrowOffset,
+    arrowPlacement,
   ]);
 
   return [containerProps, updatePosition];

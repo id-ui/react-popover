@@ -1,13 +1,34 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
+import _ from 'lodash';
 
 export default ({
   isOpen,
-  openDebounced,
-  closeDebounced,
+  open,
+  close,
+  mouseEnterDelay,
+  mouseLeaveDelay,
+  showTimer,
   showContent,
   setOpen,
   onFocus,
 }) => {
+  const openDebounced = useMemo(() => _.debounce(open, mouseEnterDelay), [
+    mouseEnterDelay,
+    open,
+  ]);
+
+  const closeDebounced = useMemo(() => _.debounce(close, mouseLeaveDelay), [
+    mouseLeaveDelay,
+    close,
+  ]);
+
+  useEffect(() => {
+    return () => {
+      openDebounced.cancel();
+      closeDebounced.cancel();
+    };
+  }, [openDebounced, closeDebounced]);
+
   const handleMouseEnter = useCallback(() => {
     if (isOpen) {
       closeDebounced.cancel();
@@ -19,8 +40,9 @@ export default ({
 
   const handleMouseLeave = useCallback(() => {
     openDebounced.cancel();
+    clearTimeout(showTimer.current);
     closeDebounced();
-  }, [closeDebounced, openDebounced]);
+  }, [closeDebounced, openDebounced, showTimer]);
 
   const handleFocus = useCallback(
     (e) => {

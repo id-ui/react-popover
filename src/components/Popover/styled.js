@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
-import { ifProp, prop } from 'styled-tools';
-import { ARROW_SIZE } from './constants';
+import { ifProp, prop, withProp } from 'styled-tools';
 
 export const Container = styled(motion.div)`
   position: absolute;
@@ -13,6 +12,8 @@ export const Container = styled(motion.div)`
   border-radius: 0.3rem;
   cursor: default;
   padding: 1.2rem 1.6rem;
+  width: ${prop('width')};
+  height: ${prop('height')};
   ${prop('positionStyles')};
   ${ifProp(
     'withArrow',
@@ -20,7 +21,8 @@ export const Container = styled(motion.div)`
       &:before {
         content: '';
         position: absolute;
-        border: ${ARROW_SIZE}px solid #ffffff;
+        border: ${withProp('arrowSize', (arrowSize) => arrowSize / 2)}px solid
+          #ffffff;
         border-right-color: transparent;
         border-top-color: transparent;
         box-shadow: -0.2rem 0.2rem 0.7rem rgba(0, 0, 0, 0.07);
@@ -49,4 +51,6 @@ export const CheckContentDimensionsHelper = styled(Inner)`
   position: absolute;
   left: -99.9rem;
   top: -99.9rem;
+  width: ${prop('width')};
+  height: ${prop('height')};
 `;

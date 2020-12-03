@@ -5,7 +5,18 @@ export const POPOVER_TRIGGER_TYPES = {
   focus: 'focus',
 };
 
+export const ARROW_PLACEMENT_TYPES = {
+  horizontal: 'horizontal',
+  vertical: 'vertical',
+};
+
+export const ARROW_PLACEMENTS = {
+  center: 'center',
+  top: 'top',
+  bottom: 'bottom',
+  right: 'right',
+  left: 'left',
+};
+
 export const EDGE_PADDING = 10;
-export const ARROW_OFFSET = 10;
-export const ARROW_SIZE = 4;
 export const MIN_SPARE_SPACE = 25;

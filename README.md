@@ -31,6 +31,7 @@ yarn add @kaprisa57/react-popover
 - Accepts custom offset from default position.
 - Accepts custom mouse enter/leave delay if trigger is "hover".
 - Accepts custom trigger container display and tag.
+- Accepts arrowSize, arrowOffset and arrowPlacement for arrow customization.
 
 
 ### See props in [Docs](https://kseniya57.github.io/react-popover/?path=/docs/popover--playground)

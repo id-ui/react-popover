@@ -3,7 +3,7 @@ import { withPropsTable } from 'storybook-addon-react-docgen';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import Popover from './Popover';
-import { POPOVER_TRIGGER_TYPES } from './constants';
+import { ARROW_PLACEMENTS, POPOVER_TRIGGER_TYPES } from './constants';
 import placementsConfig from './placementsConfig';
 
 export default {
@@ -71,11 +71,18 @@ export default {
       disable: true,
       description:
         'Function, that should return component inside which popover should render its content',
+      table: {
+        defaultValue: { summary: '() => document.body' },
+      },
     },
     isOpen: {
       control: 'boolean',
       description:
         'If isOpenControlled then it defines popover visibility else it defines initial popover visibility',
+      defaultValue: false,
+      table: {
+        defaultValue: { summary: false },
+      },
     },
     isOpenControlled: {
       control: 'boolean',
@@ -121,17 +128,19 @@ export default {
     },
     closeOnRemoteClick: {
       control: 'boolean',
-      description:
-        "Whether close on remote click or not. Default trigger === 'click' || trigger === 'contextMenu'.",
+      description: 'Whether close on remote click or not',
       defaultValue: undefined,
       table: {
-        defaultValue: { summary: undefined },
+        defaultValue: { summary: "trigger !== 'hover'" },
       },
     },
     guessBetterPosition: {
       control: 'boolean',
       description: 'Whether popover should change position if there is no room',
       defaultValue: true,
+      table: {
+        defaultValue: { summary: true },
+      },
     },
     mouseEnterDelay: {
       control: 'number',
@@ -152,6 +161,9 @@ export default {
     triggerContainerDisplay: {
       control: 'text',
       description: 'display of popover trigger container',
+      table: {
+        defaultValue: { summary: 'display of root child' },
+      },
     },
     triggerContainerTag: {
       control: 'text',
@@ -159,6 +171,72 @@ export default {
       defaultValue: 'span',
       table: {
         defaultValue: { summary: 'span' },
+      },
+    },
+    animationTranslateDistance: {
+      control: 'number',
+      description: 'Distance in % that content should slide during opening',
+      defaultValue: 30,
+      table: {
+        defaultValue: { summary: 30 },
+      },
+    },
+    animation: {
+      disable: true,
+      description:
+        'framer-motion props for opening/closing content animation {initial, animate, exit}',
+      table: {
+        defaultValue: {
+          summary: `{
+    initial: { opacity: 0, scale: 0.9 },
+    animate: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.9, transition: { duration: 0.2 } }
+  }`,
+        },
+      },
+    },
+    zIndex: {
+      control: 'number',
+      description: 'popover content z-index',
+      defaultValue: 1000,
+      table: {
+        defaultValue: { summary: 1000 },
+      },
+    },
+    spaceBetweenPopoverAndTarget: {
+      control: 'number',
+      description: 'space (px) between popover and target, including arrow',
+      defaultValue: 3,
+      table: {
+        defaultValue: { summary: 3 },
+      },
+    },
+    arrowSize: {
+      control: 'number',
+      description: 'size (px) of square circumscribing popover arrow',
+      defaultValue: 8,
+      table: {
+        defaultValue: { summary: 8 },
+      },
+    },
+    arrowOffset: {
+      control: 'number',
+      description:
+        'arrow offset (px) from popover side (second placement part) if placement consists of two sides',
+      defaultValue: 10,
+      table: {
+        defaultValue: { summary: 10 },
+      },
+    },
+    arrowPlacement: {
+      control: { type: 'select', options: Object.values(ARROW_PLACEMENTS) },
+      description:
+        'arrow placement (left|center|right for top|bottom and top|center|bottom for right|left)',
+      table: {
+        defaultValue: {
+          summary:
+            'second popover placement part if it consists of two sides else center',
+        },
       },
     },
     maxWidth: {
@@ -175,33 +253,34 @@ export default {
         defaultValue: { summary: 'available space - 25px' },
       },
     },
-    animationTranslateDistance: {
-      control: 'number',
-      description: 'Distance in % that content should slide during opening',
-      defaultValue: 30,
+    width: {
+      control: 'text',
+      description: 'content width',
       table: {
-        defaultValue: { summary: 30 },
+        defaultValue: { summary: 'unset' },
       },
     },
-    animation: {
-      disable: true,
-      description:
-        'framer-motion props for opening/closing content animation {initial, animate, exit}',
-    },
-    zIndex: {
-      control: 'number',
-      description: 'popover content z-index',
-      defaultValue: 1000,
+    height: {
+      control: 'text',
+      description: 'content height',
       table: {
-        defaultValue: 1000,
+        defaultValue: { summary: 'unset' },
       },
     },
-    spaceBetweenPopoverAndTarget: {
-      control: 'number',
-      description: 'space (px) between popover and target, including arrow',
-      defaultValue: 3,
+    useTriggerWidth: {
+      control: 'boolean',
+      description: 'make popover width to equal trigger width',
+      defaultValue: false,
       table: {
-        defaultValue: 3,
+        defaultValue: { summary: false },
+      },
+    },
+    useTriggerHeight: {
+      control: 'boolean',
+      description: 'make popover height to equal trigger height',
+      defaultValue: false,
+      table: {
+        defaultValue: { summary: false },
       },
     },
   },
@@ -423,3 +502,21 @@ export function styledPopover(props) {
     </CustomPopover>
   );
 }
+
+export function customArrow(props) {
+  return (
+    <Popover
+      {...props}
+      content={`Hi! I'm a popover with custom arrow { size: ${props.arrowSize}, offset: ${props.arrowOffset}, placement: ${props.arrowPlacement} }`}
+    >
+      <button>{props.trigger || 'hover'} to open</button>
+    </Popover>
+  );
+}
+
+customArrow.args = {
+  arrowSize: 15,
+  arrowOffset: 195,
+  placement: 'top',
+  arrowPlacement: 'right',
+};

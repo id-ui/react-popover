@@ -1,8 +1,57 @@
 import { css } from 'styled-components';
-import { ARROW_OFFSET, ARROW_SIZE, MIN_SPARE_SPACE } from './constants';
+import {
+  MIN_SPARE_SPACE,
+  ARROW_PLACEMENT_TYPES,
+  ARROW_PLACEMENTS,
+} from './constants';
 import { Inner } from './styled';
 
-export const getDefaultOffset = (withArrow) => (withArrow ? ARROW_SIZE : 0) + 5;
+export const getDefaultOffset = (withArrow, arrowSize) =>
+  (withArrow ? arrowSize / 2 : 0) + 5;
+
+const arrowPlacementGetters = {
+  [ARROW_PLACEMENT_TYPES.vertical]: {
+    [ARROW_PLACEMENTS.center]: ({ angle }) => css`
+      top: 50%;
+      transform: translateY(-50%) rotate(${angle}deg);
+    `,
+    [ARROW_PLACEMENTS.top]: ({ angle, arrowOffset }) => css`
+      top: ${arrowOffset}px;
+      transform: rotate(${angle}deg);
+    `,
+    [ARROW_PLACEMENTS.bottom]: ({ angle, arrowOffset }) => css`
+      bottom: ${arrowOffset}px;
+      transform: rotate(${angle}deg);
+    `,
+  },
+  [ARROW_PLACEMENT_TYPES.horizontal]: {
+    [ARROW_PLACEMENTS.center]: ({ angle }) => css`
+      left: 50%;
+      transform: translateX(-50%) rotate(${angle}deg);
+    `,
+    [ARROW_PLACEMENTS.right]: ({ angle, arrowOffset }) => css`
+      right: ${arrowOffset}px;
+      transform: rotate(${angle}deg);
+    `,
+    [ARROW_PLACEMENTS.left]: ({ angle, arrowOffset }) => css`
+      left: ${arrowOffset}px;
+      transform: rotate(${angle}deg);
+    `,
+  },
+};
+
+const getArrowPlacement = ({
+  type,
+  angle,
+  arrowPlacement,
+  arrowOffset,
+  defaultPlacement,
+}) =>
+  arrowPlacementGetters[type][
+    arrowPlacementGetters[type][arrowPlacement]
+      ? arrowPlacement
+      : defaultPlacement
+  ]({ angle, arrowOffset });
 
 export default {
   top: (
@@ -13,26 +62,34 @@ export default {
       animation,
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
+      arrowSize,
+      arrowOffset,
+      arrowPlacement,
     }
   ) => ({
     style: css`
       top: ${top +
       offset[1] -
-      getDefaultOffset(withArrow) -
+      getDefaultOffset(withArrow, arrowSize) -
       spaceBetweenPopoverAndTarget}px;
       left: ${left + width / 2 + offset[0]}px;
       ${Inner} {
         max-height: ${top +
         offset[1] -
-        getDefaultOffset(withArrow) -
+        getDefaultOffset(withArrow, arrowSize) -
         spaceBetweenPopoverAndTarget -
         MIN_SPARE_SPACE}px;
         max-width: 99vw;
       }
       &:before {
-        top: calc(100% - 0.4rem);
-        left: 50%;
-        transform: translateX(-50%) rotate(-45deg);
+        top: calc(100% - ${arrowSize / 2 + 1}px);
+        ${getArrowPlacement({
+          type: ARROW_PLACEMENT_TYPES.horizontal,
+          arrowPlacement,
+          arrowOffset,
+          defaultPlacement: ARROW_PLACEMENTS.center,
+          angle: -45,
+        })};
       }
     `,
     initial: {
@@ -58,26 +115,34 @@ export default {
       animation,
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
+      arrowSize,
+      arrowOffset,
+      arrowPlacement,
     }
   ) => ({
     style: css`
       top: ${top +
       offset[1] -
-      getDefaultOffset(withArrow) -
+      getDefaultOffset(withArrow, arrowSize) -
       spaceBetweenPopoverAndTarget}px;
       left: ${right + offset[0]}px;
       ${Inner} {
         max-height: ${top +
         offset[1] -
-        getDefaultOffset(withArrow) -
+        getDefaultOffset(withArrow, arrowSize) -
         spaceBetweenPopoverAndTarget -
         MIN_SPARE_SPACE}px;
         max-width: ${right + offset[0] - MIN_SPARE_SPACE}px;
       }
       &:before {
-        top: calc(100% - 0.4rem);
-        right: ${ARROW_OFFSET}px;
-        transform: rotate(-45deg);
+        top: calc(100% - ${arrowSize / 2 + 1}px);
+        ${getArrowPlacement({
+          type: ARROW_PLACEMENT_TYPES.horizontal,
+          arrowPlacement,
+          arrowOffset,
+          defaultPlacement: ARROW_PLACEMENTS.right,
+          angle: -45,
+        })};
       }
     `,
     initial: {
@@ -103,27 +168,35 @@ export default {
       animation,
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
+      arrowSize,
+      arrowOffset,
+      arrowPlacement,
     }
   ) => ({
     style: css`
       top: ${top +
       offset[1] -
-      getDefaultOffset(withArrow) -
+      getDefaultOffset(withArrow, arrowSize) -
       spaceBetweenPopoverAndTarget}px;
       left: ${left + offset[0]}px;
       ${Inner} {
         max-height: ${top +
         offset[1] -
-        getDefaultOffset(withArrow) -
+        getDefaultOffset(withArrow, arrowSize) -
         spaceBetweenPopoverAndTarget -
         MIN_SPARE_SPACE}px;
         max-width: ${window.innerWidth -
         (MIN_SPARE_SPACE + left + offset[0])}px;
       }
       &:before {
-        top: calc(100% - 0.4rem);
-        left: ${ARROW_OFFSET}px;
-        transform: rotate(-45deg);
+        top: calc(100% - ${arrowSize / 2 + 1}px);
+        ${getArrowPlacement({
+          type: ARROW_PLACEMENT_TYPES.horizontal,
+          arrowPlacement,
+          arrowOffset,
+          defaultPlacement: ARROW_PLACEMENTS.left,
+          angle: -45,
+        })};
       }
     `,
     initial: {
@@ -149,12 +222,15 @@ export default {
       animation,
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
+      arrowSize,
+      arrowOffset,
+      arrowPlacement,
     }
   ) => ({
     style: css`
       top: ${bottom +
       offset[1] +
-      getDefaultOffset(withArrow) +
+      getDefaultOffset(withArrow, arrowSize) +
       spaceBetweenPopoverAndTarget}px;
       left: ${left + width / 2 + offset[0]}px;
       ${Inner} {
@@ -162,14 +238,19 @@ export default {
         (MIN_SPARE_SPACE +
           bottom +
           offset[1] +
-          getDefaultOffset(withArrow) +
+          getDefaultOffset(withArrow, arrowSize) +
           spaceBetweenPopoverAndTarget)}px;
         max-width: 99vw;
       }
       &:before {
-        bottom: calc(100% - 0.4rem);
-        left: 50%;
-        transform: translateX(-50%) rotate(135deg);
+        bottom: calc(100% - ${arrowSize / 2 + 1}px);
+        ${getArrowPlacement({
+          type: ARROW_PLACEMENT_TYPES.horizontal,
+          arrowPlacement,
+          arrowOffset,
+          defaultPlacement: ARROW_PLACEMENTS.center,
+          angle: 135,
+        })};
       }
     `,
     initial: {
@@ -195,12 +276,15 @@ export default {
       animation,
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
+      arrowSize,
+      arrowOffset,
+      arrowPlacement,
     }
   ) => ({
     style: css`
       top: ${bottom +
       offset[1] +
-      getDefaultOffset(withArrow) +
+      getDefaultOffset(withArrow, arrowSize) +
       spaceBetweenPopoverAndTarget}px;
       left: ${right + offset[0]}px;
       ${Inner} {
@@ -208,14 +292,19 @@ export default {
         (MIN_SPARE_SPACE +
           bottom +
           offset[1] +
-          getDefaultOffset(withArrow) +
+          getDefaultOffset(withArrow, arrowSize) +
           spaceBetweenPopoverAndTarget)}px;
         max-width: ${right + offset[0] - MIN_SPARE_SPACE}px;
       }
       &:before {
-        bottom: calc(100% - 0.4rem);
-        right: ${ARROW_OFFSET}px;
-        transform: rotate(135deg);
+        bottom: calc(100% - ${arrowSize / 2 + 1}px);
+        ${getArrowPlacement({
+          type: ARROW_PLACEMENT_TYPES.horizontal,
+          arrowPlacement,
+          arrowOffset,
+          defaultPlacement: ARROW_PLACEMENTS.right,
+          angle: 135,
+        })};
       }
     `,
     initial: {
@@ -241,12 +330,15 @@ export default {
       animation,
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
+      arrowSize,
+      arrowOffset,
+      arrowPlacement,
     }
   ) => ({
     style: css`
       top: ${bottom +
       offset[1] +
-      getDefaultOffset(withArrow) +
+      getDefaultOffset(withArrow, arrowSize) +
       spaceBetweenPopoverAndTarget}px;
       left: ${left + offset[0]}px;
       ${Inner} {
@@ -254,15 +346,20 @@ export default {
         (MIN_SPARE_SPACE +
           bottom +
           offset[1] +
-          getDefaultOffset(withArrow) +
+          getDefaultOffset(withArrow, arrowSize) +
           spaceBetweenPopoverAndTarget)}px;
         max-width: ${window.innerWidth -
         (MIN_SPARE_SPACE + left + offset[0])}px;
       }
       &:before {
-        bottom: calc(100% - 0.4rem);
-        left: ${ARROW_OFFSET}px;
-        transform: rotate(135deg);
+        bottom: calc(100% - ${arrowSize / 2 + 1}px);
+        ${getArrowPlacement({
+          type: ARROW_PLACEMENT_TYPES.horizontal,
+          arrowPlacement,
+          arrowOffset,
+          defaultPlacement: ARROW_PLACEMENTS.left,
+          angle: 135,
+        })};
       }
     `,
     initial: {
@@ -288,26 +385,34 @@ export default {
       animation,
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
+      arrowSize,
+      arrowOffset,
+      arrowPlacement,
     }
   ) => ({
     style: css`
       left: ${left +
       offset[0] -
-      getDefaultOffset(withArrow) -
+      getDefaultOffset(withArrow, arrowSize) -
       spaceBetweenPopoverAndTarget}px;
       top: ${top + height / 2 + offset[1]}px;
       ${Inner} {
         max-height: 99vh;
         max-width: ${left +
         offset[0] -
-        getDefaultOffset(withArrow) -
+        getDefaultOffset(withArrow, arrowSize) -
         spaceBetweenPopoverAndTarget -
         MIN_SPARE_SPACE}px;
       }
       &:before {
-        top: 50%;
-        left: calc(100% - 0.4rem);
-        transform: translateY(-50%) rotate(-135deg);
+        left: calc(100% - ${arrowSize / 2 + 1}px);
+        ${getArrowPlacement({
+          type: ARROW_PLACEMENT_TYPES.vertical,
+          arrowPlacement,
+          arrowOffset,
+          defaultPlacement: ARROW_PLACEMENTS.center,
+          angle: -135,
+        })};
       }
     `,
     initial: {
@@ -333,26 +438,34 @@ export default {
       animation,
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
+      arrowSize,
+      arrowOffset,
+      arrowPlacement,
     }
   ) => ({
     style: css`
       left: ${left +
       offset[0] -
-      getDefaultOffset(withArrow) -
+      getDefaultOffset(withArrow, arrowSize) -
       spaceBetweenPopoverAndTarget}px;
       top: ${bottom + offset[1]}px;
       ${Inner} {
         max-height: ${bottom + offset[1] - MIN_SPARE_SPACE}px;
         max-width: ${left +
         offset[0] -
-        getDefaultOffset(withArrow) -
+        getDefaultOffset(withArrow, arrowSize) -
         spaceBetweenPopoverAndTarget -
         MIN_SPARE_SPACE}px;
       }
       &:before {
-        bottom: ${ARROW_OFFSET}px;
-        left: calc(100% - 0.4rem);
-        transform: rotate(-135deg);
+        left: calc(100% - ${arrowSize / 2 + 1}px);
+        ${getArrowPlacement({
+          type: ARROW_PLACEMENT_TYPES.vertical,
+          arrowPlacement,
+          arrowOffset,
+          defaultPlacement: ARROW_PLACEMENTS.bottom,
+          angle: -135,
+        })};
       }
     `,
     initial: {
@@ -378,12 +491,15 @@ export default {
       animation,
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
+      arrowSize,
+      arrowOffset,
+      arrowPlacement,
     }
   ) => ({
     style: css`
       left: ${left +
       offset[0] -
-      getDefaultOffset(withArrow) -
+      getDefaultOffset(withArrow, arrowSize) -
       spaceBetweenPopoverAndTarget}px;
       top: ${top + offset[1]}px;
       ${Inner} {
@@ -391,14 +507,19 @@ export default {
         (MIN_SPARE_SPACE + top + offset[1])}px;
         max-width: ${left +
         offset[0] -
-        getDefaultOffset(withArrow) -
+        getDefaultOffset(withArrow, arrowSize) -
         spaceBetweenPopoverAndTarget -
         MIN_SPARE_SPACE}px;
       }
       &:before {
-        top: ${ARROW_OFFSET}px;
-        left: calc(100% - 0.4rem);
-        transform: rotate(-135deg);
+        left: calc(100% - ${arrowSize / 2 + 1}px);
+        ${getArrowPlacement({
+          type: ARROW_PLACEMENT_TYPES.vertical,
+          arrowPlacement,
+          arrowOffset,
+          defaultPlacement: ARROW_PLACEMENTS.top,
+          angle: -135,
+        })};
       }
     `,
     initial: {
@@ -424,12 +545,15 @@ export default {
       animation,
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
+      arrowSize,
+      arrowOffset,
+      arrowPlacement,
     }
   ) => ({
     style: css`
       left: ${right +
       offset[0] +
-      getDefaultOffset(withArrow) +
+      getDefaultOffset(withArrow, arrowSize) +
       spaceBetweenPopoverAndTarget}px;
       top: ${top + height / 2 + offset[1]}px;
       ${Inner} {
@@ -438,13 +562,18 @@ export default {
         (MIN_SPARE_SPACE +
           right +
           offset[0] +
-          getDefaultOffset(withArrow) +
+          getDefaultOffset(withArrow, arrowSize) +
           spaceBetweenPopoverAndTarget)}px;
       }
       &:before {
-        top: 50%;
-        right: calc(100% - 0.4rem);
-        transform: translateY(-50%) rotate(45deg);
+        right: calc(100% - ${arrowSize / 2 + 1}px);
+        ${getArrowPlacement({
+          type: ARROW_PLACEMENT_TYPES.vertical,
+          arrowPlacement,
+          arrowOffset,
+          defaultPlacement: ARROW_PLACEMENTS.center,
+          angle: 45,
+        })};
       }
     `,
     initial: {
@@ -470,12 +599,15 @@ export default {
       animation,
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
+      arrowSize,
+      arrowOffset,
+      arrowPlacement,
     }
   ) => ({
     style: css`
       left: ${right +
       offset[0] +
-      getDefaultOffset(withArrow) +
+      getDefaultOffset(withArrow, arrowSize) +
       spaceBetweenPopoverAndTarget}px;
       top: ${bottom + offset[1]}px;
       ${Inner} {
@@ -484,13 +616,18 @@ export default {
         (MIN_SPARE_SPACE +
           right +
           offset[0] +
-          getDefaultOffset(withArrow) +
+          getDefaultOffset(withArrow, arrowSize) +
           spaceBetweenPopoverAndTarget)}px;
       }
       &:before {
-        bottom: ${ARROW_OFFSET}px;
-        right: calc(100% - 0.4rem);
-        transform: rotate(45deg);
+        right: calc(100% - ${arrowSize / 2 + 1}px);
+        ${getArrowPlacement({
+          type: ARROW_PLACEMENT_TYPES.vertical,
+          arrowPlacement,
+          arrowOffset,
+          defaultPlacement: ARROW_PLACEMENTS.bottom,
+          angle: 45,
+        })};
       }
     `,
     initial: {
@@ -516,12 +653,15 @@ export default {
       animation,
       animationTranslateDistance,
       spaceBetweenPopoverAndTarget,
+      arrowSize,
+      arrowOffset,
+      arrowPlacement,
     }
   ) => ({
     style: css`
       left: ${right +
       offset[0] +
-      getDefaultOffset(withArrow) +
+      getDefaultOffset(withArrow, arrowSize) +
       spaceBetweenPopoverAndTarget}px;
       top: ${top + offset[1]}px;
       ${Inner} {
@@ -531,13 +671,18 @@ export default {
         (MIN_SPARE_SPACE +
           right +
           offset[0] +
-          getDefaultOffset(withArrow) +
+          getDefaultOffset(withArrow, arrowSize) +
           spaceBetweenPopoverAndTarget)}px;
       }
       &:before {
-        top: ${ARROW_OFFSET}px;
-        right: calc(100% - 0.4rem);
-        transform: rotate(45deg);
+        right: calc(100% - ${arrowSize / 2 + 1}px);
+        ${getArrowPlacement({
+          type: ARROW_PLACEMENT_TYPES.vertical,
+          arrowPlacement,
+          arrowOffset,
+          defaultPlacement: ARROW_PLACEMENTS.top,
+          angle: 45,
+        })};
       }
     `,
     initial: {

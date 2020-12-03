@@ -29,9 +29,12 @@ export default ({
 
       if (force || !isOpenControlled) {
         setOpen(value);
+        if (!value) {
+          onClose();
+        }
       }
     },
-    [isOpenControlled, onChangeOpen, providedIsOpen]
+    [isOpenControlled, onChangeOpen, providedIsOpen, onClose]
   );
 
   const open = useCallback(() => {
@@ -40,8 +43,7 @@ export default ({
 
   const close = useCallback(() => {
     updateOpen(false);
-    onClose();
-  }, [onClose, updateOpen]);
+  }, [updateOpen]);
 
   const toggle = useCallback(() => {
     updateOpen(!isOpen);

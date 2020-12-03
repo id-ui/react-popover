@@ -168,8 +168,17 @@ describe('Popover', () => {
       </Popover>
     );
     expect(queryByTestId('content')).not.toBeInTheDocument();
+
     fireEvent.mouseEnter(getByTestId('button'));
-    fireEvent.mouseLeave(getByTestId('button'));
+
+    await waitFor(
+      () => {
+        expect(getByTestId('content')).toBeInTheDocument();
+        fireEvent.mouseLeave(getByTestId('button'));
+      },
+      { timeout: 300 }
+    );
+
     await waitFor(
       () => {
         expect(getByTestId('content')).toBeInTheDocument();
@@ -318,6 +327,9 @@ describe('Popover', () => {
         triggerContainerTag="div"
         ref={_.noop}
         placement="right"
+        arrowPlacement="left"
+        arrowSize={15}
+        arrowOffset={15}
       >
         <button
           data-testid="button"
@@ -353,13 +365,29 @@ describe('Popover', () => {
     await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
   });
 
-  it('custom container: do not render content if there is no container', async () => {
+  it('custom relative container: renders content', async () => {
     const containerId = 'container';
+    const { getByTestId } = render(
+      <div id={containerId} style={{ position: 'relative' }}>
+        <Popover
+          isOpen={true}
+          content={<span data-testid="content">Hi!</span>}
+          getContainer={() => document.getElementById(containerId)}
+        >
+          <button data-testid="button">Open</button>
+        </Popover>
+      </div>
+    );
+
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+  });
+
+  it('custom container: do not render content if there is no container', async () => {
     const { queryByTestId } = render(
       <Popover
         isOpen={true}
         content={<span data-testid="content">Hi!</span>}
-        getContainer={() => document.getElementById(containerId)}
+        getContainer={() => undefined}
       >
         <button data-testid="button">Open</button>
       </Popover>
@@ -368,6 +396,14 @@ describe('Popover', () => {
     await waitFor(() =>
       expect(queryByTestId('content')).not.toBeInTheDocument()
     );
+  });
+
+  it('do not calculate position if there is no trigger', async () => {
+    const { queryByTestId } = render(
+      <Popover isOpen content={<span data-testid="content">Hi!</span>} />
+    );
+
+    await waitFor(() => expect(queryByTestId('content')).toBeInTheDocument());
   });
 
   it('useOpen: toggle, open, close', async () => {
