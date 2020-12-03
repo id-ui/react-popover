@@ -117,9 +117,7 @@ export default ({
       }
     }
 
-    if (actualPlacement !== placement) {
-      setBetterPlacement(actualPlacement);
-    }
+    setBetterPlacement(actualPlacement);
 
     params.top -= offsetContainerRect.top;
     params.bottom -= offsetContainerRect.top;
