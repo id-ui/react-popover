@@ -82,7 +82,7 @@ export default {
         max-width: 99vw;
       }
       &:before {
-        top: calc(100% - ${arrowSize / 2 + 1}px);
+        top: calc(100% - ${arrowSize / 2}px);
         ${getArrowPlacement({
           type: ARROW_PLACEMENT_TYPES.horizontal,
           arrowPlacement,
@@ -135,7 +135,7 @@ export default {
         max-width: ${right + offset[0] - MIN_SPARE_SPACE}px;
       }
       &:before {
-        top: calc(100% - ${arrowSize / 2 + 1}px);
+        top: calc(100% - ${arrowSize / 2}px);
         ${getArrowPlacement({
           type: ARROW_PLACEMENT_TYPES.horizontal,
           arrowPlacement,
@@ -189,7 +189,7 @@ export default {
         (MIN_SPARE_SPACE + left + offset[0])}px;
       }
       &:before {
-        top: calc(100% - ${arrowSize / 2 + 1}px);
+        top: calc(100% - ${arrowSize / 2}px);
         ${getArrowPlacement({
           type: ARROW_PLACEMENT_TYPES.horizontal,
           arrowPlacement,
@@ -243,7 +243,7 @@ export default {
         max-width: 99vw;
       }
       &:before {
-        bottom: calc(100% - ${arrowSize / 2 + 1}px);
+        bottom: calc(100% - ${arrowSize / 2}px);
         ${getArrowPlacement({
           type: ARROW_PLACEMENT_TYPES.horizontal,
           arrowPlacement,
@@ -297,7 +297,7 @@ export default {
         max-width: ${right + offset[0] - MIN_SPARE_SPACE}px;
       }
       &:before {
-        bottom: calc(100% - ${arrowSize / 2 + 1}px);
+        bottom: calc(100% - ${arrowSize / 2}px);
         ${getArrowPlacement({
           type: ARROW_PLACEMENT_TYPES.horizontal,
           arrowPlacement,
@@ -352,7 +352,7 @@ export default {
         (MIN_SPARE_SPACE + left + offset[0])}px;
       }
       &:before {
-        bottom: calc(100% - ${arrowSize / 2 + 1}px);
+        bottom: calc(100% - ${arrowSize / 2}px);
         ${getArrowPlacement({
           type: ARROW_PLACEMENT_TYPES.horizontal,
           arrowPlacement,
@@ -405,7 +405,7 @@ export default {
         MIN_SPARE_SPACE}px;
       }
       &:before {
-        left: calc(100% - ${arrowSize / 2 + 1}px);
+        left: calc(100% - ${arrowSize / 2}px);
         ${getArrowPlacement({
           type: ARROW_PLACEMENT_TYPES.vertical,
           arrowPlacement,
@@ -458,7 +458,7 @@ export default {
         MIN_SPARE_SPACE}px;
       }
       &:before {
-        left: calc(100% - ${arrowSize / 2 + 1}px);
+        left: calc(100% - ${arrowSize / 2}px);
         ${getArrowPlacement({
           type: ARROW_PLACEMENT_TYPES.vertical,
           arrowPlacement,
@@ -512,7 +512,7 @@ export default {
         MIN_SPARE_SPACE}px;
       }
       &:before {
-        left: calc(100% - ${arrowSize / 2 + 1}px);
+        left: calc(100% - ${arrowSize / 2}px);
         ${getArrowPlacement({
           type: ARROW_PLACEMENT_TYPES.vertical,
           arrowPlacement,
@@ -566,7 +566,7 @@ export default {
           spaceBetweenPopoverAndTarget)}px;
       }
       &:before {
-        right: calc(100% - ${arrowSize / 2 + 1}px);
+        right: calc(100% - ${arrowSize / 2}px);
         ${getArrowPlacement({
           type: ARROW_PLACEMENT_TYPES.vertical,
           arrowPlacement,
@@ -620,7 +620,7 @@ export default {
           spaceBetweenPopoverAndTarget)}px;
       }
       &:before {
-        right: calc(100% - ${arrowSize / 2 + 1}px);
+        right: calc(100% - ${arrowSize / 2}px);
         ${getArrowPlacement({
           type: ARROW_PLACEMENT_TYPES.vertical,
           arrowPlacement,
@@ -675,7 +675,7 @@ export default {
           spaceBetweenPopoverAndTarget)}px;
       }
       &:before {
-        right: calc(100% - ${arrowSize / 2 + 1}px);
+        right: calc(100% - ${arrowSize / 2}px);
         ${getArrowPlacement({
           type: ARROW_PLACEMENT_TYPES.vertical,
           arrowPlacement,
