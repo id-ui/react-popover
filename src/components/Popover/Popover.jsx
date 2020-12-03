@@ -434,7 +434,7 @@ PopoverWithRef.propTypes = {
   closeOnRemoteClick: PropTypes.bool,
   /**
    * Whether popover should change position if there is no room
-   * @default true
+   * @default false
    */
   guessBetterPosition: PropTypes.bool,
   /**
@@ -538,7 +538,7 @@ PopoverWithRef.defaultProps = {
   closeOnEscape: true,
   closeOnEnter: false,
   getContainer: () => document.body,
-  guessBetterPosition: true,
+  guessBetterPosition: false,
   mouseEnterDelay: 100,
   mouseLeaveDelay: 300,
   onFocus: _.noop,

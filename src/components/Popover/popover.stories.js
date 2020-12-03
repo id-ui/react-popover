@@ -137,9 +137,9 @@ export default {
     guessBetterPosition: {
       control: 'boolean',
       description: 'Whether popover should change position if there is no room',
-      defaultValue: true,
+      defaultValue: false,
       table: {
-        defaultValue: { summary: true },
+        defaultValue: { summary: false },
       },
     },
     mouseEnterDelay: {
@@ -313,7 +313,7 @@ playground.args = {
   closeOnEscape: true,
   closeOnEnter: true,
   closeOnRemoteClick: undefined,
-  guessBetterPosition: true,
+  guessBetterPosition: false,
   mouseEnterDelay: 100,
   mouseLeaveDelay: 300,
   content: 'Hi!',
@@ -353,6 +353,10 @@ export function draggable(props) {
     </div>
   );
 }
+
+draggable.args = {
+  guessBetterPosition: true,
+};
 
 export function Slider(props) {
   const [left, setLeft] = useState(0);

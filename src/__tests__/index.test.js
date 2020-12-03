@@ -274,6 +274,7 @@ describe('Popover', () => {
     const { getByTestId, queryByTestId } = render(
       <Popover
         closeOnEnter={true}
+        guessBetterPosition={true}
         content={<span data-testid="content">Hi!</span>}
       >
         <button data-testid="button">Open</button>
@@ -330,6 +331,7 @@ describe('Popover', () => {
         arrowPlacement="left"
         arrowSize={15}
         arrowOffset={15}
+        guessBetterPosition={true}
       >
         <button
           data-testid="button"
