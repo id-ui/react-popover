@@ -134,6 +134,14 @@ export default {
         defaultValue: { summary: "trigger !== 'hover'" },
       },
     },
+    closeOnScroll: {
+      control: 'boolean',
+      description: 'Whether close on scroll event of scroll container or not',
+      defaultValue: true,
+      table: {
+        defaultValue: { summary: true },
+      },
+    },
     guessBetterPosition: {
       control: 'boolean',
       description: 'Whether popover should change position if there is no room',
@@ -144,7 +152,7 @@ export default {
     },
     mouseEnterDelay: {
       control: 'number',
-      description: 'Delay in ms before opening popover on mouseEnter',
+      description: 'Delay (ms) before opening popover on mouseEnter',
       defaultValue: 100,
       table: {
         defaultValue: { summary: 100 },
@@ -152,7 +160,7 @@ export default {
     },
     mouseLeaveDelay: {
       control: 'number',
-      description: 'Delay in ms before closing popover on mouseLeave',
+      description: 'Delay (ms) before closing popover on mouseLeave',
       defaultValue: 300,
       table: {
         defaultValue: { summary: 300 },
@@ -286,7 +294,7 @@ export default {
     usePortal: {
       control: 'boolean',
       description:
-        'whether render popover into container = getContainer() or render where it is. Note: in this case you should position popover by yourself. Usage example: you want popover to scroll with target even if scroll parent is not window.',
+        'whether render popover into container = getContainer() or render where it is. Note: in this case you should position popover by yourself. Usage example: you want popover to scroll with target and not hide (closeOnScroll = false).',
       defaultValue: true,
       table: {
         defaultValue: { summary: true },
@@ -328,19 +336,26 @@ playground.args = {
   content: 'Hi!',
 };
 
+const dragContainerId = 'dragContainerId';
+
 export function draggable(props) {
   return (
     <div
       style={{
         width: 600,
-        height: 450,
+        height: 300,
         padding: 10,
         borderRadius: 30,
         backgroundColor: '#eaeaea',
       }}
+      id={dragContainerId}
     >
       <div style={{ padding: '1rem' }}>Note: considerTriggerMotion = true</div>
-      <Popover {...props} content="Hi! I follow trigger)" considerTriggerMotion>
+      <Popover
+        {...props}
+        considerTriggerMotion
+        getContainer={() => document.getElementById(dragContainerId)}
+      >
         <motion.div
           style={{
             width: 100,
@@ -365,6 +380,7 @@ export function draggable(props) {
 
 draggable.args = {
   guessBetterPosition: true,
+  content: 'Hi! I follow trigger)',
 };
 
 export function Slider(props) {
@@ -559,4 +575,24 @@ renderOnPlace.args = {
   usePortal: false,
   trigger: 'click',
   placement: 'bottom',
+};
+
+export function closeOnScroll(props) {
+  return (
+    <div style={{ overflow: 'auto', width: 300, height: 300 }}>
+      <div
+        style={{ backgroundColor: 'orangered', height: 100, marginBottom: 10 }}
+      />
+      <CustomPopover {...props} content="Hi!">
+        <button>{props.trigger || 'hover'} to open and scroll to check</button>
+      </CustomPopover>
+      <div
+        style={{ backgroundColor: 'orangered', height: 500, marginTop: 10 }}
+      />
+    </div>
+  );
+}
+
+closeOnScroll.args = {
+  trigger: 'click',
 };

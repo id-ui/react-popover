@@ -300,7 +300,7 @@ describe('Popover', () => {
     );
   });
 
-  it('closes modal on enter key press', async () => {
+  it('closes on enter key press', async () => {
     const { getByTestId, queryByTestId } = render(
       <Popover
         closeOnEnter={true}
@@ -313,6 +313,25 @@ describe('Popover', () => {
     user.click(getByTestId('button'));
     await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
     fireEvent.keyDown(document.body, { key: 'Enter', code: 'Enter' });
+    await waitFor(() =>
+      expect(queryByTestId('content')).not.toBeInTheDocument()
+    );
+  });
+
+  it('closes on scroll', async () => {
+    const { getByTestId, queryByTestId } = render(
+      <div>
+        <Popover
+          placement="leftBottom"
+          content={<span data-testid="content">Hi!</span>}
+        >
+          <button data-testid="button">Open</button>
+        </Popover>
+      </div>
+    );
+    user.click(getByTestId('button'));
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+    fireEvent.scroll(window, { target: { scrollY: 100 } });
     await waitFor(() =>
       expect(queryByTestId('content')).not.toBeInTheDocument()
     );

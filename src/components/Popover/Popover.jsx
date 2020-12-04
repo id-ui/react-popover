@@ -22,6 +22,7 @@ import {
 import { CheckContentDimensionsHelper, Container, Inner } from './styled';
 import placementPropsGetters from './placementsConfig';
 import { POPOVER_TRIGGER_TYPES } from './constants';
+import useScroll from './hooks/useScroll';
 
 function Popover(
   {
@@ -40,6 +41,7 @@ function Popover(
     considerTriggerMotion,
     closeOnEscape,
     closeOnEnter,
+    closeOnScroll,
     closeOnRemoteClick: providedCloseOnRemoteClick,
     guessBetterPosition,
     onFocus,
@@ -111,6 +113,16 @@ function Popover(
     setCheckingContentDimensions,
   ] = useNodeDimensions(providedIsOpen);
 
+  const scrollListener = useCallback(() => {
+    if (isOpen && closeOnScroll) {
+      close();
+    }
+  }, [isOpen, close, closeOnScroll]);
+
+  const setScrollContainer = useScroll({
+    listener: scrollListener,
+  });
+
   const [containerProps, updatePosition] = usePosition({
     contentDimensions,
     triggerElementRef,
@@ -136,7 +148,6 @@ function Popover(
   const setupElementMotionObserver = useElementMotion(updatePosition);
 
   useGlobalListener('resize', updatePositionIfOpen);
-  useGlobalListener('scroll', updatePositionIfOpen);
 
   const showContent = useCallback(
     (force, customSetOpen) => {
@@ -224,6 +235,8 @@ function Popover(
         });
       }
 
+      setScrollContainer(triggerElementRef.current);
+
       if (ref) {
         if (_.isFunction(ref)) {
           ref(node);
@@ -240,6 +253,7 @@ function Popover(
       setupElementMotionObserver,
       addTarget,
       usePortal,
+      setScrollContainer,
     ]
   );
 
@@ -448,6 +462,11 @@ PopoverWithRef.propTypes = {
    */
   closeOnEnter: PropTypes.bool,
   /**
+   * Whether close on scroll event of scroll container or not
+   * @default true
+   */
+  closeOnScroll: PropTypes.bool,
+  /**
    * Whether close on remote click or not
    * @default trigger !== 'hover'
    */
@@ -458,12 +477,12 @@ PopoverWithRef.propTypes = {
    */
   guessBetterPosition: PropTypes.bool,
   /**
-   * Delay in ms before opening popover on mouseEnter
+   * Delay (ms) before opening popover on mouseEnter
    * @default 100
    */
   mouseEnterDelay: PropTypes.number,
   /**
-   * Delay in ms before closing popover on mouseLeave
+   * Delay (ms) before closing popover on mouseLeave
    * @default 300
    */
   mouseLeaveDelay: PropTypes.number,
@@ -562,6 +581,7 @@ PopoverWithRef.defaultProps = {
   considerTriggerMotion: false,
   closeOnEscape: true,
   closeOnEnter: false,
+  closeOnScroll: true,
   getContainer: () => document.body,
   guessBetterPosition: false,
   mouseEnterDelay: 100,

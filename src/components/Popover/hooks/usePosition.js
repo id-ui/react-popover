@@ -54,8 +54,8 @@ export default ({
     const offsetContainerRect = offsetContainer.getBoundingClientRect();
 
     const {
-      height: targetHeight,
-      width: targetWidth,
+      height: contentHeight,
+      width: contentWidth,
     } = contentDimensions.current;
 
     const params = {
@@ -72,12 +72,14 @@ export default ({
     if (guessBetterPosition) {
       const containerRect = container.getBoundingClientRect();
 
-      const topConstraint = MIN_SPARE_SPACE + EDGE_PADDING + targetHeight;
+      const topConstraint =
+        containerRect.top + contentHeight + EDGE_PADDING + MIN_SPARE_SPACE;
       const bottomConstraint =
-        containerRect.height - targetHeight - MIN_SPARE_SPACE - EDGE_PADDING;
+        containerRect.bottom - contentHeight - MIN_SPARE_SPACE - EDGE_PADDING;
+      const leftConstraint =
+        containerRect.left + contentWidth + MIN_SPARE_SPACE + EDGE_PADDING;
       const rightConstraint =
-        containerRect.width - targetWidth - MIN_SPARE_SPACE - EDGE_PADDING;
-      const leftConstraint = MIN_SPARE_SPACE + EDGE_PADDING + targetWidth;
+        containerRect.right - contentWidth - MIN_SPARE_SPACE - EDGE_PADDING;
 
       if (['top', 'bottom'].some((item) => actualPlacement.startsWith(item))) {
         // two times to avoid wrong position replacement (second time returns old placement in wrong case)

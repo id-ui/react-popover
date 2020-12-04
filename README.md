@@ -22,7 +22,8 @@ yarn add @kaprisa57/react-popover
 - Able to choose better placement if there is no room (if guessBetterPosition = true, default false).
 - Able to follow trigger (if considerTriggerMotion = true, default false for better performance).
 - Able to detect trigger width and height and use them for content (useTriggerWidth, useTriggerHeight).
-- Considers window resizing and scrolling.
+- Considers window resizing.
+- Closes on scroll event of scroll container (if closeOnScroll = true, default true).
 - Supports 12 different placements.
 - Able to close on remote click, enter and escape buttons press.
 - Able to open on hover, click, focus and contextMenu events. 
