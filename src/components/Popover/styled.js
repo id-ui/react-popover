@@ -29,6 +29,13 @@ export const Container = styled(motion.div)`
         ${prop('arrowStyles')};
       }
     `
+  )};
+  ${ifProp(
+    'isCheckingContentDimensions',
+    css`
+      left: -99.9rem;
+      top: -99.9rem;
+    `
   )}
 `;
 
@@ -46,12 +53,4 @@ export const Inner = styled.div`
     `
   )}
   overflow: auto;
-`;
-
-export const CheckContentDimensionsHelper = styled(Inner)`
-  position: absolute;
-  left: -99.9rem;
-  top: -99.9rem;
-  width: ${prop('width')};
-  height: ${prop('height')};
 `;

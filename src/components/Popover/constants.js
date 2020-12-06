@@ -17,6 +17,3 @@ export const ARROW_PLACEMENTS = {
   right: 'right',
   left: 'left',
 };
-
-export const EDGE_PADDING = 10;
-export const MIN_SPARE_SPACE = 25;

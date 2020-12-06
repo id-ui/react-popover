@@ -23,7 +23,7 @@ describe('Popover', () => {
 
   it('renders children', () => {
     const { getByTestId } = render(
-      <Popover content="Hi!" placement="left">
+      <Popover content="Hi!">
         <button data-testid="button">Open</button>
       </Popover>
     );
@@ -70,6 +70,7 @@ describe('Popover', () => {
         trigger={POPOVER_TRIGGER_TYPES.click}
         isOpenControlled
         placement="bottom"
+        lazy={false}
         content={<span data-testid="content">Hi!</span>}
       >
         <button data-testid="button">Open</button>
@@ -164,6 +165,8 @@ describe('Popover', () => {
         trigger={POPOVER_TRIGGER_TYPES.hover}
         mouseEnterDelay={0}
         mouseLeaveDelay={300}
+        placement="left"
+        arrowPlacement="bottom"
         content={<span data-testid="content">Hi!</span>}
       >
         <button data-testid="button">Open</button>
@@ -220,8 +223,30 @@ describe('Popover', () => {
       <Popover
         trigger={POPOVER_TRIGGER_TYPES.focus}
         content={<span data-testid="content">Hi!</span>}
+        useTriggerWidth
+        useTriggerHeight
       >
         <input type="text" data-testid="input" />
+      </Popover>
+    );
+    expect(queryByTestId('content')).not.toBeInTheDocument();
+    fireEvent.focus(getByTestId('input'));
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+    fireEvent.focus(getByTestId('input'));
+    expect(getByTestId('content')).toBeInTheDocument();
+  });
+
+  it('opens on focus if children is function', async () => {
+    const { getByTestId, queryByTestId } = render(
+      <Popover
+        trigger={POPOVER_TRIGGER_TYPES.focus}
+        content={() => <span data-testid="content">Hi!</span>}
+        lazy={false}
+        avoidOverflowBounds
+        useTriggerWidth
+        useTriggerHeight
+      >
+        {() => <input type="text" data-testid="input" />}
       </Popover>
     );
     expect(queryByTestId('content')).not.toBeInTheDocument();
@@ -235,7 +260,7 @@ describe('Popover', () => {
         trigger={POPOVER_TRIGGER_TYPES.contextMenu}
         content={<span data-testid="content">{'Hi!'}</span>}
       >
-        <button data-testid="button">Open</button>
+        {() => <button data-testid="button">Open</button>}
       </Popover>
     );
     expect(queryByTestId('content')).not.toBeInTheDocument();
@@ -245,7 +270,11 @@ describe('Popover', () => {
 
   it('opens by children function', async () => {
     const { getByTestId, queryByTestId } = render(
-      <Popover content={<span data-testid="content">Hi!</span>}>
+      <Popover
+        content={<span data-testid="content">Hi!</span>}
+        fitMaxHeightToBounds={false}
+        fitMaxWidthToBounds={false}
+      >
         {({ open }) => (
           <div data-testid="rootChild">
             <button data-testid="button" onClick={open}>
@@ -530,5 +559,8 @@ describe('Popover', () => {
     expect(
       checkConstraints('bottomLeft', ['top', 100, 200], ['bottom', 300, 400])
     ).toBe('topLeft');
+    expect(
+      checkConstraints('bottomLeft', ['top', 200, 100], ['bottom', 400, 300])
+    ).toBe('bottomLeft');
   });
 });

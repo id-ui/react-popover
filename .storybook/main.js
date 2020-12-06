@@ -12,5 +12,9 @@ module.exports = {
     config.resolve = custom.resolve;
     return config;
   },
-  addons: ['@storybook/addon-essentials', '@storybook/addon-storysource', 'storybook-addon-react-docgen'],
+  addons: [
+    '@storybook/addon-essentials',
+    '@storybook/addon-storysource',
+    'storybook-addon-react-docgen',
+  ],
 };
