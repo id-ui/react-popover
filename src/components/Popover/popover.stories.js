@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { withPropsTable } from 'storybook-addon-react-docgen';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import Popover from './Popover';
+import Popover from './PopoverContainer';
 import { ARROW_PLACEMENTS, POPOVER_TRIGGER_TYPES } from './constants';
 import placementsConfig from './placementsConfig';
 
@@ -161,9 +161,9 @@ export default {
     mouseLeaveDelay: {
       control: 'number',
       description: 'Delay (ms) before closing popover on mouseLeave',
-      defaultValue: 300,
+      defaultValue: 100,
       table: {
-        defaultValue: { summary: 300 },
+        defaultValue: { summary: 100 },
       },
     },
     triggerContainerDisplay: {
@@ -181,12 +181,20 @@ export default {
         defaultValue: { summary: 'span' },
       },
     },
-    animationTranslateDistance: {
+    openingAnimationTranslateDistance: {
       control: 'number',
       description: 'Distance in % that content should slide during opening',
       defaultValue: 30,
       table: {
         defaultValue: { summary: 30 },
+      },
+    },
+    closingAnimationTranslateDistance: {
+      control: 'number',
+      description: 'Distance in % that content should slide during closing',
+      defaultValue: 0,
+      table: {
+        defaultValue: { summary: 0 },
       },
     },
     animation: {
@@ -198,7 +206,7 @@ export default {
           summary: `{
     initial: { opacity: 0, scale: 0.9 },
     animate: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.9, transition: { duration: 0.2 } }
+    exit: { opacity: 0, scale: 0.9, transition: { duration: 0.1 } }
   }`,
         },
       },
@@ -214,9 +222,9 @@ export default {
     spaceBetweenPopoverAndTarget: {
       control: 'number',
       description: 'space (px) between popover and target, including arrow',
-      defaultValue: 3,
+      defaultValue: 7,
       table: {
-        defaultValue: { summary: 3 },
+        defaultValue: { summary: 7 },
       },
     },
     arrowSize: {
@@ -250,15 +258,48 @@ export default {
     maxWidth: {
       control: 'text',
       description: 'max content width',
-      table: {
-        defaultValue: { summary: 'available space - 25px' },
-      },
     },
     maxHeight: {
       control: 'text',
       description: 'max content height',
+    },
+    minSpaceBetweenPopoverAndContainer: {
+      control: 'number',
+      description: 'min space (px) between popover and container',
+      defaultValue: 10,
       table: {
-        defaultValue: { summary: 'available space - 25px' },
+        defaultValue: { summary: 10 },
+      },
+    },
+    fitMaxWidthToBounds: {
+      control: 'boolean',
+      description: 'make content maxWidth fit to position and bounds',
+      defaultValue: true,
+      table: {
+        defaultValue: {
+          summary: '!maxWidth',
+        },
+      },
+    },
+    fitMaxHeightToBounds: {
+      control: 'boolean',
+      description: 'make content maxHeight fit to position and bounds',
+      defaultValue: true,
+      table: {
+        defaultValue: {
+          summary: '!maxHeight',
+        },
+      },
+    },
+    avoidOverflowBounds: {
+      control: 'boolean',
+      description:
+        'should popover try to change position to not overflow bounds if !fitMaxWidthToBounds && !fitMaxHeightToBounds',
+      defaultValue: true,
+      table: {
+        defaultValue: {
+          summary: true,
+        },
       },
     },
     width: {
@@ -300,6 +341,15 @@ export default {
         defaultValue: { summary: true },
       },
     },
+    lazy: {
+      control: 'boolean',
+      description:
+        'whether wait for trigger event to initialize popover or not',
+      defaultValue: true,
+      table: {
+        defaultValue: { summary: true },
+      },
+    },
   },
   decorators: [withPropsTable],
   parameters: {
@@ -332,7 +382,7 @@ playground.args = {
   closeOnRemoteClick: undefined,
   guessBetterPosition: false,
   mouseEnterDelay: 100,
-  mouseLeaveDelay: 300,
+  mouseLeaveDelay: 100,
   content: 'Hi!',
 };
 
@@ -490,7 +540,7 @@ export function popoverWithCustomSimpleAnimation(props) {
     <Popover
       {...props}
       content={longContent}
-      animationTranslateDistance={0}
+      openingAnimationTranslateDistance={0}
       animation={{
         initial: {
           opacity: 0,

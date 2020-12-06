@@ -14,12 +14,12 @@ import {
   useOpen,
   usePosition,
   useHandlers,
-  useNodeDimensions,
+  useContentDimensions,
   useElementMotion,
   useGlobalListener,
   useArrow,
 } from './hooks';
-import { CheckContentDimensionsHelper, Container, Inner } from './styled';
+import { Container, Inner } from './styled';
 import placementPropsGetters from './placementsConfig';
 import { POPOVER_TRIGGER_TYPES } from './constants';
 import useScroll from './hooks/useScroll';
@@ -51,8 +51,13 @@ function Popover(
     triggerContainerTag,
     maxHeight,
     maxWidth,
+    minSpaceBetweenPopoverAndContainer,
+    avoidOverflowBounds,
+    fitMaxHeightToBounds,
+    fitMaxWidthToBounds,
     animation,
-    animationTranslateDistance,
+    openingAnimationTranslateDistance,
+    closingAnimationTranslateDistance,
     spaceBetweenPopoverAndTarget,
     zIndex,
     arrowSize,
@@ -63,7 +68,6 @@ function Popover(
     width,
     height,
     usePortal,
-    ...wrapperProps
   },
   ref
 ) {
@@ -74,11 +78,6 @@ function Popover(
   }, [placement]);
 
   const showTimer = useRef();
-  useEffect(() => {
-    return () => {
-      clearTimeout(showTimer.current);
-    };
-  }, []);
 
   const handleClose = useCallback(() => {
     clearTimeout(showTimer.current);
@@ -110,8 +109,7 @@ function Popover(
     contentDimensions,
     checkContentDimensions,
     isCheckingContentDimensions,
-    setCheckingContentDimensions,
-  ] = useNodeDimensions(providedIsOpen);
+  ] = useContentDimensions();
 
   const scrollListener = useCallback(() => {
     if (isOpen && closeOnScroll) {
@@ -131,23 +129,24 @@ function Popover(
     withArrow,
     guessBetterPosition,
     animation,
-    animationTranslateDistance,
+    openingAnimationTranslateDistance,
+    closingAnimationTranslateDistance,
     spaceBetweenPopoverAndTarget,
     getContainer,
     arrowSize,
     setBetterPlacement,
     canUpdate: usePortal,
+    minSpaceBetweenPopoverAndContainer,
+    avoidOverflowBounds,
+    fitMaxHeightToBounds,
+    fitMaxWidthToBounds,
+    maxHeight,
+    maxWidth,
   });
-
-  const updatePositionIfOpen = useCallback(() => {
-    if (isOpen) {
-      updatePosition();
-    }
-  }, [isOpen, updatePosition]);
 
   const setupElementMotionObserver = useElementMotion(updatePosition);
 
-  useGlobalListener('resize', updatePositionIfOpen);
+  useGlobalListener('resize', updatePosition, isOpen);
 
   const showContent = useCallback(
     (force, customSetOpen) => {
@@ -156,20 +155,9 @@ function Popover(
         (customSetOpen || setOpen)(!isOpen, force);
       };
 
-      if (!contentDimensions.current) {
-        setCheckingContentDimensions(true);
-        showTimer.current = setTimeout(show, 100);
-      } else {
-        show();
-      }
+      show();
     },
-    [
-      contentDimensions,
-      updatePosition,
-      setOpen,
-      isOpen,
-      setCheckingContentDimensions,
-    ]
+    [updatePosition, setOpen, isOpen]
   );
 
   useEffect(() => {
@@ -189,6 +177,10 @@ function Popover(
         updatePosition();
         setOpen(true, true);
       }, 100);
+
+      return () => {
+        clearTimeout(showTimer.current);
+      };
     }
     // eslint-disable-next-line
   }, []);
@@ -210,7 +202,7 @@ function Popover(
     showTimer,
   });
 
-  const setContainerRef = useCallback(
+  const setTriggerRef = useCallback(
     (node) => {
       if (node && node.children.length) {
         const child = node.children[0];
@@ -303,7 +295,7 @@ function Popover(
 
   const animationProps = usePortal ? containerProps : animation;
 
-  const popoverContent = (
+  const popoverContentAnimated = (
     <AnimatePresence initial={null}>
       {isOpen && (!usePortal || containerProps.style) && (
         <Container
@@ -332,20 +324,25 @@ function Popover(
 
   return (
     <Fragment>
-      {isCheckingContentDimensions && (
-        <CheckContentDimensionsHelper
-          maxHeight={maxHeight}
-          maxWidth={maxWidth}
-          width={useTriggerWidth ? `${triggerDimensions.width}px` : width}
-          height={useTriggerHeight ? `${triggerDimensions.height}px` : height}
-          ref={checkContentDimensions}
-        >
-          {transformedContent}
-        </CheckContentDimensionsHelper>
-      )}
+      {isCheckingContentDimensions &&
+        container &&
+        createPortal(
+          <Container
+            ref={checkContentDimensions}
+            isCheckingContentDimensions
+            className={className}
+            width={useTriggerWidth ? `${triggerDimensions.width}px` : width}
+            height={useTriggerHeight ? `${triggerDimensions.height}px` : height}
+          >
+            <Inner maxHeight={maxHeight} maxWidth={maxWidth}>
+              {transformedContent}
+            </Inner>
+          </Container>,
+          container
+        )}
       {usePortal
-        ? container && createPortal(popoverContent, container)
-        : popoverContent}
+        ? container && createPortal(popoverContentAnimated, container)
+        : popoverContentAnimated}
       {trigger === POPOVER_TRIGGER_TYPES.focus ? (
         React.cloneElement(
           React.Children.only(
@@ -355,16 +352,11 @@ function Popover(
           ),
           {
             onFocus: handleFocus,
-            ref: setContainerRef,
-            ...wrapperProps,
+            ref: setTriggerRef,
           }
         )
       ) : (
-        <TriggerContainer
-          {...triggerProps}
-          ref={setContainerRef}
-          {...wrapperProps}
-        >
+        <TriggerContainer {...triggerProps} ref={setTriggerRef}>
           {_.isFunction(children)
             ? children({ isOpen, open, close, toggle })
             : children}
@@ -509,7 +501,11 @@ PopoverWithRef.propTypes = {
   /**
    * distance in % that content should slide during opening
    */
-  animationTranslateDistance: PropTypes.number,
+  openingAnimationTranslateDistance: PropTypes.number,
+  /**
+   * distance in % that content should slide during closing
+   */
+  closingAnimationTranslateDistance: PropTypes.number,
   /**
    * popover content z-index
    */
@@ -535,14 +531,32 @@ PopoverWithRef.propTypes = {
   arrowPlacement: PropTypes.string,
   /**
    * max content width
-   * @default available space - 25
    */
   maxWidth: PropTypes.string,
   /**
    * max content height
-   * @default available space - 25
    */
   maxHeight: PropTypes.string,
+  /**
+   * min space (px) between popover and container
+   * @default 10
+   */
+  minSpaceBetweenPopoverAndContainer: PropTypes.number,
+  /**
+   * make content maxWidth fit to position and bounds
+   * @default !maxWidth
+   */
+  fitMaxWidthToBounds: PropTypes.bool,
+  /**
+   * make content maxHeight fit to position and bounds
+   * @default !maxHeight
+   */
+  fitMaxHeightToBounds: PropTypes.bool,
+  /**
+   * should popover try to change position to not overflow bounds if !fitMaxWidthToBounds && !fitMaxHeightToBounds
+   * @default true
+   */
+  avoidOverflowBounds: PropTypes.bool,
   /**
    * content width
    * @default unset
@@ -585,7 +599,7 @@ PopoverWithRef.defaultProps = {
   getContainer: () => document.body,
   guessBetterPosition: false,
   mouseEnterDelay: 100,
-  mouseLeaveDelay: 300,
+  mouseLeaveDelay: 100,
   onFocus: _.noop,
   triggerContainerTag: 'span',
   animation: {
@@ -602,11 +616,13 @@ PopoverWithRef.defaultProps = {
     exit: {
       opacity: 0,
       scale: 0.9,
-      transition: { duration: 0.2 },
+      transition: { duration: 0.1 },
     },
   },
-  animationTranslateDistance: 30,
-  spaceBetweenPopoverAndTarget: 3,
+  openingAnimationTranslateDistance: 30,
+  closingAnimationTranslateDistance: 0,
+  minSpaceBetweenPopoverAndContainer: 10,
+  spaceBetweenPopoverAndTarget: 7,
   arrowSize: 8,
   arrowOffset: 10,
   useTriggerWidth: false,
@@ -614,6 +630,7 @@ PopoverWithRef.defaultProps = {
   width: 'unset',
   height: 'unset',
   usePortal: true,
+  avoidOverflowBounds: true,
 };
 
 export default PopoverWithRef;

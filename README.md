@@ -34,6 +34,7 @@ yarn add @kaprisa57/react-popover
 - Accepts custom mouse enter/leave delay if trigger is "hover".
 - Accepts custom trigger container display and tag.
 - Accepts arrowSize, arrowOffset and arrowPlacement for arrow customization.
+- Lazy initialization. Popover initializes on first trigger event.
 
 
 ### See props in [Docs](https://kseniya57.github.io/react-popover/?path=/docs/popover--playground)

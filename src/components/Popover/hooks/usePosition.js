@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { EDGE_PADDING, MIN_SPARE_SPACE } from '../constants';
+import _ from 'lodash';
 import { checkConstraints } from '../helpers';
 import placementPropsGetters from '../placementsConfig';
 
@@ -24,12 +24,19 @@ export default ({
   withArrow,
   guessBetterPosition,
   animation,
-  animationTranslateDistance,
+  openingAnimationTranslateDistance,
+  closingAnimationTranslateDistance,
   spaceBetweenPopoverAndTarget,
   getContainer,
   arrowSize,
   setBetterPlacement,
   canUpdate,
+  minSpaceBetweenPopoverAndContainer,
+  avoidOverflowBounds,
+  fitMaxHeightToBounds,
+  fitMaxWidthToBounds,
+  maxHeight,
+  maxWidth,
 }) => {
   const [containerProps, setContainerProps] = useState({});
 
@@ -56,6 +63,7 @@ export default ({
     const {
       height: contentHeight,
       width: contentWidth,
+      ...otherContentDimensions
     } = contentDimensions.current;
 
     const params = {
@@ -73,13 +81,39 @@ export default ({
       const containerRect = container.getBoundingClientRect();
 
       const topConstraint =
-        containerRect.top + contentHeight + EDGE_PADDING + MIN_SPARE_SPACE;
+        containerRect.top +
+        contentHeight +
+        spaceBetweenPopoverAndTarget +
+        minSpaceBetweenPopoverAndContainer;
       const bottomConstraint =
-        containerRect.bottom - contentHeight - MIN_SPARE_SPACE - EDGE_PADDING;
+        containerRect.bottom -
+        contentHeight -
+        minSpaceBetweenPopoverAndContainer -
+        spaceBetweenPopoverAndTarget;
       const leftConstraint =
-        containerRect.left + contentWidth + MIN_SPARE_SPACE + EDGE_PADDING;
+        containerRect.left +
+        contentWidth +
+        minSpaceBetweenPopoverAndContainer +
+        spaceBetweenPopoverAndTarget;
       const rightConstraint =
-        containerRect.right - contentWidth - MIN_SPARE_SPACE - EDGE_PADDING;
+        containerRect.right -
+        contentWidth -
+        minSpaceBetweenPopoverAndContainer -
+        spaceBetweenPopoverAndTarget;
+
+      if (['top', 'bottom'].includes(actualPlacement)) {
+        if (params.right < leftConstraint) {
+          actualPlacement = `${actualPlacement}Left`;
+        } else if (params.left > rightConstraint) {
+          actualPlacement = `${actualPlacement}Right`;
+        }
+      } else if (['right', 'left'].includes(actualPlacement)) {
+        if (params.bottom < topConstraint) {
+          actualPlacement = `${actualPlacement}Top`;
+        } else if (params.top > bottomConstraint) {
+          actualPlacement = `${actualPlacement}Bottom`;
+        }
+      }
 
       if (['top', 'bottom'].some((item) => actualPlacement.startsWith(item))) {
         // two times to avoid wrong position replacement (second time returns old placement in wrong case)
@@ -131,9 +165,23 @@ export default ({
         offset,
         withArrow,
         animation,
-        animationTranslateDistance,
+        openingAnimationTranslateDistance,
+        closingAnimationTranslateDistance,
         spaceBetweenPopoverAndTarget,
         arrowSize,
+        minSpaceBetweenPopoverAndContainer,
+        avoidOverflowBounds,
+        fitMaxHeightToBounds: _.isBoolean(fitMaxHeightToBounds)
+          ? fitMaxHeightToBounds
+          : !maxHeight,
+        fitMaxWidthToBounds: _.isBoolean(fitMaxWidthToBounds)
+          ? fitMaxWidthToBounds
+          : !maxWidth,
+        contentHeight,
+        contentWidth,
+        containerWidth: offsetContainerRect.width,
+        containerHeight: offsetContainerRect.height,
+        ...otherContentDimensions,
       })
     );
   }, [
@@ -144,12 +192,19 @@ export default ({
     contentDimensions,
     withArrow,
     animation,
-    animationTranslateDistance,
+    openingAnimationTranslateDistance,
+    closingAnimationTranslateDistance,
     spaceBetweenPopoverAndTarget,
     getContainer,
     arrowSize,
     canUpdate,
     setBetterPlacement,
+    minSpaceBetweenPopoverAndContainer,
+    fitMaxHeightToBounds,
+    fitMaxWidthToBounds,
+    maxHeight,
+    maxWidth,
+    avoidOverflowBounds,
   ]);
 
   return [containerProps, updatePosition];
