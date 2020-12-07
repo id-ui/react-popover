@@ -1,12 +1,20 @@
 {
   "name": "@kaprisa57/react-popover",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "React Popover Component",
   "author": "kaprisa57@gmail.com",
   "license": "MIT",
   "repository": "kseniya57/react-popover",
   "main": "dist/index.js",
   "source": "src/index.js",
+  "keywords": [
+    "react",
+    "react-component",
+    "react-popover",
+    "popover",
+    "react-tooltip",
+    "tooltip"
+  ],
   "engines": {
     "node": ">=10"
   },
