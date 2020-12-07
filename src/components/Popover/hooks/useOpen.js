@@ -5,11 +5,11 @@ export default ({
   closeOnEscape,
   closeOnEnter,
   closeOnRemoteClick,
-  onClose = _.noop,
+  onClose,
   isOpen: providedIsOpen = false,
   isOpenControlled,
   onChangeOpen,
-} = {}) => {
+}) => {
   const targetsMap = useRef({});
   const parentNode = useRef(document.body);
 
