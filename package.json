@@ -1,10 +1,10 @@
 {
-  "name": "@kaprisa57/react-popover",
-  "version": "2.0.1",
+  "name": "@idui/react-popover",
+  "version": "1.0.0",
   "description": "React Popover Component",
   "author": "kaprisa57@gmail.com",
   "license": "MIT",
-  "repository": "kseniya57/react-popover",
+  "repository": "id-ui/react-popover",
   "main": "dist/index.js",
   "source": "src/index.js",
   "keywords": [
