@@ -16,7 +16,10 @@ function LazyPopover(props, ref) {
   } = props;
 
   const [isInitialized, setInitialized] = useState(
-    () => providedIsOpen || _.isFunction(children)
+    () =>
+      providedIsOpen ||
+      _.isFunction(children) ||
+      trigger === POPOVER_TRIGGER_TYPES.focus
   );
   const [isOpen, setOpen] = useState(providedIsOpen);
 

@@ -315,9 +315,7 @@ describe('Popover', () => {
     await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
 
     fireEvent.mouseDown(button, { which: 0 });
-    await waitFor(() =>
-        expect(getByTestId('content')).toBeInTheDocument()
-    );
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
   });
 
   it('closes on escape key press', async () => {
@@ -339,20 +337,18 @@ describe('Popover', () => {
 
   it('does not close on any button press (except for buttons in props)', async () => {
     const { getByTestId } = render(
-        <Popover
-            placement="leftBottom"
-            content={<span data-testid="content">Hi!</span>}
-            closeOnEnter
-        >
-          <button data-testid="button">Open</button>
-        </Popover>
+      <Popover
+        placement="leftBottom"
+        content={<span data-testid="content">Hi!</span>}
+        closeOnEnter
+      >
+        <button data-testid="button">Open</button>
+      </Popover>
     );
     user.click(getByTestId('button'));
     await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
     fireEvent.keyDown(document.body, { key: 'Shift', code: 'Shift' });
-    await waitFor(() =>
-        expect(getByTestId('content')).toBeInTheDocument()
-    );
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
   });
 
   it('closes on enter key press', async () => {
