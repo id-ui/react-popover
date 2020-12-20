@@ -29,11 +29,11 @@ const GlobalStyle = createGlobalStyle`
       cursor: pointer;
       border-radius: 0.5rem;
       padding: 0 1.5rem;
-      background-color: #095d25;
-      color: #fff;
+      background-color: #580B9E;
+      color: #FFFFFF;
       height: 3.5rem;
       &:hover {
-        background-color: #126e2f;
+        background-color: #9552D4;
       }
     }
     

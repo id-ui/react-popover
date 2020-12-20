@@ -1,6 +1,10 @@
 # Popover React Component
 
-[![NPM](https://img.shields.io/npm/v/@idui/react-popover.svg)](https://www.npmjs.com/package/@idui/react-popover) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Coverage Status](https://coveralls.io/repos/github/id-ui/react-popover/badge.svg?branch=main)](https://coveralls.io/github/id-ui/react-popover?branch=main)
+[![NPM](https://img.shields.io/npm/v/@idui/react-popover.svg)](https://www.npmjs.com/package/@idui/react-popover/)
+[![Size](https://img.shields.io/bundlephobia/min/@idui/react-popover)](https://www.npmjs.com/package/@idui/react-popover)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![Coverage Status](https://coveralls.io/repos/github/id-ui/react-popover/badge.svg?branch=main)](https://coveralls.io/github/id-ui/react-popover?branch=main)
+[![LICENSE](https://img.shields.io/github/license/id-ui/react-popover)](https://github.com/id-ui/react-popover/blob/main/LICENSE)
 
 - [Docs](https://id-ui.github.io/react-popover/?path=/docs/popover--playground)
 - [Playground](https://id-ui.github.io/react-popover/?path=/story/popover--playground)

@@ -401,7 +401,7 @@ export function draggable(props) {
         height: 300,
         padding: 10,
         borderRadius: 30,
-        backgroundColor: '#eaeaea',
+        backgroundColor: '#14B9E4',
       }}
       id={dragContainerId}
     >
@@ -416,8 +416,8 @@ export function draggable(props) {
             width: 100,
             height: 100,
             borderRadius: 30,
-            backgroundColor: '#247c79',
-            color: '#fff',
+            backgroundColor: '#580B9E',
+            color: '#FFFFFF',
             cursor: 'grab',
             display: 'flex',
             alignItems: 'center',
@@ -567,14 +567,14 @@ export function popoverWithCustomSimpleAnimation(props) {
 }
 
 const CustomPopover = styled(Popover)`
-  background-color: aquamarine;
+  background-color: #14b9e4;
   border-radius: 30px;
-  border: 2px solid black;
+  border: 2px solid #14113c;
   box-shadow: none;
   &:before {
     // arrow
-    border-left-color: black;
-    border-bottom-color: black;
+    border-left-color: #14113c;
+    border-bottom-color: #14113c;
     box-shadow: none;
   }
 `;

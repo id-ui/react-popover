@@ -1,9 +1,9 @@
 import React, {
+  Fragment,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
-  Fragment,
-  useEffect,
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
@@ -11,13 +11,13 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { AnimatePresence } from 'framer-motion';
 import {
-  useOpen,
-  usePosition,
-  useHandlers,
+  useArrow,
   useContentDimensions,
   useElementMotion,
   useGlobalListener,
-  useArrow,
+  useHandlers,
+  useOpen,
+  usePosition,
 } from './hooks';
 import { Container, Inner } from './styled';
 import placementPropsGetters from './placementsConfig';
