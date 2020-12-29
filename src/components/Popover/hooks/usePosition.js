@@ -16,17 +16,17 @@ const findFirstRelativeElement = (element) => {
   return element;
 };
 
-const findScrollContainer = element => {
+const findScrollContainer = (element) => {
   if (element.tagName === 'BODY') {
     return element;
   }
 
   if (element.scrollHeight > element.clientHeight) {
-    return element
+    return element;
   }
 
-  return findFirstRelativeElement(element.parentElement)
-}
+  return findFirstRelativeElement(element.parentElement);
+};
 
 export default ({
   contentDimensions,
@@ -169,8 +169,7 @@ export default ({
 
     const scrollContainer = findScrollContainer(container);
     const scrollTop = scrollContainer.scrollTop;
-    const scrollLeft =
-        scrollContainer.scrollLeft;
+    const scrollLeft = scrollContainer.scrollLeft;
 
     params.top -= offsetContainerRect.top - scrollTop;
     params.bottom -= offsetContainerRect.top - scrollTop;
