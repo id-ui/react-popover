@@ -52,5 +52,6 @@ export const Inner = styled.div`
       max-width: ${prop('maxWidth')}!important;
     `
   )}
+  height: 100%;
   overflow: auto;
 `;
