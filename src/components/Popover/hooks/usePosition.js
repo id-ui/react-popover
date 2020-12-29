@@ -32,7 +32,7 @@ export default ({
   contentDimensions,
   triggerElementRef,
   placement,
-  offset,
+  offset: providedOffset,
   withArrow,
   guessBetterPosition,
   animation,
@@ -89,11 +89,18 @@ export default ({
 
     let actualPlacement = placement;
 
+    const scrollContainer = findScrollContainer(container);
+    const scrollTop = scrollContainer.scrollTop;
+    const scrollLeft = scrollContainer.scrollLeft;
+
+    let offset = providedOffset;
+
     if (guessBetterPosition) {
       const containerRect = container.getBoundingClientRect();
 
       const topConstraint =
         containerRect.top +
+        scrollTop +
         contentHeight +
         spaceBetweenPopoverAndTarget +
         minSpaceBetweenPopoverAndContainer;
@@ -163,13 +170,29 @@ export default ({
           );
         }
       }
+
+      if (
+        ['top', 'bottom'].some(
+          (item) =>
+            placement.toLowerCase().indexOf(item) > -1 &&
+            actualPlacement.toLowerCase().indexOf(item) === -1
+        )
+      ) {
+        offset[1] = 0;
+      }
+
+      if (
+        ['left', 'right'].some(
+          (item) =>
+            placement.toLowerCase().indexOf(item) > -1 &&
+            actualPlacement.toLowerCase().indexOf(item) === -1
+        )
+      ) {
+        offset[0] = 0;
+      }
     }
 
     setBetterPlacement(actualPlacement);
-
-    const scrollContainer = findScrollContainer(container);
-    const scrollTop = scrollContainer.scrollTop;
-    const scrollLeft = scrollContainer.scrollLeft;
 
     params.top -= offsetContainerRect.top - scrollTop;
     params.bottom -= offsetContainerRect.top - scrollTop;
@@ -203,7 +226,7 @@ export default ({
   }, [
     triggerElementRef,
     guessBetterPosition,
-    offset,
+    providedOffset,
     placement,
     contentDimensions,
     withArrow,

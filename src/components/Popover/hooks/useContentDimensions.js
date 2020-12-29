@@ -1,22 +1,34 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef } from 'react';
 
-export default () => {
-  const [isChecking, setChecking] = useState(true);
-  const dimensions = useRef();
+export default ({ updatePosition, ref: dimensionsRef, isOpen }) => {
+  const contentRef = useRef();
+
+  useLayoutEffect(() => {
+    if (isOpen && contentRef.current && dimensionsRef.current) {
+      const { clientHeight, clientWidth } = contentRef.current;
+      if (
+        dimensionsRef.current.height !== clientHeight ||
+        dimensionsRef.current.width !== clientWidth
+      ) {
+        dimensionsRef.current.height = clientHeight;
+        dimensionsRef.current.width = clientWidth;
+        updatePosition();
+      }
+    }
+  });
 
   const checkDimensions = useCallback((node) => {
     if (node) {
       const { clientHeight, clientWidth, firstChild } = node;
 
-      dimensions.current = {
+      dimensionsRef.current = {
         height: clientHeight,
         width: clientWidth,
         verticalPadding: clientHeight - firstChild.clientHeight,
         horizontalPadding: clientWidth - firstChild.clientWidth,
       };
-      setChecking(false);
     }
   }, []);
 
-  return [dimensions, checkDimensions, isChecking];
+  return [checkDimensions, contentRef];
 };

@@ -95,21 +95,8 @@ function Popover(
     onChangeOpen,
   });
 
-  const setContentRef = useCallback(
-    (node) => {
-      addTarget('content', node);
-    },
-    [addTarget]
-  );
-
   const triggerElementRef = useRef();
   const [triggerDimensions, setTriggerDimensions] = useState({});
-
-  const [
-    contentDimensions,
-    checkContentDimensions,
-    isCheckingContentDimensions,
-  ] = useContentDimensions();
 
   const scrollListener = useCallback(() => {
     if (isOpen && closeOnScroll) {
@@ -120,6 +107,16 @@ function Popover(
   const setScrollContainer = useScroll({
     listener: scrollListener,
   });
+
+  const setContentRef = useCallback(
+    (node) => {
+      contentRef.current = node;
+      addTarget('content', node);
+    },
+    [addTarget]
+  );
+
+  const contentDimensions = useRef();
 
   const [containerProps, updatePosition] = usePosition({
     contentDimensions,
@@ -142,6 +139,12 @@ function Popover(
     fitMaxWidthToBounds,
     maxHeight,
     maxWidth,
+  });
+
+  const [checkContentDimensions, contentRef] = useContentDimensions({
+    updatePosition,
+    ref: contentDimensions,
+    isOpen,
   });
 
   const setupElementMotionObserver = useElementMotion(updatePosition);
@@ -249,11 +252,6 @@ function Popover(
     ]
   );
 
-  const transformedContent = useMemo(
-    () => (_.isFunction(content) ? content({ close }) : content),
-    [close, content]
-  );
-
   const triggerProps = useMemo(
     () =>
       _.fromPairs(
@@ -295,6 +293,11 @@ function Popover(
 
   const animationProps = usePortal ? containerProps : animation;
 
+  const transformedContent = useMemo(
+    () => (_.isFunction(content) ? content({ close }) : content),
+    [content, close]
+  );
+
   const popoverContentAnimated = (
     <AnimatePresence initial={null}>
       {isOpen && (!usePortal || containerProps.style) && (
@@ -324,7 +327,7 @@ function Popover(
 
   return (
     <Fragment>
-      {isCheckingContentDimensions &&
+      {!contentDimensions.current &&
         container &&
         createPortal(
           <Container
