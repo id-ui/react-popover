@@ -16,6 +16,18 @@ const findFirstRelativeElement = (element) => {
   return element;
 };
 
+const findScrollContainer = element => {
+  if (element.tagName === 'BODY') {
+    return element;
+  }
+
+  if (element.scrollHeight > element.clientHeight) {
+    return element
+  }
+
+  return findFirstRelativeElement(element.parentElement)
+}
+
 export default ({
   contentDimensions,
   triggerElementRef,
@@ -155,10 +167,15 @@ export default ({
 
     setBetterPlacement(actualPlacement);
 
-    params.top -= offsetContainerRect.top;
-    params.bottom -= offsetContainerRect.top;
-    params.right -= offsetContainerRect.left;
-    params.left -= offsetContainerRect.left;
+    const scrollContainer = findScrollContainer(container);
+    const scrollTop = scrollContainer.scrollTop;
+    const scrollLeft =
+        scrollContainer.scrollLeft;
+
+    params.top -= offsetContainerRect.top - scrollTop;
+    params.bottom -= offsetContainerRect.top - scrollTop;
+    params.right -= offsetContainerRect.left - scrollLeft;
+    params.left -= offsetContainerRect.left - scrollLeft;
 
     setContainerProps(
       placementPropsGetters[actualPlacement](params, {
