@@ -1,6 +1,6 @@
 {
   "name": "@idui/react-popover",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "React Popover Component",
   "author": "kaprisa57@gmail.com",
   "license": "MIT",
@@ -63,7 +63,7 @@
     "@testing-library/dom": "^7.26.6",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.1.2",
-    "@testing-library/react-hooks": "^3.4.2",
+    "@testing-library/react-hooks": "^4.0.0",
     "@testing-library/user-event": "^12.2.2",
     "babel-eslint": "^10.1.0",
     "babel-loader": "8.2.1",

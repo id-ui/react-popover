@@ -73,10 +73,6 @@ function Popover(
 ) {
   const [betterPlacement, setBetterPlacement] = useState(placement);
 
-  useEffect(() => {
-    setBetterPlacement(placement);
-  }, [placement]);
-
   const showTimer = useRef();
 
   const handleClose = useCallback(() => {
@@ -140,6 +136,11 @@ function Popover(
     maxHeight,
     maxWidth,
   });
+
+  useEffect(() => {
+    updatePosition();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [placement]);
 
   const [checkContentDimensions, contentRef] = useContentDimensions({
     updatePosition,
