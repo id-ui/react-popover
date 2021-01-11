@@ -454,7 +454,7 @@ describe('Popover', () => {
       <div style={{ position: 'relative' }}>
         <div id={containerId} style={{ position: 'static' }}>
           <Popover
-            isOpen={true}
+            initialIsOpen={true}
             content={<span data-testid="content">Hi!</span>}
             getContainer={() => document.getElementById(containerId)}
           >
@@ -472,7 +472,7 @@ describe('Popover', () => {
     const { getByTestId } = render(
       <div id={containerId} style={{ position: 'relative' }}>
         <Popover
-          isOpen={true}
+          initialIsOpen={true}
           content={<span data-testid="content">Hi!</span>}
           getContainer={() => document.getElementById(containerId)}
         >

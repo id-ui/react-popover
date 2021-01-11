@@ -78,16 +78,11 @@ export default {
     isOpen: {
       control: 'boolean',
       description:
-        'If isOpenControlled then it defines popover visibility else it defines initial popover visibility',
-      defaultValue: false,
-      table: {
-        defaultValue: { summary: false },
-      },
+        'Popover visibility. If you provide this prop then you should control popover visibility (when popover should change visibility it fires onChangeOpen)',
     },
-    isOpenControlled: {
+    initialIsOpen: {
       control: 'boolean',
-      description:
-        'Whether popover visibility controlled or not, use if you want control visibility from external component',
+      description: 'Whether popover visible on init or not',
       defaultValue: false,
       table: {
         defaultValue: { summary: false },

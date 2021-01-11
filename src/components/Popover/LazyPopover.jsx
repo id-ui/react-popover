@@ -5,6 +5,7 @@ import Popover from './Popover';
 
 function LazyPopover(props, ref) {
   const {
+    initialIsOpen,
     isOpen: providedIsOpen,
     onChangeOpen,
     triggerContainerTag,
@@ -17,11 +18,12 @@ function LazyPopover(props, ref) {
 
   const [isInitialized, setInitialized] = useState(
     () =>
+      initialIsOpen ||
       providedIsOpen ||
       _.isFunction(children) ||
       trigger === POPOVER_TRIGGER_TYPES.focus
   );
-  const [isOpen, setOpen] = useState(providedIsOpen);
+  const [isOpen, setOpen] = useState(initialIsOpen || providedIsOpen);
 
   const handleChangeOpen = useCallback(
     (value) => {

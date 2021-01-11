@@ -594,7 +594,7 @@ PopoverWithRef.defaultProps = {
   withArrow: true,
   onClose: _.noop,
   offset: [0, 0],
-  isOpen: false,
+  initialIsOpen: false,
   onChangeOpen: _.noop,
   considerTriggerMotion: false,
   closeOnEscape: true,
