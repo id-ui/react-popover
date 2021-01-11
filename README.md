@@ -31,7 +31,7 @@ yarn add @idui/react-popover
 - Supports 12 different placements.
 - Able to close on remote click, enter and escape buttons press.
 - Able to open on hover, click, focus and contextMenu events. 
-- Supports external visibility control (if isOpenControlled = true).
+- Supports external visibility control (if isOpen specified).
 - Renders content into body or provided container.
 - Supports children and content functions and provides them with some useful props.
 - Accepts custom offset from default position.
