@@ -8,7 +8,6 @@ export default ({
   mouseEnterDelay,
   mouseLeaveDelay,
   showTimer,
-  showContent,
   setOpen,
   onFocus,
 }) => {
@@ -35,8 +34,8 @@ export default ({
       return;
     }
 
-    showContent(undefined, openDebounced);
-  }, [closeDebounced, isOpen, openDebounced, showContent]);
+    openDebounced();
+  }, [closeDebounced, isOpen, openDebounced]);
 
   const handleMouseLeave = useCallback(() => {
     openDebounced.cancel();
@@ -46,25 +45,19 @@ export default ({
 
   const handleFocus = useCallback(
     (e) => {
-      if (!isOpen) {
-        showContent();
-      }
+      setOpen(true);
       onFocus(e);
     },
-    [isOpen, onFocus, showContent]
+    [onFocus, setOpen]
   );
 
   const handleClick = useCallback(
     (e) => {
       e.preventDefault();
 
-      if (!isOpen) {
-        showContent();
-      } else {
-        setOpen(!isOpen);
-      }
+      setOpen(!isOpen);
     },
-    [isOpen, showContent, setOpen]
+    [isOpen, setOpen]
   );
 
   return {

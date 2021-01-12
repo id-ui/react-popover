@@ -5,60 +5,35 @@ import Popover from './Popover';
 
 function LazyPopover(props, ref) {
   const {
-    initialIsOpen,
-    isOpen: providedIsOpen,
+    isOpen,
     onChangeOpen,
     triggerContainerTag,
     children,
     trigger,
-    isOpenControlled,
     triggerContainerDisplay,
     mouseEnterDelay,
   } = props;
 
   const [isInitialized, setInitialized] = useState(
     () =>
-      initialIsOpen ||
-      providedIsOpen ||
+      isOpen ||
       _.isFunction(children) ||
       trigger === POPOVER_TRIGGER_TYPES.focus
   );
-  const [isOpen, setOpen] = useState(initialIsOpen || providedIsOpen);
-
-  const handleChangeOpen = useCallback(
-    (value) => {
-      if (!isOpenControlled) {
-        setOpen(value);
-      }
-      onChangeOpen(value);
-    },
-    [onChangeOpen, isOpenControlled]
-  );
 
   const initialize = useCallback(() => {
-    if (isOpenControlled) {
-      onChangeOpen(true);
-    } else {
-      setOpen(true);
-      setInitialized(true);
-    }
-  }, [isOpenControlled, onChangeOpen]);
+    onChangeOpen(true);
+  }, [onChangeOpen]);
 
   useEffect(() => {
-    setOpen(providedIsOpen);
-    if (providedIsOpen && isOpenControlled) {
+    if (isOpen) {
       setInitialized(true);
     }
-  }, [providedIsOpen, isOpenControlled]);
+  }, [isOpen]);
 
   if (isInitialized) {
     return (
-      <Popover
-        {...props}
-        ref={ref}
-        isOpen={isOpen}
-        onChangeOpen={handleChangeOpen}
-      >
+      <Popover {...props} ref={ref} isOpen={isOpen} onChangeOpen={onChangeOpen}>
         {children}
       </Popover>
     );

@@ -31,11 +31,9 @@ function Popover(
     placement,
     trigger,
     withArrow,
-    onClose,
     offset,
     getContainer,
-    isOpen: providedIsOpen,
-    isOpenControlled,
+    isOpen,
     onChangeOpen,
     className,
     considerTriggerMotion,
@@ -75,19 +73,12 @@ function Popover(
 
   const showTimer = useRef();
 
-  const handleClose = useCallback(() => {
-    clearTimeout(showTimer.current);
-    onClose();
-  }, [onClose]);
-
-  const { addTarget, isOpen, setOpen, open, close, toggle } = useOpen({
-    onClose: handleClose,
+  const { addTarget, open, close, toggle, setOpen } = useOpen({
     closeOnRemoteClick:
       providedCloseOnRemoteClick || trigger !== POPOVER_TRIGGER_TYPES.hover,
     closeOnEscape,
     closeOnEnter,
-    isOpen: providedIsOpen,
-    isOpenControlled,
+    isOpen,
     onChangeOpen,
   });
 
@@ -138,9 +129,11 @@ function Popover(
   });
 
   useEffect(() => {
-    updatePosition();
+    if (isOpen) {
+      updatePosition();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [placement]);
+  }, [placement, isOpen]);
 
   const [checkContentDimensions, contentRef] = useContentDimensions({
     updatePosition,
@@ -151,43 +144,6 @@ function Popover(
   const setupElementMotionObserver = useElementMotion(updatePosition);
 
   useGlobalListener('resize', updatePosition, isOpen);
-
-  const showContent = useCallback(
-    (force, customSetOpen) => {
-      const show = () => {
-        updatePosition();
-        (customSetOpen || setOpen)(!isOpen, force);
-      };
-
-      show();
-    },
-    [updatePosition, setOpen, isOpen]
-  );
-
-  useEffect(() => {
-    if (isOpenControlled && isOpen !== providedIsOpen) {
-      if (providedIsOpen) {
-        showContent(true);
-      } else {
-        setOpen(providedIsOpen, true);
-      }
-    }
-  }, [isOpen, isOpenControlled, providedIsOpen, setOpen, showContent]);
-
-  useEffect(() => {
-    // open on mount
-    if (!isOpenControlled && providedIsOpen) {
-      showTimer.current = setTimeout(() => {
-        updatePosition();
-        setOpen(true, true);
-      }, 100);
-
-      return () => {
-        clearTimeout(showTimer.current);
-      };
-    }
-    // eslint-disable-next-line
-  }, []);
 
   const {
     handleClick,
@@ -200,7 +156,7 @@ function Popover(
     close,
     mouseEnterDelay,
     mouseLeaveDelay,
-    showContent,
+    updatePosition,
     setOpen,
     onFocus,
     showTimer,
@@ -408,11 +364,6 @@ PopoverWithRef.propTypes = {
    */
   content: PropTypes.any.isRequired,
   /**
-   * Function, triggered when popover closed
-   * @default _.noop
-   */
-  onClose: PropTypes.func,
-  /**
    * Offset from computed popover position, if offset = [x, y] then popover position would be [position.x + x, position.y + y]
    * @default [0, 0]
    */
@@ -423,15 +374,10 @@ PopoverWithRef.propTypes = {
    */
   getContainer: PropTypes.func,
   /**
-   * If isOpenControlled then it defines popover visibility else it defines initial popover visibility
+   * controlled popover visibility
    * @default undefined
    */
   isOpen: PropTypes.bool,
-  /**
-   * Whether popover visibility controlled or not, use if you want control visibility from external component
-   * @default false
-   */
-  isOpenControlled: PropTypes.bool,
   /**
    * Function triggered when popover should change visibility
    * @default _.noop
@@ -592,9 +538,7 @@ PopoverWithRef.defaultProps = {
   placement: 'top',
   trigger: POPOVER_TRIGGER_TYPES.hover,
   withArrow: true,
-  onClose: _.noop,
   offset: [0, 0],
-  initialIsOpen: false,
   onChangeOpen: _.noop,
   considerTriggerMotion: false,
   closeOnEscape: true,

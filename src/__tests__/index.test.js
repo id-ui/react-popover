@@ -64,11 +64,11 @@ describe('Popover', () => {
     await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
   });
 
-  it('isOpenControlled: able to be controlled from outside', async () => {
+  it('able to be controlled from outside', async () => {
     const { queryByTestId, getByTestId, rerender } = render(
       <Popover
         trigger={POPOVER_TRIGGER_TYPES.click}
-        isOpenControlled
+        isOpen={false}
         placement="bottom"
         lazy={false}
         content={<span data-testid="content">Hi!</span>}
@@ -84,7 +84,6 @@ describe('Popover', () => {
     rerender(
       <Popover
         trigger={POPOVER_TRIGGER_TYPES.click}
-        isOpenControlled
         isOpen
         placement="topLeft"
         content={<span data-testid="content">Hi!</span>}
@@ -96,7 +95,7 @@ describe('Popover', () => {
     rerender(
       <Popover
         trigger={POPOVER_TRIGGER_TYPES.click}
-        isOpenControlled
+        isOpen={false}
         placement="topRight"
         content={<span data-testid="content">Hi!</span>}
       >
@@ -509,37 +508,31 @@ describe('Popover', () => {
   });
 
   it('useOpen: toggle, open, close', async () => {
+    const onChangeOpen = jest.fn();
     const { result } = renderHook(useOpen, {
       initialProps: {
-        onClose: _.noop,
         closeOnRemoteClick: true,
         closeOnEscape: true,
         closeOnEnter: false,
-        onChangeOpen: _.noop,
+        onChangeOpen,
       },
     });
-    expect(result.current.isOpen).toBe(false);
     act(() => result.current.toggle());
-    expect(result.current.isOpen).toBe(true);
-    act(() => result.current.toggle());
-    expect(result.current.isOpen).toBe(false);
     act(() => result.current.open());
-    expect(result.current.isOpen).toBe(true);
     act(() => result.current.close());
-    expect(result.current.isOpen).toBe(false);
+    expect(onChangeOpen.mock.calls).toEqual([[true], [true], [false]]);
   });
 
   it('useOpen: controlled visibility', async () => {
+    const onChangeOpen = jest.fn();
     const { result } = renderHook(useOpen, {
       initialProps: {
-        onClose: _.noop,
-        onChangeOpen: _.noop,
-        isOpenControlled: true,
+        onChangeOpen,
+        isOpen: false,
       },
     });
-    expect(result.current.isOpen).toBe(false);
     act(() => result.current.toggle());
-    expect(result.current.isOpen).toBe(false);
+    expect(onChangeOpen).toBeCalledWith(true);
   });
 
   it('placementPropsGetters: contains all popover placements', async () => {

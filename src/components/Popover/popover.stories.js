@@ -54,10 +54,6 @@ export default {
       description:
         "Popover content. If it's function then it provided with {close: close popover}",
     },
-    onClose: {
-      action: 'onClose',
-      description: 'Function, triggered when popover closed',
-    },
     offset: {
       control: 'array',
       description:
@@ -374,8 +370,7 @@ playground.args = {
   trigger: 'click',
   withArrow: 'true',
   offset: [0, 0],
-  isOpen: undefined,
-  isOpenControlled: false,
+  initialIsOpen: false,
   considerTriggerMotion: false,
   closeOnEscape: true,
   closeOnEnter: true,
@@ -447,7 +442,6 @@ export function Slider(props) {
           {...props}
           considerTriggerMotion
           isOpen
-          isOpenControlled
           triggerContainerDisplay="inline"
           content="Hi! I follow trigger)"
         >
