@@ -51,8 +51,6 @@ export default {
         left: ${left + width / 2 + offset[0]}px;
         ${Inner} {
           max-height: ${maxContentHeight - verticalPadding}px;
-          min-height: ${Math.min(maxContentHeight, contentHeight) -
-          verticalPadding}px;
           max-width: ${maxContentWidth - horizontalPadding}px;
           min-width: ${Math.min(maxContentWidth, contentWidth) -
           horizontalPadding}px;
@@ -122,8 +120,6 @@ export default {
             )}px;
         ${Inner} {
           max-height: ${maxContentHeight - verticalPadding}px;
-          min-height: ${Math.min(maxContentHeight, contentHeight) -
-          verticalPadding}px;
           max-width: ${maxContentWidth - horizontalPadding}px;
           min-width: ${Math.min(maxContentWidth, contentWidth) -
           horizontalPadding}px;
@@ -194,8 +190,6 @@ export default {
             )}px;
         ${Inner} {
           max-height: ${maxContentHeight - verticalPadding}px;
-          min-height: ${Math.min(maxContentHeight, contentHeight) -
-          verticalPadding}px;
           max-width: ${maxContentWidth - horizontalPadding}px;
         }
       `,
@@ -468,7 +462,6 @@ export default {
         top: ${top + height / 2 + offset[1]}px;
         ${Inner} {
           max-height: ${maxContentHeight - verticalPadding}px;
-          min-height: ${Math.min(maxContentHeight, contentHeight)};
           max-width: ${maxContentWidth - horizontalPadding}px;
           min-width: ${Math.min(maxContentWidth, contentWidth) -
           horizontalPadding}px;
@@ -539,8 +532,6 @@ export default {
             )}px;
         ${Inner} {
           max-height: ${maxContentHeight - verticalPadding}px;
-          min-height: ${Math.min(maxContentHeight, contentHeight) -
-          verticalPadding}px;
           max-width: ${maxContentWidth - horizontalPadding}px;
           min-width: ${Math.min(maxContentWidth, contentWidth) -
           horizontalPadding}px;
@@ -680,8 +671,6 @@ export default {
         top: ${top + height / 2 + offset[1]}px;
         ${Inner} {
           max-height: ${maxContentHeight - verticalPadding}px;
-          min-height: ${Math.min(maxContentHeight, contentHeight) -
-          verticalPadding}px;
           max-width: ${maxContentWidth - horizontalPadding}px;
         }
       `,
@@ -753,8 +742,6 @@ export default {
             )}px;
         ${Inner} {
           max-height: ${maxContentHeight - verticalPadding}px;
-          min-height: ${Math.min(maxContentHeight, contentHeight) -
-          verticalPadding}px;
           max-width: ${maxContentWidth - horizontalPadding}px;
         }
       `,
