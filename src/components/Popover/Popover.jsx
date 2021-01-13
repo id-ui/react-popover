@@ -71,8 +71,6 @@ function Popover(
 ) {
   const [betterPlacement, setBetterPlacement] = useState(placement);
 
-  const showTimer = useRef();
-
   const { addTarget, open, close, toggle, setOpen } = useOpen({
     closeOnRemoteClick:
       providedCloseOnRemoteClick || trigger !== POPOVER_TRIGGER_TYPES.hover,
@@ -159,7 +157,6 @@ function Popover(
     updatePosition,
     setOpen,
     onFocus,
-    showTimer,
   });
 
   const setTriggerRef = useCallback(

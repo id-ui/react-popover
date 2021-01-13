@@ -7,7 +7,6 @@ export default ({
   close,
   mouseEnterDelay,
   mouseLeaveDelay,
-  showTimer,
   setOpen,
   onFocus,
 }) => {
@@ -39,9 +38,8 @@ export default ({
 
   const handleMouseLeave = useCallback(() => {
     openDebounced.cancel();
-    clearTimeout(showTimer.current);
     closeDebounced();
-  }, [closeDebounced, openDebounced, showTimer]);
+  }, [closeDebounced, openDebounced]);
 
   const handleFocus = useCallback(
     (e) => {

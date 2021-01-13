@@ -89,9 +89,19 @@ function Trigger(
 
   const TriggerContainer = triggerContainerTag;
 
+  const initializeDebounced = useMemo(
+    () => _.debounce(initialize, mouseEnterDelay),
+    [initialize, mouseEnterDelay]
+  );
+
+  useEffect(() => {
+    return () => {
+      initializeDebounced.cancel();
+    };
+  }, [initializeDebounced]);
+
   const triggerProps = useMemo(() => {
     if (trigger === POPOVER_TRIGGER_TYPES.hover) {
-      const initializeDebounced = _.debounce(initialize, mouseEnterDelay);
       return {
         onMouseEnter: initializeDebounced,
         onMouseLeave: initializeDebounced.cancel,
@@ -101,7 +111,7 @@ function Trigger(
     return {
       [`on${_.upperFirst(trigger)}`]: initialize,
     };
-  }, [initialize, mouseEnterDelay, trigger]);
+  }, [initializeDebounced, initialize, trigger]);
 
   return trigger === POPOVER_TRIGGER_TYPES.focus ? (
     React.cloneElement(React.Children.only(children), {

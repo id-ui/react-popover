@@ -8,16 +8,11 @@ export default (name, listener, condition, timeout = 100) => {
   ]);
 
   useEffect(() => {
-    return () => {
-      debouncedListener.cancel();
-    };
-  }, [debouncedListener]);
-
-  useEffect(() => {
     if (condition) {
       window.addEventListener(name, debouncedListener);
       return () => {
         window.removeEventListener(name, debouncedListener);
+        debouncedListener.cancel();
       };
     }
   }, [name, debouncedListener, condition]);
