@@ -1,6 +1,6 @@
 {
   "name": "@idui/react-popover",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "React Popover Component",
   "author": "kaprisa57@gmail.com",
   "license": "MIT",
@@ -23,6 +23,7 @@
     "start": "start-storybook",
     "deploy-storybook": "storybook-to-ghpages",
     "build": "webpack --mode production && yarn run types:copy",
+    "types:copy": "cp ./types.d.ts ./dist",
     "eslint": "eslint ./src/ --ext .js,.jsx --fix",
     "pretty": "npx prettier --write \"**/*.js*\"",
     "lint": "yarn run eslint && yarn run pretty",
@@ -30,8 +31,7 @@
     "test:watch": "npm run test -- --watch",
     "test:coverage": "yarn test -- --coverage",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
-    "build-and-publish": "yarn run build && npm version patch && npm publish",
-    "types:copy": "cp ./types.d.ts ./dist"
+    "build-and-publish": "yarn run build && npm version patch && npm publish"
   },
   "eslintConfig": {
     "extends": "react-app"

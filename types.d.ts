@@ -2,7 +2,7 @@ import * as React from 'react';
 
 type VoidFunction = (...args: any[]) => void;
 
-interface PopoverProps {
+export interface PopoverProps {
     /**
      * whether wait for trigger event to initialize popover or not
      * @default true
