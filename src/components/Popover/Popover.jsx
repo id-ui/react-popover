@@ -37,6 +37,7 @@ function Popover(
     onChangeOpen,
     className,
     considerTriggerMotion,
+    considerContentResizing,
     closeOnEscape,
     closeOnEnter,
     closeOnScroll,
@@ -137,6 +138,7 @@ function Popover(
     updatePosition,
     ref: contentDimensions,
     isOpen,
+    considerContentResizing,
   });
 
   const setupElementMotionObserver = useElementMotion(updatePosition);
@@ -391,6 +393,11 @@ PopoverWithRef.propTypes = {
    */
   considerTriggerMotion: PropTypes.bool,
   /**
+   * Whether consider content resizing or not, use if content dimensions can change, for example after loading
+   * @default false
+   */
+  considerContentResizing: PropTypes.bool,
+  /**
    * Whether close on escape button press or not
    * @default true
    */
@@ -576,6 +583,7 @@ PopoverWithRef.defaultProps = {
   height: 'unset',
   usePortal: true,
   avoidOverflowBounds: true,
+  considerContentResizing: false,
 };
 
 export default PopoverWithRef;

@@ -25,6 +25,7 @@ yarn add @idui/react-popover
 - Able to change dimensions depending on available space (if maxHeight and maxWidth not specified).
 - Able to choose better placement if there is no room (if guessBetterPosition = true, default false).
 - Able to follow trigger (if considerTriggerMotion = true, default false for better performance).
+- Able to change placement when content dimensions changed (if considerContentResizing = true, default false for better performance).
 - Able to detect trigger width and height and use them for content (useTriggerWidth, useTriggerHeight).
 - Considers window resizing.
 - Closes on scroll event of scroll container (if closeOnScroll = true, default true).

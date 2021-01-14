@@ -101,6 +101,15 @@ export default {
         defaultValue: { summary: false },
       },
     },
+    considerContentResizing: {
+      control: 'boolean',
+      description:
+        'Whether consider content resizing or not, use if content can change its dimensions, for example after loading',
+      defaultValue: false,
+      table: {
+        defaultValue: { summary: false },
+      },
+    },
     closeOnEscape: {
       control: 'boolean',
       description: 'Whether close on escape button press or not',

@@ -1,10 +1,20 @@
 import { useCallback, useLayoutEffect, useRef } from 'react';
 
-export default ({ updatePosition, ref: dimensionsRef, isOpen }) => {
+export default ({
+  updatePosition,
+  ref: dimensionsRef,
+  isOpen,
+  considerContentResizing,
+}) => {
   const contentRef = useRef();
 
   useLayoutEffect(() => {
-    if (isOpen && contentRef.current && dimensionsRef.current) {
+    if (
+      considerContentResizing &&
+      isOpen &&
+      contentRef.current &&
+      dimensionsRef.current
+    ) {
       const { clientHeight, clientWidth } = contentRef.current;
       if (
         dimensionsRef.current.height !== clientHeight ||

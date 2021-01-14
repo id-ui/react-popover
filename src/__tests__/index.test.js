@@ -431,6 +431,7 @@ describe('Popover', () => {
         arrowSize={15}
         arrowOffset={15}
         guessBetterPosition={true}
+        considerContentResizing
       >
         <button
           data-testid="button"
