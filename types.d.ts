@@ -22,24 +22,24 @@ export interface PopoverProps {
      * Function triggered when popover should change visibility
      * @default _.noop
      */
-    onChangeOpen?: (isOpen: boolean) => void,
+    onChangeOpen?: (isOpen: boolean) => void;
     /**
      * Where popover should show it's content
      * @default _.noop
      */
-    placement?: 'top' | 'topRight' | 'topLeft' | 'bottom' | 'bottomRight' | 'bottomLeft' | 'right' | 'rightTop' | 'rightBottom' | 'left' | 'leftTop' | 'leftBottom',
+    placement?: 'top' | 'topRight' | 'topLeft' | 'bottom' | 'bottomRight' | 'bottomLeft' | 'right' | 'rightTop' | 'rightBottom' | 'left' | 'leftTop' | 'leftBottom';
     /**
      * Event name, on which popover should change visibility
      * If trigger is 'focus' and you want to listen for onFocus on child then provide popover with this listener
      * If trigger is 'focus' then root child should accept event onFocus, use forwardRef to choose another child
      * @default hover
      */
-    trigger?: 'hover' | 'click' | 'focus' | 'contextMenu',
+    trigger?: 'hover' | 'click' | 'focus' | 'contextMenu';
     /**
      * onFocus event of child component, triggered if trigger === 'focus'
      * @default _.noop
      */
-    onFocus?: (event: React.SyntheticEvent) => void,
+    onFocus?: React.EventHandler<void>;
     /**
      * Whether show popover arrow or not
      * @default true
@@ -55,17 +55,17 @@ export interface PopoverProps {
      * If it's function then it provided with {close: close popover}
      * @default undefined
      */
-    content: React.ReactNode | (({ close: VoidFunction }) => React.ReactNode);
+    content: React.ReactChildren | (({ close: VoidFunction }) => React.ReactChildren);
     /**
      * Offset from computed popover position, if offset = [x, y] then popover position would be [position.x + x, position.y + y]
      * @default [0, 0]
      */
-    offset?: [x: number, y: number],
+    offset?: [x: number, y: number];
     /**
      * Function, that should return component inside which popover should render its content
      * @default () => document.body
      */
-    getContainer?: () => Node,
+    getContainer?: () => Node;
     /**
      * Popover content className
      * @default undefined
@@ -160,7 +160,7 @@ export interface PopoverProps {
      * arrow placement (left|center|right for top|bottom and top|center|bottom for right|left)
      * @default second popover placement part if it consists of two sides else center
      */
-    arrowPlacement?: string;
+    arrowPlacement?: 'left' | 'center' | 'right' | 'top' | 'bottom';
     /**
      * max content width
      */

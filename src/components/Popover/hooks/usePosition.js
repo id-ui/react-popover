@@ -1,7 +1,8 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import _ from 'lodash';
 import { checkConstraints } from '../helpers';
 import placementPropsGetters from '../placementsConfig';
+import { useContentDimensions } from '.';
 
 const findFirstRelativeElement = (element) => {
   if (element.tagName === 'BODY') {
@@ -29,7 +30,6 @@ const findScrollContainer = (element) => {
 };
 
 export default ({
-  contentDimensions,
   triggerElementRef,
   placement,
   offset: providedOffset,
@@ -49,8 +49,12 @@ export default ({
   fitMaxWidthToBounds,
   maxHeight,
   maxWidth,
+  isOpen,
+  considerContentResizing,
 }) => {
   const [containerProps, setContainerProps] = useState({});
+
+  const contentDimensions = useRef();
 
   const updatePosition = useCallback(() => {
     if (
@@ -246,5 +250,18 @@ export default ({
     avoidOverflowBounds,
   ]);
 
-  return [containerProps, updatePosition];
+  const [setContentDimensions, contentRef] = useContentDimensions({
+    onDimensionsChanged: updatePosition,
+    dimensionsRef: contentDimensions,
+    isOpen,
+    considerContentResizing,
+  });
+
+  return {
+    containerProps,
+    updatePosition,
+    contentRef,
+    setContentDimensions,
+    shouldCheckContentDimensions: !contentDimensions.current,
+  };
 };

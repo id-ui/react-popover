@@ -12,7 +12,6 @@ import _ from 'lodash';
 import { AnimatePresence } from 'framer-motion';
 import {
   useArrow,
-  useContentDimensions,
   useElementMotion,
   useGlobalListener,
   useHandlers,
@@ -94,18 +93,13 @@ function Popover(
     listener: scrollListener,
   });
 
-  const setContentRef = useCallback(
-    (node) => {
-      contentRef.current = node;
-      addTarget('content', node);
-    },
-    [addTarget]
-  );
-
-  const contentDimensions = useRef();
-
-  const [containerProps, updatePosition] = usePosition({
-    contentDimensions,
+  const {
+    containerProps,
+    updatePosition,
+    contentRef,
+    setContentDimensions,
+    shouldCheckContentDimensions,
+  } = usePosition({
     triggerElementRef,
     placement,
     offset,
@@ -125,7 +119,17 @@ function Popover(
     fitMaxWidthToBounds,
     maxHeight,
     maxWidth,
+    isOpen,
+    considerContentResizing,
   });
+
+  const setContentRef = useCallback(
+    (node) => {
+      contentRef.current = node;
+      addTarget('content', node);
+    },
+    [addTarget]
+  );
 
   useEffect(() => {
     if (isOpen) {
@@ -133,13 +137,6 @@ function Popover(
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [placement, isOpen]);
-
-  const [checkContentDimensions, contentRef] = useContentDimensions({
-    updatePosition,
-    ref: contentDimensions,
-    isOpen,
-    considerContentResizing,
-  });
 
   const setupElementMotionObserver = useElementMotion(updatePosition);
 
@@ -283,11 +280,11 @@ function Popover(
 
   return (
     <Fragment>
-      {!contentDimensions.current &&
+      {shouldCheckContentDimensions &&
         container &&
         createPortal(
           <Container
-            ref={checkContentDimensions}
+            ref={setContentDimensions}
             isCheckingContentDimensions
             className={className}
             width={useTriggerWidth ? `${triggerDimensions.width}px` : width}
