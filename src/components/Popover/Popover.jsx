@@ -71,7 +71,7 @@ function Popover(
 ) {
   const [betterPlacement, setBetterPlacement] = useState(placement);
 
-  const { addTarget, open, close, toggle, setOpen } = useOpen({
+  const { addTarget, open, close, toggle } = useOpen({
     closeOnRemoteClick:
       providedCloseOnRemoteClick || trigger !== POPOVER_TRIGGER_TYPES.hover,
     closeOnEscape,
@@ -151,10 +151,9 @@ function Popover(
     isOpen,
     open,
     close,
+    toggle,
     mouseEnterDelay,
     mouseLeaveDelay,
-    updatePosition,
-    setOpen,
     onFocus,
   });
 

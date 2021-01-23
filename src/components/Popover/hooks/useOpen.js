@@ -38,14 +38,20 @@ export default ({
 
   useEffect(() => {
     const remoteClickListener = (e) => {
+      if ((e.which || e.button) !== 1) {
+        return;
+      }
+
+      if (!isOpen) {
+        return;
+      }
+
+      if (parentNode.current && !parentNode.current.contains(e.target)) {
+        return;
+      }
+
       const targets = _.values(targetsMap.current).filter(Boolean);
-      if (
-        isOpen &&
-        closeOnRemoteClick &&
-        !targets.find((item) => item.contains(e.target)) &&
-        (e.which || e.button) === 1 &&
-        (!parentNode.current || parentNode.current.contains(e.target))
-      ) {
+      if (!targets.find((item) => item.contains(e.target))) {
         close();
       }
     };
@@ -59,8 +65,11 @@ export default ({
       }
     };
 
-    document.addEventListener('mousedown', remoteClickListener);
     document.addEventListener('keydown', keyDownListener);
+
+    if (closeOnRemoteClick) {
+      document.addEventListener('mousedown', remoteClickListener);
+    }
 
     return () => {
       document.removeEventListener('mousedown', remoteClickListener);

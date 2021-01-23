@@ -377,7 +377,7 @@ export function playground(props) {
 playground.args = {
   placement: 'top',
   trigger: 'click',
-  withArrow: 'true',
+  withArrow: true,
   offset: [0, 0],
   initialIsOpen: false,
   considerTriggerMotion: false,

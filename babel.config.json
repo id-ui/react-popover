@@ -1,7 +1,10 @@
 {
   "plugins": [
-    ["babel-plugin-styled-components", {
-      "namespace": "idui-popover"
-    }]
+    [
+      "babel-plugin-styled-components",
+      {
+        "namespace": "idui-popover"
+      }
+    ]
   ]
 }

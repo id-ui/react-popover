@@ -5,9 +5,9 @@ export default ({
   isOpen,
   open,
   close,
+  toggle,
   mouseEnterDelay,
   mouseLeaveDelay,
-  setOpen,
   onFocus,
 }) => {
   const openDebounced = useMemo(() => _.debounce(open, mouseEnterDelay), [
@@ -43,19 +43,19 @@ export default ({
 
   const handleFocus = useCallback(
     (e) => {
-      setOpen(true);
+      open();
       onFocus(e);
     },
-    [onFocus, setOpen]
+    [onFocus, open]
   );
 
   const handleClick = useCallback(
     (e) => {
       e.preventDefault();
 
-      setOpen(!isOpen);
+      toggle();
     },
-    [isOpen, setOpen]
+    [toggle]
   );
 
   return {
