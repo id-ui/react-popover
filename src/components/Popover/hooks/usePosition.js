@@ -26,7 +26,7 @@ const findScrollContainer = (element) => {
     return element;
   }
 
-  return findFirstRelativeElement(element.parentElement);
+  return findScrollContainer(element.parentElement);
 };
 
 export default ({
