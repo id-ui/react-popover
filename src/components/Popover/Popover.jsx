@@ -73,7 +73,7 @@ function Popover(
 
   const { addTarget, open, close, toggle } = useOpen({
     closeOnRemoteClick:
-      providedCloseOnRemoteClick || trigger !== POPOVER_TRIGGER_TYPES.hover,
+      _.isBoolean(providedCloseOnRemoteClick) ? providedCloseOnRemoteClick : trigger !== POPOVER_TRIGGER_TYPES.hover,
     closeOnEscape,
     closeOnEnter,
     isOpen,
