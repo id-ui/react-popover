@@ -217,3 +217,12 @@ export interface PopoverProps {
 }
 
 export default class Popover extends React.Component<PopoverProps> {}
+
+export interface TooltipProps extends PopoverProps {
+    /**
+     * Tooltip content
+     */
+    title: string;
+}
+
+export class Tooltip extends React.Component<TooltipProps> {}
