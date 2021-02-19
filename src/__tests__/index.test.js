@@ -368,6 +368,24 @@ describe('Popover', () => {
     );
   });
 
+  it('closes on tab key press', async () => {
+    const { getByTestId, queryByTestId } = render(
+      <Popover
+        closeOnTab={true}
+        guessBetterPosition={true}
+        content={<span data-testid="content">Hi!</span>}
+      >
+        <button data-testid="button">Open</button>
+      </Popover>
+    );
+    user.click(getByTestId('button'));
+    await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
+    fireEvent.keyDown(document.body, { key: 'Tab', code: 'Tab' });
+    await waitFor(() =>
+      expect(queryByTestId('content')).not.toBeInTheDocument()
+    );
+  });
+
   it('closes on scroll', async () => {
     const { getByTestId, queryByTestId } = render(
       <div>

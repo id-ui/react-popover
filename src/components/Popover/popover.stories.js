@@ -126,6 +126,14 @@ export default {
         defaultValue: { summary: false },
       },
     },
+    closeOnTab: {
+      control: 'boolean',
+      description: 'Whether close on tab button press or not',
+      defaultValue: false,
+      table: {
+        defaultValue: { summary: false },
+      },
+    },
     closeOnRemoteClick: {
       control: 'boolean',
       description: 'Whether close on remote click or not',

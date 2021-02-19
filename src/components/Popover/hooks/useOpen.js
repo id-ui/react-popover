@@ -4,6 +4,7 @@ import _ from 'lodash';
 export default ({
   closeOnEscape,
   closeOnEnter,
+  closeOnTab,
   closeOnRemoteClick,
   isOpen,
   onChangeOpen,
@@ -37,6 +38,14 @@ export default ({
   }, [isOpen, updateOpen]);
 
   useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    if (!closeOnRemoteClick) {
+      return;
+    }
+
     const remoteClickListener = (e) => {
       if ((e.which || e.button) !== 1) {
         return;
@@ -51,15 +60,36 @@ export default ({
       }
 
       const targets = _.values(targetsMap.current).filter(Boolean);
+
       if (!targets.find((item) => item.contains(e.target))) {
         close();
       }
     };
 
+    document.addEventListener('mousedown', remoteClickListener);
+
+    return () => {
+      document.removeEventListener('mousedown', remoteClickListener);
+    };
+  }, [isOpen, closeOnRemoteClick, close]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    if (!closeOnEscape && !closeOnEnter && !closeOnTab) {
+      return;
+    }
+
     const keyDownListener = (e) => {
       if (
         isOpen &&
-        [closeOnEscape && 'Escape', closeOnEnter && 'Enter'].includes(e.key)
+        [
+          closeOnEscape && 'Escape',
+          closeOnEnter && 'Enter',
+          closeOnTab && 'Tab',
+        ].includes(e.key)
       ) {
         close();
       }
@@ -67,15 +97,10 @@ export default ({
 
     document.addEventListener('keydown', keyDownListener);
 
-    if (closeOnRemoteClick) {
-      document.addEventListener('mousedown', remoteClickListener);
-    }
-
     return () => {
-      document.removeEventListener('mousedown', remoteClickListener);
       document.removeEventListener('keydown', keyDownListener);
     };
-  }, [isOpen, closeOnRemoteClick, close, closeOnEscape, closeOnEnter]);
+  }, [isOpen, close, closeOnEscape, closeOnEnter, closeOnTab]);
 
   return {
     setOpen: updateOpen,

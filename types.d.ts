@@ -92,6 +92,11 @@ export interface PopoverProps {
      */
     closeOnEnter?: boolean;
     /**
+     * Whether close on tab button press or not
+     * @default false
+     */
+    closeOnTab?: boolean;
+    /**
      * Whether close on scroll event of scroll container or not
      * @default true
      */

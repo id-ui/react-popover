@@ -39,6 +39,7 @@ function Popover(
     considerContentResizing,
     closeOnEscape,
     closeOnEnter,
+    closeOnTab,
     closeOnScroll,
     closeOnRemoteClick: providedCloseOnRemoteClick,
     guessBetterPosition,
@@ -72,10 +73,12 @@ function Popover(
   const [betterPlacement, setBetterPlacement] = useState(placement);
 
   const { addTarget, open, close, toggle } = useOpen({
-    closeOnRemoteClick:
-      _.isBoolean(providedCloseOnRemoteClick) ? providedCloseOnRemoteClick : trigger !== POPOVER_TRIGGER_TYPES.hover,
+    closeOnRemoteClick: _.isBoolean(providedCloseOnRemoteClick)
+      ? providedCloseOnRemoteClick
+      : trigger !== POPOVER_TRIGGER_TYPES.hover,
     closeOnEscape,
     closeOnEnter,
+    closeOnTab,
     isOpen,
     onChangeOpen,
   });
@@ -84,6 +87,7 @@ function Popover(
   const [triggerDimensions, setTriggerDimensions] = useState({});
 
   const scrollListener = useCallback(() => {
+    console.log('scroll', isOpen, closeOnScroll);
     if (isOpen && closeOnScroll) {
       close();
     }
@@ -404,6 +408,11 @@ PopoverWithRef.propTypes = {
    */
   closeOnEnter: PropTypes.bool,
   /**
+   * Whether close on tab button press or not
+   * @default false
+   */
+  closeOnTab: PropTypes.bool,
+  /**
    * Whether close on scroll event of scroll container or not
    * @default true
    */
@@ -543,6 +552,7 @@ PopoverWithRef.defaultProps = {
   considerTriggerMotion: false,
   closeOnEscape: true,
   closeOnEnter: false,
+  closeOnTab: false,
   closeOnScroll: true,
   getContainer: () => document.body,
   guessBetterPosition: false,
