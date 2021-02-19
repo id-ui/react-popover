@@ -87,7 +87,6 @@ function Popover(
   const [triggerDimensions, setTriggerDimensions] = useState({});
 
   const scrollListener = useCallback(() => {
-    console.log('scroll', isOpen, closeOnScroll);
     if (isOpen && closeOnScroll) {
       close();
     }
