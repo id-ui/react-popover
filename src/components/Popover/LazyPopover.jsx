@@ -109,7 +109,10 @@ function Trigger(
     }
 
     return {
-      [`on${_.upperFirst(trigger)}`]: initialize,
+      [`on${_.upperFirst(trigger)}`]: (e) => {
+        e.preventDefault();
+        initialize();
+      },
     };
   }, [initializeDebounced, initialize, trigger]);
 
