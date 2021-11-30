@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Popover from './Popover';
@@ -10,9 +10,7 @@ function PopoverContainer(
 ) {
   const [isOpen, setOpen] = useState(initialIsOpen);
 
-  const isOpenControlled = useMemo(() => !_.isUndefined(providedIsOpen), [
-    providedIsOpen,
-  ]);
+  const isOpenControlled = !_.isUndefined(providedIsOpen);
 
   const handleChangeOpen = useCallback(
     (value) => {

@@ -100,28 +100,30 @@ function Trigger(
     };
   }, [initializeDebounced]);
 
-  const triggerProps = useMemo(() => {
-    if (trigger === POPOVER_TRIGGER_TYPES.hover) {
-      return {
-        onMouseEnter: initializeDebounced,
-        onMouseLeave: initializeDebounced.cancel,
-      };
-    }
+  let triggerProps;
 
-    return {
+  if (trigger === POPOVER_TRIGGER_TYPES.hover) {
+    triggerProps = {
+      onMouseEnter: initializeDebounced,
+      onMouseLeave: initializeDebounced.cancel,
+    };
+  } else {
+    triggerProps = {
       [`on${_.upperFirst(trigger)}`]: (e) => {
         e.preventDefault();
         initialize();
       },
     };
-  }, [initializeDebounced, initialize, trigger]);
+  }
 
-  return trigger === POPOVER_TRIGGER_TYPES.focus ? (
-    React.cloneElement(React.Children.only(children), {
+  if (trigger === POPOVER_TRIGGER_TYPES.focus) {
+    return React.cloneElement(React.Children.only(children), {
       ...triggerProps,
       ref: triggerRef,
-    })
-  ) : (
+    });
+  }
+
+  return (
     <TriggerContainer {...triggerProps} ref={triggerRef}>
       {children}
     </TriggerContainer>

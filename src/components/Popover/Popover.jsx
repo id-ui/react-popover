@@ -2,7 +2,6 @@ import React, {
   Fragment,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -12,16 +11,14 @@ import _ from 'lodash';
 import { AnimatePresence } from 'framer-motion';
 import {
   useArrow,
-  useElementMotion,
   useGlobalListener,
-  useHandlers,
   useOpen,
   usePosition,
+  useTrigger,
 } from './hooks';
 import { Container, Inner } from './styled';
 import placementPropsGetters from './placementsConfig';
 import { POPOVER_TRIGGER_TYPES } from './constants';
-import useScroll from './hooks/useScroll';
 
 function Popover(
   {
@@ -84,17 +81,6 @@ function Popover(
   });
 
   const triggerElementRef = useRef();
-  const [triggerDimensions, setTriggerDimensions] = useState({});
-
-  const scrollListener = useCallback(() => {
-    if (isOpen && closeOnScroll) {
-      close();
-    }
-  }, [isOpen, close, closeOnScroll]);
-
-  const setScrollContainer = useScroll({
-    listener: scrollListener,
-  });
 
   const {
     containerProps,
@@ -131,7 +117,7 @@ function Popover(
       contentRef.current = node;
       addTarget('content', node);
     },
-    [addTarget]
+    [addTarget, contentRef]
   );
 
   useEffect(() => {
@@ -141,99 +127,26 @@ function Popover(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [placement, isOpen]);
 
-  const setupElementMotionObserver = useElementMotion(updatePosition);
-
-  useGlobalListener('resize', updatePosition, isOpen);
-
-  const {
-    handleClick,
-    handleMouseEnter,
-    handleMouseLeave,
-    handleFocus,
-  } = useHandlers({
+  const { triggerDimensions, setTriggerRef, triggerHandlers } = useTrigger({
+    ref,
     isOpen,
-    open,
-    close,
-    toggle,
     mouseEnterDelay,
     mouseLeaveDelay,
     onFocus,
+    trigger,
+    closeOnScroll,
+    considerTriggerMotion,
+    triggerContainerDisplay,
+    usePortal,
+    triggerElementRef,
+    updatePosition,
+    addTarget,
+    toggle,
+    open,
+    close,
   });
 
-  const setTriggerRef = useCallback(
-    (node) => {
-      if (node && node.children.length) {
-        const child = node.children[0];
-        if (usePortal && considerTriggerMotion) {
-          setupElementMotionObserver(child);
-        }
-        triggerElementRef.current = child;
-        if (triggerContainerDisplay) {
-          node.style.display = triggerContainerDisplay;
-        } else {
-          const style = window.getComputedStyle(child);
-          node.style.display = style.display;
-        }
-      } else {
-        triggerElementRef.current = node;
-      }
-
-      if (triggerElementRef.current) {
-        setTriggerDimensions({
-          width: triggerElementRef.current.offsetWidth,
-          height: triggerElementRef.current.offsetHeight,
-        });
-      }
-
-      setScrollContainer(triggerElementRef.current);
-
-      if (ref) {
-        if (_.isFunction(ref)) {
-          ref(node);
-        } else {
-          ref.current = node;
-        }
-      }
-      addTarget('trigger', node);
-    },
-    [
-      ref,
-      considerTriggerMotion,
-      triggerContainerDisplay,
-      setupElementMotionObserver,
-      addTarget,
-      usePortal,
-      setScrollContainer,
-    ]
-  );
-
-  const triggerProps = useMemo(
-    () =>
-      _.fromPairs(
-        _.filter(
-          [
-            [
-              'onMouseDown',
-              trigger === POPOVER_TRIGGER_TYPES.click && handleClick,
-            ],
-            [
-              'onMouseEnter',
-              trigger === POPOVER_TRIGGER_TYPES.hover && handleMouseEnter,
-            ],
-            [
-              'onMouseLeave',
-              trigger === POPOVER_TRIGGER_TYPES.hover && handleMouseLeave,
-            ],
-            [
-              'onContextMenu',
-              trigger === POPOVER_TRIGGER_TYPES.contextMenu && handleClick,
-            ],
-          ],
-          1
-        )
-      ),
-    [handleClick, handleMouseEnter, handleMouseLeave, trigger]
-  );
+  useGlobalListener('resize', updatePosition, isOpen);
 
   const arrowStyles = useArrow({
     placement: betterPlacement,
@@ -248,10 +161,9 @@ function Popover(
 
   const animationProps = usePortal ? containerProps : animation;
 
-  const transformedContent = useMemo(
-    () => (_.isFunction(content) ? content({ close }) : content),
-    [content, close]
-  );
+  const transformedContent = _.isFunction(content)
+    ? content({ close })
+    : content;
 
   const popoverContentAnimated = (
     <AnimatePresence initial={null}>
@@ -264,8 +176,7 @@ function Popover(
           initial={animationProps.initial}
           animate={animationProps.animate}
           exit={animationProps.exit}
-          onMouseEnter={triggerProps.onMouseEnter}
-          onMouseLeave={triggerProps.onMouseLeave}
+          {...triggerHandlers}
           className={className}
           zIndex={zIndex}
           arrowSize={arrowSize}
@@ -283,7 +194,7 @@ function Popover(
   return (
     <Fragment>
       {shouldCheckContentDimensions &&
-        container &&
+        Boolean(container) &&
         createPortal(
           <Container
             ref={setContentDimensions}
@@ -298,9 +209,11 @@ function Popover(
           </Container>,
           container
         )}
+
       {usePortal
-        ? container && createPortal(popoverContentAnimated, container)
+        ? Boolean(container) && createPortal(popoverContentAnimated, container)
         : popoverContentAnimated}
+
       {trigger === POPOVER_TRIGGER_TYPES.focus ? (
         React.cloneElement(
           React.Children.only(
@@ -309,12 +222,15 @@ function Popover(
               : children
           ),
           {
-            onFocus: handleFocus,
+            onFocus: (e) => {
+              open();
+              onFocus(e);
+            },
             ref: setTriggerRef,
           }
         )
       ) : (
-        <TriggerContainer {...triggerProps} ref={setTriggerRef}>
+        <TriggerContainer {...triggerHandlers} ref={setTriggerRef}>
           {_.isFunction(children)
             ? children({ isOpen, open, close, toggle })
             : children}

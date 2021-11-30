@@ -27,18 +27,21 @@ export default ({
     }
   });
 
-  const setDimensions = useCallback((node) => {
-    if (node) {
-      const { clientHeight, clientWidth, firstChild } = node;
+  const setDimensions = useCallback(
+    (node) => {
+      if (node) {
+        const { clientHeight, clientWidth, firstChild } = node;
 
-      dimensionsRef.current = {
-        height: clientHeight,
-        width: clientWidth,
-        verticalPadding: clientHeight - firstChild.clientHeight,
-        horizontalPadding: clientWidth - firstChild.clientWidth,
-      };
-    }
-  }, []);
+        dimensionsRef.current = {
+          height: clientHeight,
+          width: clientWidth,
+          verticalPadding: clientHeight - firstChild.clientHeight,
+          horizontalPadding: clientWidth - firstChild.clientWidth,
+        };
+      }
+    },
+    [dimensionsRef]
+  );
 
   return [setDimensions, contentRef];
 };

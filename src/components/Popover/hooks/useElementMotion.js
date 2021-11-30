@@ -5,23 +5,27 @@ export default (callback) => {
   const elementRef = useRef();
   const previousRect = useRef();
 
-  const check = useCallback(() => {
-    const {
-      left,
-      right,
-      top,
-      bottom,
-      width,
-      height,
-    } = elementRef.current.getBoundingClientRect();
-    const newRect = { left, right, top, bottom, width, height };
-    if (!_.isEqual(previousRect.current, newRect)) {
-      previousRect.current = newRect;
-      callback();
-    }
-  }, [callback]);
+  const observer = useMemo(() => {
+    const checkElementMotion = () => {
+      const {
+        left,
+        right,
+        top,
+        bottom,
+        width,
+        height,
+      } = elementRef.current.getBoundingClientRect();
 
-  const observer = useMemo(() => new window.MutationObserver(check), [check]);
+      const newRect = { left, right, top, bottom, width, height };
+
+      if (!_.isEqual(previousRect.current, newRect)) {
+        previousRect.current = newRect;
+        callback();
+      }
+    };
+
+    return new window.MutationObserver(checkElementMotion);
+  }, [callback]);
 
   const setupObserver = useCallback(
     (element) => {
