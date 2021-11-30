@@ -176,7 +176,8 @@ function Popover(
           initial={animationProps.initial}
           animate={animationProps.animate}
           exit={animationProps.exit}
-          {...triggerHandlers}
+          onMouseEnter={triggerHandlers.onMouseEnter}
+          onMouseLeave={triggerHandlers.onMouseLeave}
           className={className}
           zIndex={zIndex}
           arrowSize={arrowSize}
