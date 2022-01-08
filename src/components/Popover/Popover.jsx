@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { isBoolean, isFunction } from 'lodash';
 import { AnimatePresence } from 'framer-motion';
 import {
   useArrow,
@@ -70,7 +70,7 @@ function Popover(
   const [betterPlacement, setBetterPlacement] = useState(placement);
 
   const { addTarget, open, close, toggle } = useOpen({
-    closeOnRemoteClick: _.isBoolean(providedCloseOnRemoteClick)
+    closeOnRemoteClick: isBoolean(providedCloseOnRemoteClick)
       ? providedCloseOnRemoteClick
       : trigger !== POPOVER_TRIGGER_TYPES.hover,
     closeOnEscape,
@@ -161,9 +161,7 @@ function Popover(
 
   const animationProps = usePortal ? containerProps : animation;
 
-  const transformedContent = _.isFunction(content)
-    ? content({ close })
-    : content;
+  const transformedContent = isFunction(content) ? content({ close }) : content;
 
   const popoverContentAnimated = (
     <AnimatePresence initial={null}>
@@ -218,7 +216,7 @@ function Popover(
       {trigger === POPOVER_TRIGGER_TYPES.focus ? (
         React.cloneElement(
           React.Children.only(
-            _.isFunction(children)
+            isFunction(children)
               ? children({ isOpen, open, close, toggle })
               : children
           ),
@@ -232,7 +230,7 @@ function Popover(
         )
       ) : (
         <TriggerContainer {...triggerHandlers} ref={setTriggerRef}>
-          {_.isFunction(children)
+          {isFunction(children)
             ? children({ isOpen, open, close, toggle })
             : children}
         </TriggerContainer>
@@ -246,7 +244,7 @@ const PopoverWithRef = React.forwardRef(Popover);
 PopoverWithRef.propTypes = {
   /**
    * Where popover should show it's content
-   * @default _.noop
+   * @default () => {}
    */
   placement: PropTypes.oneOf(Object.keys(placementPropsGetters)),
   /**
@@ -258,7 +256,7 @@ PopoverWithRef.propTypes = {
   trigger: PropTypes.oneOf(Object.keys(POPOVER_TRIGGER_TYPES)),
   /**
    * onFocus event of child component, triggered if trigger === 'focus'
-   * @default _.noop
+   * @default () => {}
    */
   onFocus: PropTypes.func,
   /**
@@ -295,7 +293,7 @@ PopoverWithRef.propTypes = {
   isOpen: PropTypes.bool,
   /**
    * Function triggered when popover should change visibility
-   * @default _.noop
+   * @default () => {}
    */
   onChangeOpen: PropTypes.func,
   /**
@@ -464,7 +462,7 @@ PopoverWithRef.defaultProps = {
   trigger: POPOVER_TRIGGER_TYPES.hover,
   withArrow: true,
   offset: [0, 0],
-  onChangeOpen: _.noop,
+  onChangeOpen: () => {},
   considerTriggerMotion: false,
   closeOnEscape: true,
   closeOnEnter: false,
@@ -474,7 +472,7 @@ PopoverWithRef.defaultProps = {
   guessBetterPosition: false,
   mouseEnterDelay: 100,
   mouseLeaveDelay: 100,
-  onFocus: _.noop,
+  onFocus: () => {},
   triggerContainerTag: 'span',
   animation: {
     initial: {

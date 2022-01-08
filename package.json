@@ -1,6 +1,6 @@
 {
   "name": "@idui/react-popover",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "React Popover Component",
   "author": "kaprisa57@gmail.com",
   "license": "MIT",
@@ -31,7 +31,7 @@
     "test:watch": "npm run test -- --watch",
     "test:coverage": "yarn test -- --coverage",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
-    "build-and-publish": "yarn run build && npm version patch && npm publish"
+    "build-and-publish": "yarn run build && npm publish"
   },
   "eslintConfig": {
     "extends": "react-app"

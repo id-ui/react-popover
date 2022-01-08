@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import _ from 'lodash';
+import { debounce } from 'lodash';
 import { POPOVER_TRIGGER_TYPES } from '../constants';
 
 const useHoverTriggerHandlers = ({
@@ -9,12 +9,12 @@ const useHoverTriggerHandlers = ({
   close,
   isOpen,
 }) => {
-  const openDebounced = useMemo(() => _.debounce(open, mouseEnterDelay), [
+  const openDebounced = useMemo(() => debounce(open, mouseEnterDelay), [
     mouseEnterDelay,
     open,
   ]);
 
-  const closeDebounced = useMemo(() => _.debounce(close, mouseLeaveDelay), [
+  const closeDebounced = useMemo(() => debounce(close, mouseLeaveDelay), [
     mouseLeaveDelay,
     close,
   ]);

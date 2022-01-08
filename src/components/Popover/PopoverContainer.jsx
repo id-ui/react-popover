@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { isUndefined } from 'lodash';
 import Popover from './Popover';
 import LazyPopover from './LazyPopover';
 
@@ -10,7 +10,7 @@ function PopoverContainer(
 ) {
   const [isOpen, setOpen] = useState(initialIsOpen);
 
-  const isOpenControlled = !_.isUndefined(providedIsOpen);
+  const isOpenControlled = !isUndefined(providedIsOpen);
 
   const handleChangeOpen = useCallback(
     (value) => {
@@ -54,7 +54,7 @@ PopoverContainerWithRef.propTypes = {
   isOpen: PropTypes.bool,
   /**
    * Function triggered when popover should change visibility
-   * @default _.noop
+   * @default () => {}
    */
   onChangeOpen: PropTypes.func,
 };
@@ -62,7 +62,7 @@ PopoverContainerWithRef.propTypes = {
 PopoverContainerWithRef.defaultProps = {
   lazy: true,
   initialIsOpen: false,
-  onChangeOpen: _.noop,
+  onChangeOpen: () => {},
 };
 
 export default PopoverContainerWithRef;

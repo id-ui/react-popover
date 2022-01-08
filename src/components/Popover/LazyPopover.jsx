@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import _ from 'lodash';
+import { isFunction, debounce, upperFirst } from 'lodash';
 import { POPOVER_TRIGGER_TYPES } from './constants';
 import Popover from './Popover';
 
@@ -16,9 +16,7 @@ function LazyPopover(props, ref) {
 
   const [isInitialized, setInitialized] = useState(
     () =>
-      isOpen ||
-      _.isFunction(children) ||
-      trigger === POPOVER_TRIGGER_TYPES.focus
+      isOpen || isFunction(children) || trigger === POPOVER_TRIGGER_TYPES.focus
   );
 
   const initialize = useCallback(() => {
@@ -77,7 +75,7 @@ function Trigger(
       }
 
       if (ref) {
-        if (_.isFunction(ref)) {
+        if (isFunction(ref)) {
           ref(node);
         } else {
           ref.current = node;
@@ -90,7 +88,7 @@ function Trigger(
   const TriggerContainer = triggerContainerTag;
 
   const initializeDebounced = useMemo(
-    () => _.debounce(initialize, mouseEnterDelay),
+    () => debounce(initialize, mouseEnterDelay),
     [initialize, mouseEnterDelay]
   );
 
@@ -109,7 +107,7 @@ function Trigger(
     };
   } else {
     triggerProps = {
-      [`on${_.upperFirst(trigger)}`]: (e) => {
+      [`on${upperFirst(trigger)}`]: (e) => {
         e.preventDefault();
         initialize();
       },

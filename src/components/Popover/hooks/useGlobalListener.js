@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import _ from 'lodash';
+import { debounce } from 'lodash';
 
 export default (name, listener, condition, timeout = 100) => {
   useEffect(() => {
     if (condition) {
-      const debouncedListener = _.debounce(listener, timeout);
+      const debouncedListener = debounce(listener, timeout);
 
       window.addEventListener(name, debouncedListener);
 

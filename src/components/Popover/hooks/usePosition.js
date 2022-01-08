@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import _ from 'lodash';
+import { isBoolean } from 'lodash';
 import { checkConstraints } from '../helpers';
 import placementPropsGetters from '../placementsConfig';
 import { useContentDimensions } from '.';
@@ -214,10 +214,10 @@ export default ({
         arrowSize,
         minSpaceBetweenPopoverAndContainer,
         avoidOverflowBounds,
-        fitMaxHeightToBounds: _.isBoolean(fitMaxHeightToBounds)
+        fitMaxHeightToBounds: isBoolean(fitMaxHeightToBounds)
           ? fitMaxHeightToBounds
           : !maxHeight,
-        fitMaxWidthToBounds: _.isBoolean(fitMaxWidthToBounds)
+        fitMaxWidthToBounds: isBoolean(fitMaxWidthToBounds)
           ? fitMaxWidthToBounds
           : !maxWidth,
         contentHeight,

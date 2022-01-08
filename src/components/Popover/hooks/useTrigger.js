@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import _ from 'lodash';
+import { isFunction } from 'lodash';
 import useElementMotion from './useElementMotion';
 import useTriggerHandlers from './useTriggerHandlers';
 import useScroll from './useScroll';
@@ -78,7 +78,7 @@ export default ({
       setScrollContainer(triggerElementRef.current);
 
       if (ref) {
-        if (_.isFunction(ref)) {
+        if (isFunction(ref)) {
           ref(node);
         } else {
           ref.current = node;

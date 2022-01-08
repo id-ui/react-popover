@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import { noop } from 'lodash';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import { axe } from 'jest-axe';
@@ -443,7 +443,7 @@ describe('Popover', () => {
         // for coverage
         triggerContainerDisplay="inline"
         triggerContainerTag="div"
-        ref={_.noop}
+        ref={noop}
         placement="right"
         arrowPlacement="left"
         arrowSize={15}
@@ -555,7 +555,7 @@ describe('Popover', () => {
   });
 
   it('placementPropsGetters: contains all popover placements', async () => {
-    expect(_.keys(placementPropsGetters)).toStrictEqual([
+    expect(Object.keys(placementPropsGetters)).toStrictEqual([
       'top',
       'topRight',
       'topLeft',
@@ -571,9 +571,9 @@ describe('Popover', () => {
     ]);
   });
   it('placementPropsGetters: each placement config contains style and motion props', async () => {
-    _.values(placementPropsGetters).forEach((item) => {
+    Object.values(placementPropsGetters).forEach((item) => {
       expect(
-        _.keys(
+        Object.keys(
           item(
             {},
             {

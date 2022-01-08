@@ -1,5 +1,5 @@
 import { useMemo, useCallback, useRef, useEffect } from 'react';
-import _ from 'lodash';
+import { isEqual } from 'lodash';
 
 export default (callback) => {
   const elementRef = useRef();
@@ -18,7 +18,7 @@ export default (callback) => {
 
       const newRect = { left, right, top, bottom, width, height };
 
-      if (!_.isEqual(previousRect.current, newRect)) {
+      if (!isEqual(previousRect.current, newRect)) {
         previousRect.current = newRect;
         callback();
       }

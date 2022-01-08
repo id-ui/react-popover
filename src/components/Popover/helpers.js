@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { upperFirst } from 'lodash';
 
 export const checkConstraints = (
   placement,
@@ -11,7 +11,7 @@ export const checkConstraints = (
   ) {
     return placement
       .replace(firstSide, secondSide)
-      .replace(_.upperFirst(firstSide), _.upperFirst(secondSide));
+      .replace(upperFirst(firstSide), upperFirst(secondSide));
   }
 
   if (
@@ -20,7 +20,7 @@ export const checkConstraints = (
   ) {
     return placement
       .replace(secondSide, firstSide)
-      .replace(_.upperFirst(secondSide), _.upperFirst(firstSide));
+      .replace(upperFirst(secondSide), upperFirst(firstSide));
   }
 
   return placement;

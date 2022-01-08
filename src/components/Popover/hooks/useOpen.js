@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef } from 'react';
-import _ from 'lodash';
 
 export default ({
   closeOnEscape,
@@ -59,7 +58,7 @@ export default ({
         return;
       }
 
-      const targets = _.values(targetsMap.current).filter(Boolean);
+      const targets = Object.values(targetsMap.current).filter(Boolean);
 
       if (!targets.find((item) => item.contains(e.target))) {
         close();
