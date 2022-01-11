@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "module": "commonjs",
+    "target": "es5",
+    "noImplicitAny": true,
+    "declaration": true,
+    "emitDeclarationOnly": false,
+    "outDir": "./dist/",
+    "preserveConstEnums": true,
+    "removeComments": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["src/*"]
+    },
+  },
+  "include": [
+    "src/index.ts"
+  ],
+  "exclude": ["node_modules", "src/__tests__"],
+}
