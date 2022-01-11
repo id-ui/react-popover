@@ -1,5 +1,9 @@
 import { css, FlattenSimpleInterpolation } from 'styled-components';
-import { ArrowPlacement, ArrowPlacementType, PopoverPlacement } from 'enums';
+import {
+  ArrowPlacement,
+  ArrowPlacementType,
+  PopoverPlacement,
+} from '../../../../enums';
 import { getArrowPlacement } from './arrowPlacementGetters';
 
 interface ArrowStyleGetterArgs {

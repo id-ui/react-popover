@@ -4,11 +4,15 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import { act, renderHook } from '@testing-library/react-hooks';
-import { ArrowPlacement, PopoverPlacement, PopoverTriggerType } from 'enums';
-import { PopoverChildrenProps } from 'types';
-import { useOpen } from 'components/Popover/components/Popover/hooks';
-import { placementPropsGetters } from 'components/Popover/components/Popover/hooks/usePosition/placementsConfig';
-import { fixPlacement } from 'components/Popover/components/Popover/hooks/usePosition/helpers';
+import {
+  ArrowPlacement,
+  PopoverPlacement,
+  PopoverTriggerType,
+} from '../components/Popover/enums';
+import { PopoverChildrenProps } from '../components/Popover/types';
+import { useOpen } from '../components/Popover/components/Popover/hooks';
+import { placementPropsGetters } from '../components/Popover/components/Popover/hooks/usePosition/placementsConfig';
+import { fixPlacement } from '../components/Popover/components/Popover/hooks/usePosition/helpers';
 import { Popover } from '..';
 
 describe('Popover', () => {

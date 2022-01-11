@@ -1,6 +1,6 @@
 import { MutableRefObject } from 'react';
-import { PopoverProps } from 'types';
-import { PopoverPlacement } from 'enums';
+import { PopoverProps } from '../../../../types';
+import { PopoverPlacement } from '../../../../enums';
 
 export interface UsePositionProps
   extends Pick<

@@ -1,5 +1,5 @@
 import { MutableRefObject, RefCallback } from 'react';
-import { PopoverProps } from 'types';
+import { PopoverProps } from '../../../../types';
 import { UseTriggerHandlersProps } from '../useTriggerHandlers';
 
 export interface UseTriggerProps

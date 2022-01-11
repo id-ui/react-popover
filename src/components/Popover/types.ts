@@ -1,5 +1,5 @@
 import { ReactChild, ReactEventHandler, ReactNode } from 'react';
-import { ArrowPlacement, PopoverTriggerType, PopoverPlacement } from 'enums';
+import { ArrowPlacement, PopoverTriggerType, PopoverPlacement } from './enums';
 
 export interface PopoverChildrenProps {
   close: () => void;

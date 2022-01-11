@@ -27,7 +27,6 @@ module.exports = {
     ],
   },
   resolve: {
-    modules: [path.resolve('./src/'), 'node_modules'],
     extensions: ['.ts', '.tsx'],
     mainFields: ['browser', 'module', 'main'],
   },

@@ -1,4 +1,4 @@
-import { ArrowPlacement, PopoverPlacement } from 'enums';
+import { ArrowPlacement, PopoverPlacement } from '../../../../enums';
 
 export interface UseArrowArgs {
   placement: PopoverPlacement;

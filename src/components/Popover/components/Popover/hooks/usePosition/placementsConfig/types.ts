@@ -1,5 +1,5 @@
 import { FlattenSimpleInterpolation } from 'styled-components';
-import { PopoverProps } from 'types';
+import { PopoverProps } from '../../../../../types';
 
 export interface GetDefaultOffsetArgs {
   withArrow: boolean;

@@ -1,4 +1,4 @@
-import { PopoverProps } from 'types';
+import { PopoverProps } from '../../../../types';
 
 export type UseOpenProps = Pick<
   PopoverProps,

@@ -1,5 +1,5 @@
 import { SyntheticEvent } from 'react';
-import { PopoverTriggerType } from 'enums';
+import { PopoverTriggerType } from '../../../../enums';
 import { useHoverTriggerHandlers } from './useHoverTriggerHandlers';
 import { TriggerHandlers, UseTriggerHandlersProps } from './types';
 

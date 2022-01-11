@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { isUndefined, noop } from 'lodash';
-import { PopoverProps } from 'types';
+import { PopoverProps } from './types';
 import Popover from './components/Popover';
 import LazyPopover from './components/LazyPopover';
 import { defaultProps } from './defaultProps';

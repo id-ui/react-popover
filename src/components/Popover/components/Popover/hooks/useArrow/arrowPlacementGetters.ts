@@ -1,5 +1,5 @@
 import { css, FlattenSimpleInterpolation } from 'styled-components';
-import { ArrowPlacement, ArrowPlacementType } from 'enums';
+import { ArrowPlacement, ArrowPlacementType } from '../../../../enums';
 
 interface PopoverArrowPlacementGetterArgs {
   angle: number;

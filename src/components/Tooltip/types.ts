@@ -1,4 +1,4 @@
-import { PopoverProps } from 'types';
+import { PopoverProps } from '../Popover/types';
 
 export interface TooltipProps extends PopoverProps {
   /**

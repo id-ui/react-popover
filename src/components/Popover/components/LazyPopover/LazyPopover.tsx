@@ -5,8 +5,8 @@ import React, {
   useState,
 } from 'react';
 import { isFunction } from 'lodash';
-import { PopoverTriggerType } from 'enums';
-import { PopoverProps } from 'types';
+import { PopoverTriggerType } from '../../enums';
+import { PopoverProps } from '../../types';
 import Popover from '../Popover';
 import LazyPopoverTrigger from './components/LazyPopoverTrigger';
 

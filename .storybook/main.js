@@ -2,10 +2,6 @@ const custom = require('../webpack.config');
 
 module.exports = {
   stories: ['../src/**/*.stories.tsx'],
-  webpackFinal: (config) => {
-    config.resolve = custom.resolve;
-    return config;
-  },
   typescript: {
     check: false,
     checkOptions: {},

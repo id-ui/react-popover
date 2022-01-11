@@ -2,7 +2,7 @@ import React, { Ref, useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { ArrowPlacement, PopoverPlacement, PopoverTriggerType } from 'enums';
+import { ArrowPlacement, PopoverPlacement, PopoverTriggerType } from './enums';
 import Popover from './PopoverContainer';
 import { placementPropsGetters } from './components/Popover/hooks/usePosition/placementsConfig';
 

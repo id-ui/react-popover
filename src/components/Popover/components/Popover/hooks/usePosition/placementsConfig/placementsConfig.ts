@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import { PopoverPlacement } from 'enums';
+import { PopoverPlacement } from '../../../../../enums';
 import { Inner } from '../../../styled';
 import { PopoverContentDimensionsRect } from './types';
 import {

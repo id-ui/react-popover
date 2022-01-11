@@ -1,5 +1,5 @@
 import React from 'react';
-import { PopoverProps } from 'types';
+import { PopoverProps } from '../../../../types';
 
 export interface PopoverTriggerProps
   extends Pick<

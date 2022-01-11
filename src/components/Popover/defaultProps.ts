@@ -1,6 +1,6 @@
 import { noop } from 'lodash';
-import { PopoverPlacement, PopoverTriggerType } from 'enums';
-import { PopoverProps } from 'types';
+import { PopoverPlacement, PopoverTriggerType } from './enums';
+import { PopoverProps } from './types';
 
 export const defaultProps: Partial<PopoverProps> = {
   placement: PopoverPlacement.top,

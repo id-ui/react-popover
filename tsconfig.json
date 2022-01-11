@@ -12,10 +12,6 @@
     "declarationMap": false,
     "sourceMap": false,
     "esModuleInterop": true,
-    "baseUrl": ".",
-    "paths": {
-      "*": ["src/*"]
-    },
   },
   "include": [
     "src/index.ts"

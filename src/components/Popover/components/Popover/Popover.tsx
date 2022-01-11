@@ -11,8 +11,8 @@ import React, {
 import { createPortal } from 'react-dom';
 import { isBoolean, isFunction, isNumber, isString, pick } from 'lodash';
 import { AnimatePresence } from 'framer-motion';
-import { PopoverTriggerType } from 'enums';
-import { PopoverProps } from 'types';
+import { PopoverTriggerType } from '../../enums';
+import { PopoverProps } from '../../types';
 import {
   useArrow,
   useGlobalListener,

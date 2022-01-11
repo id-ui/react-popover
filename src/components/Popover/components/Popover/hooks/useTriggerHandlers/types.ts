@@ -1,5 +1,5 @@
 import { ReactEventHandler } from 'react';
-import { PopoverProps } from 'types';
+import { PopoverProps } from '../../../../types';
 
 export interface UseTriggerHandlersProps
   extends Pick<

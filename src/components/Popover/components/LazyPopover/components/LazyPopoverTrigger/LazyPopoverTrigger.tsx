@@ -7,7 +7,7 @@ import React, {
   useMemo,
 } from 'react';
 import { debounce, isFunction, isNumber, isString, noop } from 'lodash';
-import { PopoverTriggerType } from 'enums';
+import { PopoverTriggerType } from '../../../../enums';
 import { TriggerHandlers } from '../../../Popover/hooks/useTriggerHandlers';
 import { PopoverTriggerProps } from './types';
 
