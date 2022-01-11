@@ -24,18 +24,11 @@ module.exports = {
         loader: 'ts-loader',
         exclude: /node_modules/,
       },
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
-      },
     ],
   },
   resolve: {
     modules: [path.resolve('./src/'), 'node_modules'],
-    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+    extensions: ['.ts', '.tsx'],
     mainFields: ['browser', 'module', 'main'],
   },
 };

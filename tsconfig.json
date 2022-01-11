@@ -18,7 +18,7 @@
     },
   },
   "include": [
-    "src"
+    "src/index.ts"
   ],
   "exclude": ["node_modules", "src/__tests__"],
 }
