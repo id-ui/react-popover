@@ -1,5 +1,5 @@
 {
-  "parser": "babel-eslint",
+  "parser":  "@typescript-eslint/parser",
   "env": {
     "browser": true,
     "es6": true,
@@ -10,7 +10,9 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:jsx-a11y/recommended"
+    "plugin:jsx-a11y/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -19,19 +21,12 @@
     "ecmaVersion": 2020,
     "sourceType": "module"
   },
-  "plugins": ["react", "jsx-a11y", "react-hooks", "import"],
+  "plugins": ["react", "jsx-a11y", "react-hooks", "import", "@typescript-eslint"],
   "rules": {
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": 2,
+    "react-hooks/exhaustive-deps": 1,
     "react/prop-types": 0,
     "react/display-name": 0,
-    "react/function-component-definition": [
-      2,
-      {
-        "namedComponents": "function-declaration",
-        "unnamedComponents": "arrow-function"
-      }
-    ],
     "import/order": [
       2,
       {
@@ -51,6 +46,7 @@
       {
         "noUselessIndex": true
       }
-    ]
+    ],
+    "@typescript-eslint/ban-ts-comment": 1
   }
 }
