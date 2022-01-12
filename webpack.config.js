@@ -12,7 +12,6 @@ module.exports = {
     'react',
     'react-dom',
     'lodash',
-    'prop-types',
     'styled-components',
     'styled-tools',
     'framer-motion',
