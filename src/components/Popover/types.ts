@@ -107,6 +107,11 @@ export interface PopoverProps {
    */
   closeOnScroll?: boolean;
   /**
+   * Min scrolled distance to call scroll handler (scroll handler closes popover if closeOnScroll, otherwise it updates popover position)
+   * @default 0
+   */
+  scrollHandlerMinDistance?: number;
+  /**
    * Whether close on remote click or not
    * @default trigger !== 'hover'
    */

@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { isFunction } from 'lodash';
 import { useElementMotion } from '../useElementMotion';
 import { useTriggerHandlers } from '../useTriggerHandlers';
-import { useScroll } from '../useScroll';
+import { useScrollHandler } from '../useScrollHandler';
 import { UseTriggerProps } from './types';
 
 export const useTrigger = ({
@@ -14,6 +14,7 @@ export const useTrigger = ({
   mouseLeaveDelay,
   trigger,
   closeOnScroll,
+  scrollHandlerMinDistance,
   updatePosition,
   considerTriggerMotion,
   triggerContainerDisplay,
@@ -37,14 +38,12 @@ export const useTrigger = ({
     trigger,
   });
 
-  const scrollListener = useCallback(() => {
-    if (isOpen && closeOnScroll) {
-      close();
-    }
-  }, [isOpen, close, closeOnScroll]);
-
-  const setScrollContainer = useScroll({
-    listener: scrollListener,
+  const setScrollContainer = useScrollHandler({
+    scrollHandlerMinDistance,
+    closeOnScroll,
+    close,
+    isOpen,
+    updatePosition,
   });
 
   const setupElementMotionObserver = useElementMotion(updatePosition);

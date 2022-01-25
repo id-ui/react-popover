@@ -13,6 +13,7 @@ export const defaultProps: Partial<PopoverProps> = {
   closeOnEnter: false,
   closeOnTab: false,
   closeOnScroll: true,
+  scrollHandlerMinDistance: 0,
   getContainer: () => document.body,
   guessBetterPosition: false,
   mouseEnterDelay: 100,

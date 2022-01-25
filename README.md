@@ -28,7 +28,7 @@ yarn add @idui/react-popover
 - Able to change placement when content dimensions changed (if considerContentResizing = true, default false for better performance).
 - Able to detect trigger width and height and use them for content (useTriggerWidth, useTriggerHeight).
 - Considers window resizing.
-- Closes on scroll event of scroll container (if closeOnScroll = true, default true).
+- Closes on scroll event of scroll container if closeOnScroll = true (default true), otherwise changes position. Use scrollHandlerMinDistance prop to specify min scrolled distance to call scroll handler.
 - Supports 12 different placements.
 - Able to close on remote click, enter and escape buttons press.
 - Able to open on hover, click, focus and contextMenu events. 

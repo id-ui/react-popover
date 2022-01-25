@@ -10,6 +10,7 @@ export interface UseTriggerProps
       | 'considerTriggerMotion'
       | 'triggerContainerDisplay'
       | 'usePortal'
+      | 'scrollHandlerMinDistance'
     > {
   ref: RefCallback<HTMLElement> | MutableRefObject<HTMLElement>;
   triggerElementRef: MutableRefObject<HTMLElement>;

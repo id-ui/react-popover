@@ -150,6 +150,15 @@ export default {
         defaultValue: { summary: true },
       },
     },
+    scrollHandlerMinDistance: {
+      control: 'number',
+      description:
+        'Min scrolled distance to call scroll handler (scroll handler closes popover if closeOnScroll, otherwise it updates popover position)',
+      defaultValue: 0,
+      table: {
+        defaultValue: { summary: 0 },
+      },
+    },
     guessBetterPosition: {
       control: 'boolean',
       description: 'Whether popover should change position if there is no room',
