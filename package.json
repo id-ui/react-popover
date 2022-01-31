@@ -1,6 +1,6 @@
 {
   "name": "@idui/react-popover",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "React Popover Component",
   "author": "kaprisa57@gmail.com",
   "license": "MIT",
@@ -69,7 +69,7 @@
     "@testing-library/react-hooks": "3.0.0",
     "@testing-library/user-event": "^12.2.2",
     "@types/jest-axe": "^3.5.3",
-    "@types/lodash": "^4.14.178",
+    "@types/lodash-es": "^4.17.5",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "@types/styled-components": "^5.1.19",
@@ -102,7 +102,7 @@
   ],
   "dependencies": {
     "framer-motion": "^1.11.1",
-    "lodash": "^4.17.20",
+    "lodash-es": "^4.17.21",
     "styled-components": "^5.2.1",
     "styled-tools": "^1.7.2"
   },

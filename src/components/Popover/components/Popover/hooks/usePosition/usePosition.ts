@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { isBoolean } from 'lodash';
+import { isBoolean } from 'lodash-es';
 import { PopoverPlacement } from '../../../../enums';
 import {
   useContentDimensions,

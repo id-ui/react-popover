@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { isFunction } from 'lodash';
+import { isFunction } from 'lodash-es';
 import { useElementMotion } from '../useElementMotion';
 import { useTriggerHandlers } from '../useTriggerHandlers';
 import { useScrollHandler } from '../useScrollHandler';

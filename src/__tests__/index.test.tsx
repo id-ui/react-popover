@@ -404,7 +404,7 @@ describe('Popover', () => {
     );
     user.click(getByTestId('button'));
     await waitFor(() => expect(getByTestId('content')).toBeInTheDocument());
-    fireEvent.scroll(window, { target: { scrollY: 100 } });
+    fireEvent.scroll(document.body, { target: { scrollY: 100 } });
     await waitFor(() =>
       expect(queryByTestId('content')).not.toBeInTheDocument()
     );

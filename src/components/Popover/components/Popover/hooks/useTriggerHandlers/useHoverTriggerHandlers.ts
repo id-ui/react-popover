@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 import { TriggerHandlers, UseTriggerHandlersProps } from './types';
 
 export const useHoverTriggerHandlers = ({

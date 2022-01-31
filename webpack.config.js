@@ -11,10 +11,10 @@ module.exports = {
   externals: [
     'react',
     'react-dom',
-    'lodash',
     'styled-components',
     'styled-tools',
     'framer-motion',
+    'lodash-es'
   ],
   module: {
     rules: [

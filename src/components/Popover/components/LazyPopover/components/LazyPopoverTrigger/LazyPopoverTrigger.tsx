@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-import { debounce, isFunction, isNumber, isString, noop } from 'lodash';
+import { debounce, isFunction, isNumber, isString, noop } from 'lodash-es';
 import { PopoverTriggerType } from '../../../../enums';
 import { TriggerHandlers } from '../../../Popover/hooks/useTriggerHandlers';
 import { PopoverTriggerProps } from './types';

@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { isFunction } from 'lodash';
+import { isFunction } from 'lodash-es';
 import { PopoverTriggerType } from '../../enums';
 import { PopoverProps } from '../../types';
 import Popover from '../Popover';

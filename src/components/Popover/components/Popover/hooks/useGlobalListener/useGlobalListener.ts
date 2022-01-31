@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 
 export const useGlobalListener = (
   name: keyof WindowEventMap,
