@@ -5,7 +5,7 @@ import {
   useEffect,
   MutableRefObject,
 } from 'react';
-import { isEqual } from 'lodash-es';
+import { isEqual } from '../../../../helpers';
 import { PopoverContentDimensionsRect } from '../usePosition/placementsConfig';
 
 export const useElementMotion = (callback: () => void) => {

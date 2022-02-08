@@ -3,7 +3,7 @@ import { PopoverProps } from './types';
 import Popover from './components/Popover';
 import LazyPopover from './components/LazyPopover';
 import { defaultProps } from './defaultProps';
-import { noop, isUndefined } from 'lodash-es';
+import { noop, isUndefined } from './helpers';
 
 function PopoverContainer(
   {

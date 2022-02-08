@@ -1,4 +1,4 @@
-import { noop } from 'lodash-es';
+import { noop } from './helpers';
 import { PopoverPlacement, PopoverTriggerType } from './enums';
 import { PopoverProps } from './types';
 

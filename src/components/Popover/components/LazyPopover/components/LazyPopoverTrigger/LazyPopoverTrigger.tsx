@@ -1,12 +1,13 @@
 import React, {
-  ForwardRefRenderFunction,
+  ForwardRefRenderFunction, ReactChild,
   RefCallback,
   SyntheticEvent,
   useCallback,
   useEffect,
-  useMemo,
+  useMemo
 } from 'react';
-import { debounce, isFunction, isNumber, isString, noop } from 'lodash-es';
+import { isFunction, isNumber, isString, noop } from '../../../../helpers';
+import debounce from 'debounce'
 import { PopoverTriggerType } from '../../../../enums';
 import { TriggerHandlers } from '../../../Popover/hooks/useTriggerHandlers';
 import { PopoverTriggerProps } from './types';
@@ -64,7 +65,7 @@ const LazyPopoverTrigger: ForwardRefRenderFunction<
 
   useEffect(() => {
     return () => {
-      initializeDebounced.cancel();
+      initializeDebounced.clear();
     };
   }, [initializeDebounced]);
 
@@ -72,7 +73,7 @@ const LazyPopoverTrigger: ForwardRefRenderFunction<
     if (trigger === PopoverTriggerType.hover) {
       return {
         onMouseEnter: initializeDebounced,
-        onMouseLeave: initializeDebounced.cancel,
+        onMouseLeave: initializeDebounced.clear,
       };
     }
 
@@ -107,9 +108,7 @@ const LazyPopoverTrigger: ForwardRefRenderFunction<
   const triggerProps: TriggerHandlers = getTriggerProps();
 
   if (trigger === PopoverTriggerType.focus) {
-    let childElement = isFunction(children)
-      ? children(defaultChildrenProps)
-      : children;
+    let childElement: ReactChild = (isFunction(children) ? children(defaultChildrenProps) : children) as ReactChild;
 
     if (isString(childElement) || isNumber(childElement)) {
       childElement = <span>{childElement}</span>;

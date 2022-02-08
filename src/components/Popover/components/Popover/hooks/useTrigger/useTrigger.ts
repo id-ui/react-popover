@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
-import { isFunction } from 'lodash-es';
 import { useElementMotion } from '../useElementMotion';
 import { useTriggerHandlers } from '../useTriggerHandlers';
 import { useScrollHandler } from '../useScrollHandler';
 import { UseTriggerProps } from './types';
+import { isFunction } from '../../../../helpers';
 
 export const useTrigger = ({
   ref,

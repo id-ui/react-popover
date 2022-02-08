@@ -1,4 +1,4 @@
-import { upperFirst } from 'lodash-es';
+import { upperFirst } from '../../../../helpers';
 import { PopoverPlacement } from '../../../../enums';
 
 export const fixPlacement = (

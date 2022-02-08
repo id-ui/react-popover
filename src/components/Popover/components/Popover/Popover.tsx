@@ -1,15 +1,15 @@
 import React, {
   ForwardRefRenderFunction,
-  Fragment,
+  Fragment, ReactChild,
   ReactElement,
   SyntheticEvent,
   useCallback,
   useEffect,
   useRef,
-  useState,
+  useState
 } from 'react';
 import { createPortal } from 'react-dom';
-import { isBoolean, isFunction, isNumber, isString, pick } from 'lodash-es';
+import { isBoolean, isFunction, isNumber, isString } from '../../helpers';
 import { AnimatePresence } from 'framer-motion';
 import { PopoverTriggerType } from '../../enums';
 import { PopoverProps } from '../../types';
@@ -177,7 +177,8 @@ const Popover: ForwardRefRenderFunction<HTMLElement, PopoverProps> = (
           initial={animationProps.initial}
           animate={animationProps.animate}
           exit={animationProps.exit}
-          {...pick(triggerHandlers, ['onMouseEnter', 'onMouseLeave'])}
+          onMouseEnter={triggerHandlers.onMouseEnter}
+          onMouseLeave={triggerHandlers.onMouseLeave}
           className={className}
           zIndex={zIndex}
           arrowSize={arrowSize}
@@ -195,9 +196,9 @@ const Popover: ForwardRefRenderFunction<HTMLElement, PopoverProps> = (
   let triggerElement: ReactElement = null;
 
   if (trigger === PopoverTriggerType.focus) {
-    let childElement = isFunction(children)
+    let childElement: ReactChild = (isFunction(children)
       ? children({ isOpen, open, close, toggle })
-      : children;
+      : children) as ReactChild;
 
     if (isString(childElement) || isNumber(childElement)) {
       childElement = <span>{childElement}</span>;

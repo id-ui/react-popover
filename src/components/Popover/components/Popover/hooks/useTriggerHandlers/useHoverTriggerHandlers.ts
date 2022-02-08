@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { debounce } from 'lodash-es';
+import debounce from 'debounce';
 import { TriggerHandlers, UseTriggerHandlersProps } from './types';
 
 export const useHoverTriggerHandlers = ({
@@ -21,22 +21,22 @@ export const useHoverTriggerHandlers = ({
 
   useEffect(() => {
     return () => {
-      openDebounced.cancel();
-      closeDebounced.cancel();
+      openDebounced.clear();
+      closeDebounced.clear();
     };
   }, [openDebounced, closeDebounced]);
 
   return {
     onMouseEnter: () => {
       if (isOpen) {
-        closeDebounced.cancel();
+        closeDebounced.clear();
         return;
       }
 
       openDebounced();
     },
     onMouseLeave: () => {
-      openDebounced.cancel();
+      openDebounced.clear();
       closeDebounced();
     },
   };

@@ -14,7 +14,7 @@ module.exports = {
     'styled-components',
     'styled-tools',
     'framer-motion',
-    'lodash-es'
+    'debounce'
   ],
   module: {
     rules: [

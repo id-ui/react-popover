@@ -5,7 +5,7 @@ import {
   useMemo,
   useRef,
 } from 'react';
-import { debounce } from 'lodash-es';
+import debounce from 'debounce';
 import { UseScrollHandlerProps } from './types';
 import { findScrollContainer } from './helpers';
 

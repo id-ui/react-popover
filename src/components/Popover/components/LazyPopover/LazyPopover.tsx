@@ -4,11 +4,11 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { isFunction } from 'lodash-es';
 import { PopoverTriggerType } from '../../enums';
 import { PopoverProps } from '../../types';
 import Popover from '../Popover';
 import LazyPopoverTrigger from './components/LazyPopoverTrigger';
+import { isFunction } from '../../helpers';
 
 const LazyPopover: ForwardRefRenderFunction<HTMLElement, PopoverProps> = (
   props,
