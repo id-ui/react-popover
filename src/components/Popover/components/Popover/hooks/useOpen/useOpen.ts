@@ -57,11 +57,11 @@ export const useOpen = ({
         return;
       }
 
-      if (!(e.target instanceof HTMLElement)) {
+      if (!(e.target instanceof HTMLElement) && !(e.target instanceof  SVGElement)) {
         return;
       }
 
-      const target: HTMLElement = e.target;
+      const target: HTMLElement | SVGElement = e.target;
 
       if (parentNode.current && !parentNode.current.contains(target)) {
         return;

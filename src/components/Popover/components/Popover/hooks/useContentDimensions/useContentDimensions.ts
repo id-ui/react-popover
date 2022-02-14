@@ -37,7 +37,7 @@ export const useContentDimensions = ({
       if (node) {
         const { clientHeight, clientWidth, firstChild } = node;
 
-        if (firstChild instanceof HTMLElement) {
+        if (firstChild instanceof HTMLElement || firstChild instanceof SVGElement) {
           dimensionsRef.current = {
             height: clientHeight,
             width: clientWidth,
