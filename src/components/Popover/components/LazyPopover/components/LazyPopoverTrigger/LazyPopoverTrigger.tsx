@@ -80,9 +80,7 @@ const LazyPopoverTrigger: ForwardRefRenderFunction<
     const handler = (
       e: SyntheticEvent<HTMLElement, MouseEvent | FocusEvent>
     ) => {
-      if ('preventDefault' in e) {
-        e.preventDefault();
-      }
+      e.preventDefault();
       initialize();
     };
 
