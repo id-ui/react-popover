@@ -72,14 +72,14 @@ import React from 'react'
 import Popover from '@idui/react-popover'
 import styled from 'styled-components'
 
-const CustomPopover = styled(Popover)`
+const CustomPopover = styled(Popover).attrs({
+  arrowColor: 'black',
+})`
   background-color: aquamarine;
   border-radius: 30px;
   border: 2px solid black;
   box-shadow: none;
   .idui-popover__arrow { // arrow
-    border-left-color: black!important;
-    border-bottom-color: black!important;
     box-shadow: none;
   }
 `
