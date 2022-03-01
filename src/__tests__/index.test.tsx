@@ -15,6 +15,8 @@ import { placementPropsGetters } from '../components/Popover/components/Popover/
 import { fixPlacement } from '../components/Popover/components/Popover/hooks/usePosition/helpers';
 import { Popover } from '..';
 
+jest.mock('../components/Popover/components/Popover/styles.css', () => {})
+
 describe('Popover', () => {
   it('accessible', async () => {
     const { container } = render(
@@ -593,7 +595,7 @@ describe('Popover', () => {
             }
           )
         )
-      ).toStrictEqual(['style', 'initial', 'animate', 'exit']);
+      ).toStrictEqual(['containerStyle', 'contentStyle', 'motionProps']);
     });
   });
 

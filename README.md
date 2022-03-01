@@ -99,9 +99,9 @@ const animation = {
       opacity: 0,
   },
    
- animate: {
-  opacity: 1,
- },
+  animate: {
+      opacity: 1,
+  },
    
    exit: {
      opacity: 0,
