@@ -93,6 +93,6 @@ export const useScrollHandler = ({
 
       scrollContainer.current = findScrollContainer(node);
     },
-    [handleScroll, removeScrollListener]
+    [removeScrollListener]
   );
 };

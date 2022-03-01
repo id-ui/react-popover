@@ -1,13 +1,14 @@
 import React, {
-  ForwardRefRenderFunction, ReactChild,
+  ForwardRefRenderFunction,
+  ReactChild,
   RefCallback,
   SyntheticEvent,
   useCallback,
   useEffect,
-  useMemo
+  useMemo,
 } from 'react';
+import debounce from 'debounce';
 import { isFunction, isNumber, isString, noop } from '../../../../helpers';
-import debounce from 'debounce'
 import { PopoverTriggerType } from '../../../../enums';
 import { TriggerHandlers } from '../../../Popover/hooks/useTriggerHandlers';
 import { PopoverTriggerProps } from './types';
@@ -106,7 +107,9 @@ const LazyPopoverTrigger: ForwardRefRenderFunction<
   const triggerProps: TriggerHandlers = getTriggerProps();
 
   if (trigger === PopoverTriggerType.focus) {
-    let childElement: ReactChild = (isFunction(children) ? children(defaultChildrenProps) : children) as ReactChild;
+    let childElement: ReactChild = (isFunction(children)
+      ? children(defaultChildrenProps)
+      : children) as ReactChild;
 
     if (isString(childElement) || isNumber(childElement)) {
       childElement = <span>{childElement}</span>;

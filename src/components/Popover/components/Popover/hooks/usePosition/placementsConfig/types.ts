@@ -1,4 +1,3 @@
-import { FlattenSimpleInterpolation } from 'styled-components';
 import { PopoverProps } from '../../../../../types';
 
 export interface GetDefaultOffsetArgs {
@@ -33,11 +32,26 @@ export interface ConfigProps
   };
 }
 
+interface PopoverPlacementStyles {
+  top?: number;
+  left?: number;
+}
+
+interface PopoverContentStyles {
+  maxHeight?: number;
+  minHeight?: number;
+  maxWidth?: number;
+  minWidth?: number;
+}
+
 export interface PopoverPlacementProps {
-  style?: FlattenSimpleInterpolation;
-  initial?: object;
-  animate?: object;
-  exit?: object;
+  containerStyle?: PopoverPlacementStyles;
+  contentStyle?: PopoverContentStyles;
+  motionProps?: {
+    initial?: object;
+    animate?: object;
+    exit?: object;
+  };
 }
 
 export type PopoverContentDimensionsRect = Pick<

@@ -1,6 +1,4 @@
-import { css } from 'styled-components';
 import { PopoverPlacement } from '../../../../../enums';
-import { Inner } from '../../../styled';
 import { PopoverContentDimensionsRect } from './types';
 import {
   ConfigProps,
@@ -54,35 +52,37 @@ export const placementPropsGetters: {
       : contentWidth;
 
     return {
-      style: css`
-        top: ${fitMaxHeightToBounds || !avoidOverflowBounds
-          ? top + fullYOffset
-          : Math.max(
-              top + fullYOffset,
-              contentHeight + minSpaceBetweenPopoverAndContainer
-            )}px;
-        left: ${left + width / 2 + offset[0]}px;
-        ${Inner} {
-          max-height: ${maxContentHeight - verticalPadding}px;
-          max-width: ${maxContentWidth - horizontalPadding}px;
-          min-width: ${Math.min(maxContentWidth, contentWidth) -
-          horizontalPadding}px;
-        }
-      `,
-      initial: {
-        ...animation.initial,
-        y: `-${100 - openingAnimationTranslateDistance}%`,
-        x: '-50%',
+      containerStyle: {
+        top:
+          fitMaxHeightToBounds || !avoidOverflowBounds
+            ? top + fullYOffset
+            : Math.max(
+                top + fullYOffset,
+                contentHeight + minSpaceBetweenPopoverAndContainer
+              ),
+        left: left + width / 2 + offset[0],
       },
-      animate: {
-        ...animation.animate,
-        y: '-100%',
-        x: '-50%',
+      contentStyle: {
+        maxHeight: maxContentHeight - verticalPadding,
+        maxWidth: maxContentWidth - horizontalPadding,
+        minWidth: Math.min(maxContentWidth, contentWidth) - horizontalPadding,
       },
-      exit: {
-        ...animation.exit,
-        y: `-${100 - closingAnimationTranslateDistance}%`,
-        x: '-50%',
+      motionProps: {
+        initial: {
+          ...animation.initial,
+          y: `-${100 - openingAnimationTranslateDistance}%`,
+          x: '-50%',
+        },
+        animate: {
+          ...animation.animate,
+          y: '-100%',
+          x: '-50%',
+        },
+        exit: {
+          ...animation.exit,
+          y: `-${100 - closingAnimationTranslateDistance}%`,
+          x: '-50%',
+        },
       },
     };
   },
@@ -118,40 +118,43 @@ export const placementPropsGetters: {
       : contentWidth;
 
     return {
-      style: css`
-        top: ${fitMaxHeightToBounds || !avoidOverflowBounds
-          ? top + fullYOffset
-          : Math.max(
-              top + fullYOffset,
-              contentHeight + minSpaceBetweenPopoverAndContainer
-            )}px;
-        left: ${fitMaxWidthToBounds || !avoidOverflowBounds
-          ? right + offset[0]
-          : Math.max(
-              right + offset[0],
-              contentWidth + minSpaceBetweenPopoverAndContainer
-            )}px;
-        ${Inner} {
-          max-height: ${maxContentHeight - verticalPadding}px;
-          max-width: ${maxContentWidth - horizontalPadding}px;
-          min-width: ${Math.min(maxContentWidth, contentWidth) -
-          horizontalPadding}px;
-        }
-      `,
-      initial: {
-        ...animation.initial,
-        x: `-${100 - openingAnimationTranslateDistance}%`,
-        y: '-100%',
+      containerStyle: {
+        top:
+          fitMaxHeightToBounds || !avoidOverflowBounds
+            ? top + fullYOffset
+            : Math.max(
+                top + fullYOffset,
+                contentHeight + minSpaceBetweenPopoverAndContainer
+              ),
+        left:
+          fitMaxWidthToBounds || !avoidOverflowBounds
+            ? right + offset[0]
+            : Math.max(
+                right + offset[0],
+                contentWidth + minSpaceBetweenPopoverAndContainer
+              ),
       },
-      animate: {
-        ...animation.animate,
-        x: '-100%',
-        y: '-100%',
+      contentStyle: {
+        maxHeight: maxContentHeight - verticalPadding,
+        maxWidth: maxContentWidth - horizontalPadding,
+        minWidth: Math.min(maxContentWidth, contentWidth) - horizontalPadding,
       },
-      exit: {
-        ...animation.exit,
-        x: `-${100 - closingAnimationTranslateDistance}%`,
-        y: '-100%',
+      motionProps: {
+        initial: {
+          ...animation.initial,
+          x: `-${100 - openingAnimationTranslateDistance}%`,
+          y: '-100%',
+        },
+        animate: {
+          ...animation.animate,
+          x: '-100%',
+          y: '-100%',
+        },
+        exit: {
+          ...animation.exit,
+          x: `-${100 - closingAnimationTranslateDistance}%`,
+          y: '-100%',
+        },
       },
     };
   },
@@ -188,38 +191,44 @@ export const placementPropsGetters: {
       : contentWidth;
 
     return {
-      style: css`
-        top: ${fitMaxHeightToBounds || !avoidOverflowBounds
-          ? top + fullYOffset
-          : Math.max(
-              top + fullYOffset,
-              contentHeight + minSpaceBetweenPopoverAndContainer
-            )}px;
-        left: ${fitMaxWidthToBounds || !avoidOverflowBounds
-          ? left + offset[0]
-          : Math.min(
-              left + offset[0],
-              containerWidth - contentWidth - minSpaceBetweenPopoverAndContainer
-            )}px;
-        ${Inner} {
-          max-height: ${maxContentHeight - verticalPadding}px;
-          max-width: ${maxContentWidth - horizontalPadding}px;
-        }
-      `,
-      initial: {
-        ...animation.initial,
-        x: `-${openingAnimationTranslateDistance}%`,
-        y: '-100%',
+      containerStyle: {
+        top:
+          fitMaxHeightToBounds || !avoidOverflowBounds
+            ? top + fullYOffset
+            : Math.max(
+                top + fullYOffset,
+                contentHeight + minSpaceBetweenPopoverAndContainer
+              ),
+        left:
+          fitMaxWidthToBounds || !avoidOverflowBounds
+            ? left + offset[0]
+            : Math.min(
+                left + offset[0],
+                containerWidth -
+                  contentWidth -
+                  minSpaceBetweenPopoverAndContainer
+              ),
       },
-      animate: {
-        ...animation.animate,
-        x: 0,
-        y: '-100%',
+      contentStyle: {
+        maxHeight: maxContentHeight - verticalPadding,
+        maxWidth: maxContentWidth - horizontalPadding,
       },
-      exit: {
-        ...animation.exit,
-        x: `-${closingAnimationTranslateDistance}%`,
-        y: '-100%',
+      motionProps: {
+        initial: {
+          ...animation.initial,
+          x: `-${openingAnimationTranslateDistance}%`,
+          y: '-100%',
+        },
+        animate: {
+          ...animation.animate,
+          x: 0,
+          y: '-100%',
+        },
+        exit: {
+          ...animation.exit,
+          x: `-${closingAnimationTranslateDistance}%`,
+          y: '-100%',
+        },
       },
     };
   },
@@ -258,37 +267,39 @@ export const placementPropsGetters: {
       : contentWidth;
 
     return {
-      style: css`
-        top: ${fitMaxHeightToBounds || !avoidOverflowBounds
-          ? bottom + fullYOffset
-          : Math.min(
-              bottom + fullYOffset,
-              containerHeight -
-                contentHeight -
-                minSpaceBetweenPopoverAndContainer
-            )}px;
-        left: ${left + width / 2 + offset[0]}px;
-        ${Inner} {
-          max-height: ${maxContentHeight - verticalPadding}px;
-          max-width: ${maxContentWidth - horizontalPadding}px;
-          min-width: ${Math.min(maxContentWidth, contentWidth) -
-          horizontalPadding}px;
-        }
-      `,
-      initial: {
-        ...animation.initial,
-        y: `-${openingAnimationTranslateDistance}%`,
-        x: '-50%',
+      containerStyle: {
+        top:
+          fitMaxHeightToBounds || !avoidOverflowBounds
+            ? bottom + fullYOffset
+            : Math.min(
+                bottom + fullYOffset,
+                containerHeight -
+                  contentHeight -
+                  minSpaceBetweenPopoverAndContainer
+              ),
+        left: left + width / 2 + offset[0],
       },
-      animate: {
-        ...animation.animate,
-        y: 0,
-        x: '-50%',
+      contentStyle: {
+        maxHeight: maxContentHeight - verticalPadding,
+        maxWidth: maxContentWidth - horizontalPadding,
+        minWidth: Math.min(maxContentWidth, contentWidth) - horizontalPadding,
       },
-      exit: {
-        ...animation.exit,
-        y: `-${closingAnimationTranslateDistance}%`,
-        x: '-50%',
+      motionProps: {
+        initial: {
+          ...animation.initial,
+          y: `-${openingAnimationTranslateDistance}%`,
+          x: '-50%',
+        },
+        animate: {
+          ...animation.animate,
+          y: 0,
+          x: '-50%',
+        },
+        exit: {
+          ...animation.exit,
+          y: `-${closingAnimationTranslateDistance}%`,
+          x: '-50%',
+        },
       },
     };
   },
@@ -326,39 +337,42 @@ export const placementPropsGetters: {
       : contentWidth;
 
     return {
-      style: css`
-        top: ${fitMaxHeightToBounds || !avoidOverflowBounds
-          ? bottom + fullYOffset
-          : Math.min(
-              bottom + fullYOffset,
-              containerHeight -
-                contentHeight -
-                minSpaceBetweenPopoverAndContainer
-            )}px;
-        left: ${fitMaxWidthToBounds || !avoidOverflowBounds
-          ? right + offset[0]
-          : Math.max(
-              right + offset[0],
-              contentWidth + minSpaceBetweenPopoverAndContainer
-            )}px;
-        ${Inner} {
-          max-height: ${maxContentHeight - verticalPadding}px;
-          max-width: ${maxContentWidth - horizontalPadding}px;
-          min-width: ${Math.min(maxContentWidth, contentWidth) -
-          horizontalPadding}px;
-        }
-      `,
-      initial: {
-        ...animation.initial,
-        x: `-${100 - openingAnimationTranslateDistance}%`,
+      containerStyle: {
+        top:
+          fitMaxHeightToBounds || !avoidOverflowBounds
+            ? bottom + fullYOffset
+            : Math.min(
+                bottom + fullYOffset,
+                containerHeight -
+                  contentHeight -
+                  minSpaceBetweenPopoverAndContainer
+              ),
+        left:
+          fitMaxWidthToBounds || !avoidOverflowBounds
+            ? right + offset[0]
+            : Math.max(
+                right + offset[0],
+                contentWidth + minSpaceBetweenPopoverAndContainer
+              ),
       },
-      animate: {
-        ...animation.animate,
-        x: '-100%',
+      contentStyle: {
+        maxHeight: maxContentHeight - verticalPadding,
+        maxWidth: maxContentWidth - horizontalPadding,
+        minWidth: Math.min(maxContentWidth, contentWidth) - horizontalPadding,
       },
-      exit: {
-        ...animation.exit,
-        x: `-${100 - closingAnimationTranslateDistance}%`,
+      motionProps: {
+        initial: {
+          ...animation.initial,
+          x: `-${100 - openingAnimationTranslateDistance}%`,
+        },
+        animate: {
+          ...animation.animate,
+          x: '-100%',
+        },
+        exit: {
+          ...animation.exit,
+          x: `-${100 - closingAnimationTranslateDistance}%`,
+        },
       },
     };
   },
@@ -397,37 +411,43 @@ export const placementPropsGetters: {
       : contentWidth;
 
     return {
-      style: css`
-        top: ${fitMaxHeightToBounds || !avoidOverflowBounds
-          ? bottom + fullYOffset
-          : Math.min(
-              bottom + fullYOffset,
-              containerHeight -
-                contentHeight -
-                minSpaceBetweenPopoverAndContainer
-            )}px;
-        left: ${fitMaxWidthToBounds || !avoidOverflowBounds
-          ? left + offset[0]
-          : Math.min(
-              left + offset[0],
-              containerWidth - contentWidth - minSpaceBetweenPopoverAndContainer
-            )}px;
-        ${Inner} {
-          max-height: ${maxContentHeight - verticalPadding}px;
-          max-width: ${maxContentWidth - horizontalPadding}px;
-        }
-      `,
-      initial: {
-        ...animation.initial,
-        x: `-${openingAnimationTranslateDistance}%`,
+      containerStyle: {
+        top:
+          fitMaxHeightToBounds || !avoidOverflowBounds
+            ? bottom + fullYOffset
+            : Math.min(
+                bottom + fullYOffset,
+                containerHeight -
+                  contentHeight -
+                  minSpaceBetweenPopoverAndContainer
+              ),
+        left:
+          fitMaxWidthToBounds || !avoidOverflowBounds
+            ? left + offset[0]
+            : Math.min(
+                left + offset[0],
+                containerWidth -
+                  contentWidth -
+                  minSpaceBetweenPopoverAndContainer
+              ),
       },
-      animate: {
-        ...animation.animate,
-        x: 0,
+      contentStyle: {
+        maxHeight: maxContentHeight - verticalPadding,
+        maxWidth: maxContentWidth - horizontalPadding,
       },
-      exit: {
-        ...animation.exit,
-        x: `-${closingAnimationTranslateDistance}%`,
+      motionProps: {
+        initial: {
+          ...animation.initial,
+          x: `-${openingAnimationTranslateDistance}%`,
+        },
+        animate: {
+          ...animation.animate,
+          x: 0,
+        },
+        exit: {
+          ...animation.exit,
+          x: `-${closingAnimationTranslateDistance}%`,
+        },
       },
     };
   },
@@ -465,35 +485,37 @@ export const placementPropsGetters: {
       : contentWidth;
 
     return {
-      style: css`
-        left: ${fitMaxWidthToBounds || !avoidOverflowBounds
-          ? left + fullXOffset
-          : left + fullXOffset >
-            containerWidth - contentWidth - minSpaceBetweenPopoverAndContainer
-          ? minSpaceBetweenPopoverAndContainer + contentWidth
-          : left + fullXOffset}px;
-        top: ${top + height / 2 + offset[1]}px;
-        ${Inner} {
-          max-height: ${maxContentHeight - verticalPadding}px;
-          max-width: ${maxContentWidth - horizontalPadding}px;
-          min-width: ${Math.min(maxContentWidth, contentWidth) -
-          horizontalPadding}px;
-        }
-      `,
-      initial: {
-        ...animation.initial,
-        x: `-${100 - openingAnimationTranslateDistance}%`,
-        y: '-50%',
+      containerStyle: {
+        left:
+          fitMaxWidthToBounds || !avoidOverflowBounds
+            ? left + fullXOffset
+            : left + fullXOffset >
+              containerWidth - contentWidth - minSpaceBetweenPopoverAndContainer
+            ? minSpaceBetweenPopoverAndContainer + contentWidth
+            : left + fullXOffset,
+        top: top + height / 2 + offset[1],
       },
-      animate: {
-        ...animation.animate,
-        x: '-100%',
-        y: '-50%',
+      contentStyle: {
+        maxHeight: maxContentHeight - verticalPadding,
+        maxWidth: maxContentWidth - horizontalPadding,
+        minWidth: Math.min(maxContentWidth, contentWidth) - horizontalPadding,
       },
-      exit: {
-        ...animation.exit,
-        x: `-${100 - closingAnimationTranslateDistance}%`,
-        y: '-50%',
+      motionProps: {
+        initial: {
+          ...animation.initial,
+          x: `-${100 - openingAnimationTranslateDistance}%`,
+          y: '-50%',
+        },
+        animate: {
+          ...animation.animate,
+          x: '-100%',
+          y: '-50%',
+        },
+        exit: {
+          ...animation.exit,
+          x: `-${100 - closingAnimationTranslateDistance}%`,
+          y: '-50%',
+        },
       },
     };
   },
@@ -530,40 +552,43 @@ export const placementPropsGetters: {
       : contentWidth;
 
     return {
-      style: css`
-        left: ${fitMaxWidthToBounds || !avoidOverflowBounds
-          ? left + fullXOffset
-          : left + fullXOffset >
-            containerWidth - contentWidth - minSpaceBetweenPopoverAndContainer
-          ? minSpaceBetweenPopoverAndContainer + contentWidth
-          : left + fullXOffset}px;
-        top: ${fitMaxHeightToBounds || !avoidOverflowBounds
-          ? bottom + offset[1]
-          : Math.max(
-              bottom + offset[1],
-              contentHeight + minSpaceBetweenPopoverAndContainer
-            )}px;
-        ${Inner} {
-          max-height: ${maxContentHeight - verticalPadding}px;
-          max-width: ${maxContentWidth - horizontalPadding}px;
-          min-width: ${Math.min(maxContentWidth, contentWidth) -
-          horizontalPadding}px;
-        }
-      `,
-      initial: {
-        ...animation.initial,
-        x: `-${100 - openingAnimationTranslateDistance}%`,
-        y: '-100%',
+      containerStyle: {
+        left:
+          fitMaxWidthToBounds || !avoidOverflowBounds
+            ? left + fullXOffset
+            : left + fullXOffset >
+              containerWidth - contentWidth - minSpaceBetweenPopoverAndContainer
+            ? minSpaceBetweenPopoverAndContainer + contentWidth
+            : left + fullXOffset,
+        top:
+          fitMaxHeightToBounds || !avoidOverflowBounds
+            ? bottom + offset[1]
+            : Math.max(
+                bottom + offset[1],
+                contentHeight + minSpaceBetweenPopoverAndContainer
+              ),
       },
-      animate: {
-        ...animation.animate,
-        x: '-100%',
-        y: '-100%',
+      contentStyle: {
+        maxHeight: maxContentHeight - verticalPadding,
+        maxWidth: maxContentWidth - horizontalPadding,
+        minWidth: Math.min(maxContentWidth, contentWidth) - horizontalPadding,
       },
-      exit: {
-        ...animation.exit,
-        x: `-${100 - closingAnimationTranslateDistance}%`,
-        y: '-100%',
+      motionProps: {
+        initial: {
+          ...animation.initial,
+          x: `-${100 - openingAnimationTranslateDistance}%`,
+          y: '-100%',
+        },
+        animate: {
+          ...animation.animate,
+          x: '-100%',
+          y: '-100%',
+        },
+        exit: {
+          ...animation.exit,
+          x: `-${100 - closingAnimationTranslateDistance}%`,
+          y: '-100%',
+        },
       },
     };
   },
@@ -601,39 +626,42 @@ export const placementPropsGetters: {
       : contentWidth;
 
     return {
-      style: css`
-        left: ${fitMaxWidthToBounds || !avoidOverflowBounds
-          ? left + fullXOffset
-          : left + fullXOffset >
-            containerWidth - contentWidth - minSpaceBetweenPopoverAndContainer
-          ? minSpaceBetweenPopoverAndContainer + contentWidth
-          : left + fullXOffset}px;
-        top: ${fitMaxHeightToBounds || !avoidOverflowBounds
-          ? top + offset[1]
-          : Math.min(
-              top + offset[1],
-              containerHeight -
-                contentHeight -
-                minSpaceBetweenPopoverAndContainer
-            )}px;
-        ${Inner} {
-          max-height: ${maxContentHeight - verticalPadding}px;
-          max-width: ${maxContentWidth - horizontalPadding}px;
-          min-width: ${Math.min(maxContentWidth, contentWidth) -
-          horizontalPadding}px;
-        }
-      `,
-      initial: {
-        ...animation.initial,
-        x: `-${100 - openingAnimationTranslateDistance}%`,
+      containerStyle: {
+        left:
+          fitMaxWidthToBounds || !avoidOverflowBounds
+            ? left + fullXOffset
+            : left + fullXOffset >
+              containerWidth - contentWidth - minSpaceBetweenPopoverAndContainer
+            ? minSpaceBetweenPopoverAndContainer + contentWidth
+            : left + fullXOffset,
+        top:
+          fitMaxHeightToBounds || !avoidOverflowBounds
+            ? top + offset[1]
+            : Math.min(
+                top + offset[1],
+                containerHeight -
+                  contentHeight -
+                  minSpaceBetweenPopoverAndContainer
+              ),
       },
-      animate: {
-        ...animation.animate,
-        x: '-100%',
+      contentStyle: {
+        maxHeight: maxContentHeight - verticalPadding,
+        maxWidth: maxContentWidth - horizontalPadding,
+        minWidth: Math.min(maxContentWidth, contentWidth) - horizontalPadding,
       },
-      exit: {
-        ...animation.exit,
-        x: `-${100 - closingAnimationTranslateDistance}%`,
+      motionProps: {
+        initial: {
+          ...animation.initial,
+          x: `-${100 - openingAnimationTranslateDistance}%`,
+        },
+        animate: {
+          ...animation.animate,
+          x: '-100%',
+        },
+        exit: {
+          ...animation.exit,
+          x: `-${100 - closingAnimationTranslateDistance}%`,
+        },
       },
     };
   },
@@ -674,33 +702,38 @@ export const placementPropsGetters: {
       : contentWidth;
 
     return {
-      style: css`
-        left: ${fitMaxWidthToBounds || !avoidOverflowBounds
-          ? right + fullXOffset
-          : Math.min(
-              right + fullXOffset,
-              containerWidth - contentWidth - minSpaceBetweenPopoverAndContainer
-            )}px;
-        top: ${top + height / 2 + offset[1]}px;
-        ${Inner} {
-          max-height: ${maxContentHeight - verticalPadding}px;
-          max-width: ${maxContentWidth - horizontalPadding}px;
-        }
-      `,
-      initial: {
-        ...animation.initial,
-        x: `-${openingAnimationTranslateDistance}%`,
-        y: '-50%',
+      containerStyle: {
+        left:
+          fitMaxWidthToBounds || !avoidOverflowBounds
+            ? right + fullXOffset
+            : Math.min(
+                right + fullXOffset,
+                containerWidth -
+                  contentWidth -
+                  minSpaceBetweenPopoverAndContainer
+              ),
+        top: top + height / 2 + offset[1],
       },
-      animate: {
-        ...animation.animate,
-        x: 0,
-        y: '-50%',
+      contentStyle: {
+        maxHeight: maxContentHeight - verticalPadding,
+        maxWidth: maxContentWidth - horizontalPadding,
       },
-      exit: {
-        ...animation.exit,
-        x: `-${closingAnimationTranslateDistance}%`,
-        y: '-50%',
+      motionProps: {
+        initial: {
+          ...animation.initial,
+          x: `-${openingAnimationTranslateDistance}%`,
+          y: '-50%',
+        },
+        animate: {
+          ...animation.animate,
+          x: 0,
+          y: '-50%',
+        },
+        exit: {
+          ...animation.exit,
+          x: `-${closingAnimationTranslateDistance}%`,
+          y: '-50%',
+        },
       },
     };
   },
@@ -740,38 +773,44 @@ export const placementPropsGetters: {
       : contentWidth;
 
     return {
-      style: css`
-        left: ${fitMaxWidthToBounds || !avoidOverflowBounds
-          ? right + fullXOffset
-          : Math.min(
-              right + fullXOffset,
-              containerWidth - contentWidth - minSpaceBetweenPopoverAndContainer
-            )}px;
-        top: ${fitMaxHeightToBounds || !avoidOverflowBounds
-          ? bottom + offset[1]
-          : Math.max(
-              bottom + offset[1],
-              contentHeight + minSpaceBetweenPopoverAndContainer
-            )}px;
-        ${Inner} {
-          max-height: ${maxContentHeight - verticalPadding}px;
-          max-width: ${maxContentWidth - horizontalPadding}px;
-        }
-      `,
-      initial: {
-        ...animation.initial,
-        x: `-${openingAnimationTranslateDistance}%`,
-        y: '-100%',
+      containerStyle: {
+        left:
+          fitMaxWidthToBounds || !avoidOverflowBounds
+            ? right + fullXOffset
+            : Math.min(
+                right + fullXOffset,
+                containerWidth -
+                  contentWidth -
+                  minSpaceBetweenPopoverAndContainer
+              ),
+        top:
+          fitMaxHeightToBounds || !avoidOverflowBounds
+            ? bottom + offset[1]
+            : Math.max(
+                bottom + offset[1],
+                contentHeight + minSpaceBetweenPopoverAndContainer
+              ),
       },
-      animate: {
-        ...animation.animate,
-        x: 0,
-        y: '-100%',
+      contentStyle: {
+        maxHeight: maxContentHeight - verticalPadding,
+        maxWidth: maxContentWidth - horizontalPadding,
       },
-      exit: {
-        ...animation.exit,
-        x: `-${closingAnimationTranslateDistance}%`,
-        y: '-100%',
+      motionProps: {
+        initial: {
+          ...animation.initial,
+          x: `-${openingAnimationTranslateDistance}%`,
+          y: '-100%',
+        },
+        animate: {
+          ...animation.animate,
+          x: 0,
+          y: '-100%',
+        },
+        exit: {
+          ...animation.exit,
+          x: `-${closingAnimationTranslateDistance}%`,
+          y: '-100%',
+        },
       },
     };
   },
@@ -811,39 +850,44 @@ export const placementPropsGetters: {
         minSpaceBetweenPopoverAndContainer
       : contentWidth;
     return {
-      style: css`
-        left: ${fitMaxWidthToBounds || !avoidOverflowBounds
-          ? right + fullXOffset
-          : Math.min(
-              right + fullXOffset,
-              containerWidth - contentWidth - minSpaceBetweenPopoverAndContainer
-            )}px;
-        top: ${fitMaxHeightToBounds || !avoidOverflowBounds
-          ? top + offset[1]
-          : Math.min(
-              top + offset[1],
-              containerHeight -
-                contentHeight -
-                minSpaceBetweenPopoverAndContainer
-            )}px;
-        ${Inner} {
-          max-height: ${maxContentHeight - verticalPadding}px;
-          max-width: ${maxContentWidth - horizontalPadding}px;
-          min-width: ${Math.min(maxContentWidth, contentWidth) -
-          horizontalPadding}px;
-        }
-      `,
-      initial: {
-        ...animation.initial,
-        x: `-${openingAnimationTranslateDistance}%`,
+      containerStyle: {
+        left:
+          fitMaxWidthToBounds || !avoidOverflowBounds
+            ? right + fullXOffset
+            : Math.min(
+                right + fullXOffset,
+                containerWidth -
+                  contentWidth -
+                  minSpaceBetweenPopoverAndContainer
+              ),
+        top:
+          fitMaxHeightToBounds || !avoidOverflowBounds
+            ? top + offset[1]
+            : Math.min(
+                top + offset[1],
+                containerHeight -
+                  contentHeight -
+                  minSpaceBetweenPopoverAndContainer
+              ),
       },
-      animate: {
-        ...animation.animate,
-        x: 0,
+      contentStyle: {
+        maxHeight: maxContentHeight - verticalPadding,
+        maxWidth: maxContentWidth - horizontalPadding,
+        minWidth: Math.min(maxContentWidth, contentWidth) - horizontalPadding,
       },
-      exit: {
-        ...animation.exit,
-        x: `-${closingAnimationTranslateDistance}%`,
+      motionProps: {
+        initial: {
+          ...animation.initial,
+          x: `-${openingAnimationTranslateDistance}%`,
+        },
+        animate: {
+          ...animation.animate,
+          x: 0,
+        },
+        exit: {
+          ...animation.exit,
+          x: `-${closingAnimationTranslateDistance}%`,
+        },
       },
     };
   },

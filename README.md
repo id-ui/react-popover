@@ -21,7 +21,6 @@ yarn add @idui/react-popover
 
 ### Advantages
 - Fully and easily customizable. It has a bunch of props, including animation, className, arrow visibility, etc.
-- Uses styled-components for styling.
 - Able to change dimensions depending on available space (if maxHeight and maxWidth not specified).
 - Able to choose better placement if there is no room (if guessBetterPosition = true, default false).
 - Able to follow trigger (if considerTriggerMotion = true, default false for better performance).
@@ -78,35 +77,12 @@ const CustomPopover = styled(Popover)`
   border-radius: 30px;
   border: 2px solid black;
   box-shadow: none;
-  &:before { // arrow
-    border-left-color: black;
-    border-bottom-color: black;
+  .idui-popover__arrow { // arrow
+    border-left-color: black!important;
+    border-bottom-color: black!important;
     box-shadow: none;
   }
 `
-
-// if you use lower version of styled-components
-const CustomPopover2 = styled(Popover)`
-  && {
-    background-color: aquamarine;
-    border-radius: 30px;
-    border: 2px solid black;
-    box-shadow: none;
-    &:before { // arrow
-    border-left-color: black;
-    border-bottom-color: black;
-    box-shadow: none;
-    }
- }
-`
-
-export function styledPopover(props) {
-  return (
-      <CustomPopover {...props} content="Hi!">
-        <button>Open</button>
-      </CustomPopover>
-  );
-}
 ```
 
 > Also you can use className

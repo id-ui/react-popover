@@ -186,9 +186,15 @@ export interface PopoverProps {
    */
   arrowOffset?: number;
   /**
+   * Popover's arrow background color
+   * @default white
+   */
+  arrowColor?: string;
+  /**
    * arrow placement (left|center|right for top|bottom and top|center|bottom for right|left)
    * @default second popover placement part if it consists of two sides else center
    */
+
   arrowPlacement?: ArrowPlacement;
   /**
    * max content width

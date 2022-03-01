@@ -57,7 +57,10 @@ export const useOpen = ({
         return;
       }
 
-      if (!(e.target instanceof HTMLElement) && !(e.target instanceof  SVGElement)) {
+      if (
+        !(e.target instanceof HTMLElement) &&
+        !(e.target instanceof SVGElement)
+      ) {
         return;
       }
 

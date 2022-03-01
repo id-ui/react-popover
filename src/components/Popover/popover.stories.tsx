@@ -1,7 +1,7 @@
 import React, { Ref, useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
-import styled from 'styled-components';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { styled } from '@storybook/theming';
 import { ArrowPlacement, PopoverPlacement, PopoverTriggerType } from './enums';
 import Popover from './PopoverContainer';
 import { placementPropsGetters } from './components/Popover/hooks/usePosition/placementsConfig';
@@ -264,6 +264,14 @@ export default {
       defaultValue: 10,
       table: {
         defaultValue: { summary: 10 },
+      },
+    },
+    arrowColor: {
+      control: 'text',
+      description: 'arrow background color',
+      defaultValue: 'white',
+      table: {
+        defaultValue: { summary: 'white' },
       },
     },
     arrowPlacement: {
@@ -597,10 +605,7 @@ const CustomPopover = styled(Popover)`
   border-radius: 30px;
   border: 2px solid #14113c;
   box-shadow: none;
-  &:before {
-    // arrow
-    border-left-color: #14113c;
-    border-bottom-color: #14113c;
+  .idui-popover__arrow {
     box-shadow: none;
   }
 `;
@@ -611,6 +616,10 @@ export const StyledPopover: ComponentStory<typeof Popover> = (props) => {
       <button>{props.trigger || 'hover'} to open</button>
     </CustomPopover>
   );
+};
+
+StyledPopover.args = {
+  arrowColor: '#14113c',
 };
 
 export const PopoverWithCustomArrow: ComponentStory<typeof Popover> = (
@@ -678,4 +687,5 @@ export const CloseOnScroll: ComponentStory<typeof Popover> = (props) => {
 
 CloseOnScroll.args = {
   trigger: PopoverTriggerType.click,
+  arrowColor: '#14113c',
 };

@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react';
 import { useElementMotion } from '../useElementMotion';
 import { useTriggerHandlers } from '../useTriggerHandlers';
 import { useScrollHandler } from '../useScrollHandler';
-import { UseTriggerProps } from './types';
 import { isFunction } from '../../../../helpers';
+import { UseTriggerProps } from './types';
 
 export const useTrigger = ({
   ref,

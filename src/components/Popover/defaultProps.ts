@@ -20,6 +20,8 @@ export const defaultProps: Partial<PopoverProps> = {
   mouseLeaveDelay: 100,
   onFocus: noop,
   triggerContainerTag: 'span',
+  className: '',
+  zIndex: 1000,
   animation: {
     initial: {
       opacity: 0,
@@ -43,6 +45,7 @@ export const defaultProps: Partial<PopoverProps> = {
   spaceBetweenPopoverAndTarget: 7,
   arrowSize: 8,
   arrowOffset: 10,
+  arrowColor: 'white',
   useTriggerWidth: false,
   useTriggerHeight: false,
   width: 'unset',

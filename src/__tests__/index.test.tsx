@@ -1,9 +1,9 @@
 import React from 'react';
-import { noop } from '../components/Popover/helpers';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import { act, renderHook } from '@testing-library/react-hooks';
+import { noop } from '../components/Popover/helpers';
 import {
   ArrowPlacement,
   PopoverPlacement,
