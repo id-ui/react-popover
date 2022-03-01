@@ -3,13 +3,5 @@
     "@babel/env",
     "@babel/react",
     "@babel/preset-typescript"
-  ],
-  "plugins": [
-    [
-      "babel-plugin-styled-components",
-      {
-        "namespace": "idui-popover"
-      }
-    ]
   ]
 }

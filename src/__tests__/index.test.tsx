@@ -1,9 +1,9 @@
 import React from 'react';
-import { noop } from '../components/Popover/helpers';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import { act, renderHook } from '@testing-library/react-hooks';
+import { noop } from '../components/Popover/helpers';
 import {
   ArrowPlacement,
   PopoverPlacement,
@@ -14,6 +14,8 @@ import { useOpen } from '../components/Popover/components/Popover/hooks';
 import { placementPropsGetters } from '../components/Popover/components/Popover/hooks/usePosition/placementsConfig';
 import { fixPlacement } from '../components/Popover/components/Popover/hooks/usePosition/helpers';
 import { Popover } from '..';
+
+jest.mock('../components/Popover/components/Popover/styles.css', () => {});
 
 describe('Popover', () => {
   it('accessible', async () => {
@@ -593,7 +595,7 @@ describe('Popover', () => {
             }
           )
         )
-      ).toStrictEqual(['style', 'initial', 'animate', 'exit']);
+      ).toStrictEqual(['containerStyle', 'contentStyle', 'motionProps']);
     });
   });
 

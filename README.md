@@ -21,7 +21,6 @@ yarn add @idui/react-popover
 
 ### Advantages
 - Fully and easily customizable. It has a bunch of props, including animation, className, arrow visibility, etc.
-- Uses styled-components for styling.
 - Able to change dimensions depending on available space (if maxHeight and maxWidth not specified).
 - Able to choose better placement if there is no room (if guessBetterPosition = true, default false).
 - Able to follow trigger (if considerTriggerMotion = true, default false for better performance).
@@ -73,40 +72,17 @@ import React from 'react'
 import Popover from '@idui/react-popover'
 import styled from 'styled-components'
 
-const CustomPopover = styled(Popover)`
+const CustomPopover = styled(Popover).attrs({
+  arrowColor: 'black',
+})`
   background-color: aquamarine;
   border-radius: 30px;
   border: 2px solid black;
   box-shadow: none;
-  &:before { // arrow
-    border-left-color: black;
-    border-bottom-color: black;
+  .idui-popover__arrow { // arrow
     box-shadow: none;
   }
 `
-
-// if you use lower version of styled-components
-const CustomPopover2 = styled(Popover)`
-  && {
-    background-color: aquamarine;
-    border-radius: 30px;
-    border: 2px solid black;
-    box-shadow: none;
-    &:before { // arrow
-    border-left-color: black;
-    border-bottom-color: black;
-    box-shadow: none;
-    }
- }
-`
-
-export function styledPopover(props) {
-  return (
-      <CustomPopover {...props} content="Hi!">
-        <button>Open</button>
-      </CustomPopover>
-  );
-}
 ```
 
 > Also you can use className
@@ -123,9 +99,9 @@ const animation = {
       opacity: 0,
   },
    
- animate: {
-  opacity: 1,
- },
+  animate: {
+      opacity: 1,
+  },
    
    exit: {
      opacity: 0,

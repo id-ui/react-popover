@@ -7,8 +7,8 @@ import React, {
 import { PopoverTriggerType } from '../../enums';
 import { PopoverProps } from '../../types';
 import Popover from '../Popover';
-import LazyPopoverTrigger from './components/LazyPopoverTrigger';
 import { isFunction } from '../../helpers';
+import LazyPopoverTrigger from './components/LazyPopoverTrigger';
 
 const LazyPopover: ForwardRefRenderFunction<HTMLElement, PopoverProps> = (
   props,

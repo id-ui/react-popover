@@ -1,16 +1,17 @@
 import React, {
   ForwardRefRenderFunction,
-  Fragment, ReactChild,
+  Fragment,
+  ReactChild,
   ReactElement,
   SyntheticEvent,
   useCallback,
   useEffect,
   useRef,
-  useState
+  useState,
 } from 'react';
 import { createPortal } from 'react-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import { isBoolean, isFunction, isNumber, isString } from '../../helpers';
-import { AnimatePresence } from 'framer-motion';
 import { PopoverTriggerType } from '../../enums';
 import { PopoverProps } from '../../types';
 import {
@@ -20,7 +21,8 @@ import {
   usePosition,
   useTrigger,
 } from './hooks';
-import { Container, Inner } from './styled';
+
+import './styles.css';
 
 const Popover: ForwardRefRenderFunction<HTMLElement, PopoverProps> = (
   {
@@ -61,6 +63,7 @@ const Popover: ForwardRefRenderFunction<HTMLElement, PopoverProps> = (
     zIndex,
     arrowSize,
     arrowOffset,
+    arrowColor,
     arrowPlacement,
     useTriggerWidth,
     useTriggerHeight,
@@ -86,7 +89,7 @@ const Popover: ForwardRefRenderFunction<HTMLElement, PopoverProps> = (
   const triggerElementRef = useRef();
 
   const {
-    containerProps,
+    popoverPlacementProps: { containerStyle, contentStyle, motionProps },
     updatePosition,
     contentRef,
     setContentDimensions,
@@ -162,33 +165,44 @@ const Popover: ForwardRefRenderFunction<HTMLElement, PopoverProps> = (
 
   const container = getContainer();
 
-  const animationProps = usePortal ? containerProps : animation;
+  const animationProps = usePortal ? motionProps : animation;
 
   const transformedContent = isFunction(content) ? content({ close }) : content;
 
   const popoverContentAnimated = (
     <AnimatePresence initial={null}>
-      {isOpen && (!usePortal || containerProps.style) && (
-        <Container
+      {isOpen && (!usePortal || containerStyle) && (
+        <motion.div
           ref={setContentRef}
-          withArrow={withArrow}
-          arrowStyles={arrowStyles}
-          positionStyles={containerProps.style}
           initial={animationProps.initial}
           animate={animationProps.animate}
           exit={animationProps.exit}
           onMouseEnter={triggerHandlers.onMouseEnter}
           onMouseLeave={triggerHandlers.onMouseLeave}
-          className={className}
-          zIndex={zIndex}
-          arrowSize={arrowSize}
-          width={useTriggerWidth ? `${triggerDimensions.width}px` : width}
-          height={useTriggerHeight ? `${triggerDimensions.height}px` : height}
+          className={`idui-popover ${className}`}
+          style={{
+            zIndex,
+            width: useTriggerWidth ? triggerDimensions.width : width,
+            height: useTriggerHeight ? triggerDimensions.height : height,
+            ...containerStyle,
+          }}
         >
-          <Inner maxHeight={maxHeight} maxWidth={maxWidth}>
+          {withArrow && (
+            <span
+              className="idui-popover__arrow"
+              style={{
+                ...arrowStyles,
+                border: `${arrowSize / 2}px solid ${arrowColor}`,
+              }}
+            />
+          )}
+          <div
+            className="idui-popover__content"
+            style={{ maxHeight, maxWidth, ...contentStyle }}
+          >
             {transformedContent}
-          </Inner>
-        </Container>
+          </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );
@@ -226,17 +240,23 @@ const Popover: ForwardRefRenderFunction<HTMLElement, PopoverProps> = (
       {shouldCheckContentDimensions &&
         Boolean(container) &&
         createPortal(
-          <Container
+          <div
             ref={setContentDimensions}
-            isCheckingContentDimensions
-            className={className}
-            width={useTriggerWidth ? `${triggerDimensions.width}px` : width}
-            height={useTriggerHeight ? `${triggerDimensions.height}px` : height}
+            className={`idui-popover ${className}`}
+            style={{
+              width: useTriggerWidth ? triggerDimensions.width : width,
+              height: useTriggerHeight ? triggerDimensions.height : height,
+              left: '-999px',
+              top: '-999px',
+            }}
           >
-            <Inner maxHeight={maxHeight} maxWidth={maxWidth}>
+            <div
+              className="idui-popover__content"
+              style={{ maxHeight, maxWidth }}
+            >
               {transformedContent}
-            </Inner>
-          </Container>,
+            </div>
+          </div>,
           container
         )}
 

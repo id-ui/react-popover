@@ -1,4 +1,3 @@
-import { css, FlattenSimpleInterpolation } from 'styled-components';
 import { ArrowPlacement, ArrowPlacementType } from '../../../../enums';
 
 interface PopoverArrowPlacementGetterArgs {
@@ -10,38 +9,38 @@ type PopoverArrowPlacementGetters = {
   [arrowPlacementType in ArrowPlacementType]: {
     [arrowPlacement in ArrowPlacement]?: (
       args: PopoverArrowPlacementGetterArgs
-    ) => FlattenSimpleInterpolation;
+    ) => ArrowPlacementStyles;
   };
 };
 
 const arrowPlacementGetters: PopoverArrowPlacementGetters = {
   [ArrowPlacementType.vertical]: {
-    [ArrowPlacement.center]: ({ angle }) => css`
-      top: 50%;
-      transform: translateY(-50%) rotate(${angle}deg);
-    `,
-    [ArrowPlacement.top]: ({ angle, arrowOffset }) => css`
-      top: ${arrowOffset}px;
-      transform: rotate(${angle}deg);
-    `,
-    [ArrowPlacement.bottom]: ({ angle, arrowOffset }) => css`
-      bottom: ${arrowOffset}px;
-      transform: rotate(${angle}deg);
-    `,
+    [ArrowPlacement.center]: ({ angle }) => ({
+      top: '50%',
+      transform: `translateY(-50%) rotate(${angle}deg)`,
+    }),
+    [ArrowPlacement.top]: ({ angle, arrowOffset }) => ({
+      top: `${arrowOffset}px`,
+      transform: `rotate(${angle}deg)`,
+    }),
+    [ArrowPlacement.bottom]: ({ angle, arrowOffset }) => ({
+      bottom: `${arrowOffset}px`,
+      transform: `rotate(${angle}deg)`,
+    }),
   },
   [ArrowPlacementType.horizontal]: {
-    [ArrowPlacement.center]: ({ angle }) => css`
-      left: 50%;
-      transform: translateX(-50%) rotate(${angle}deg);
-    `,
-    [ArrowPlacement.right]: ({ angle, arrowOffset }) => css`
-      right: ${arrowOffset}px;
-      transform: rotate(${angle}deg);
-    `,
-    [ArrowPlacement.left]: ({ angle, arrowOffset }) => css`
-      left: ${arrowOffset}px;
-      transform: rotate(${angle}deg);
-    `,
+    [ArrowPlacement.center]: ({ angle }) => ({
+      left: '50%',
+      transform: `translateX(-50%) rotate(${angle}deg)`,
+    }),
+    [ArrowPlacement.right]: ({ angle, arrowOffset }) => ({
+      right: `${arrowOffset}px`,
+      transform: `rotate(${angle}deg)`,
+    }),
+    [ArrowPlacement.left]: ({ angle, arrowOffset }) => ({
+      left: `${arrowOffset}px`,
+      transform: `rotate(${angle}deg)`,
+    }),
   },
 };
 
@@ -53,13 +52,21 @@ interface GetPopoverArrowPlacementArgs {
   defaultPlacement: ArrowPlacement;
 }
 
+export interface ArrowPlacementStyles {
+  top?: string;
+  bottom?: string;
+  right?: string;
+  left?: string;
+  transform?: string;
+}
+
 export const getArrowPlacement = ({
   type,
   angle,
   arrowPlacement,
   arrowOffset,
   defaultPlacement,
-}: GetPopoverArrowPlacementArgs): FlattenSimpleInterpolation =>
+}: GetPopoverArrowPlacementArgs): ArrowPlacementStyles =>
   arrowPlacementGetters[type][
     arrowPlacementGetters[type][arrowPlacement]
       ? arrowPlacement

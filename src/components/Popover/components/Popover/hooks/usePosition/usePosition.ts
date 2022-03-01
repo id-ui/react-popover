@@ -39,9 +39,9 @@ export const usePosition = ({
   isOpen,
   considerContentResizing,
 }: UsePositionProps) => {
-  const [containerProps, setContainerProps] = useState<PopoverPlacementProps>(
-    {}
-  );
+  const [popoverPlacementProps, setPopoverPlacementProps] = useState<
+    PopoverPlacementProps
+  >({});
 
   const contentDimensions: PopoverContentDimensionsRefObject = useRef();
 
@@ -220,7 +220,7 @@ export const usePosition = ({
     params.right -= offsetContainerRect.left - scrollLeft;
     params.left -= offsetContainerRect.left - scrollLeft;
 
-    setContainerProps(
+    setPopoverPlacementProps(
       placementPropsGetters[actualPlacement](params, {
         offset,
         withArrow,
@@ -275,7 +275,7 @@ export const usePosition = ({
   });
 
   return {
-    containerProps,
+    popoverPlacementProps,
     updatePosition,
     contentRef,
     setContentDimensions,

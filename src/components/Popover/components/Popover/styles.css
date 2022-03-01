@@ -1,0 +1,23 @@
+.idui-popover {
+    position: absolute;
+    box-shadow: 0 0.4rem 0.8rem -0.4rem rgba(0, 0, 0, 0.11),
+    0 0.8rem 1.6rem 0 rgba(0, 0, 0, 0.09),
+    0 0.9rem 1.5rem 0.9rem rgba(0, 0, 0, 0.05);
+    background-color: #ffffff;
+    border-radius: 0.3rem;
+    cursor: default;
+    padding: 1.2rem 1.6rem;
+}
+
+.idui-popover__arrow {
+     content: '';
+     position: absolute;
+     border-right-color: transparent!important;
+     border-top-color: transparent!important;
+     box-shadow: -0.2rem 0.2rem 0.7rem rgba(0, 0, 0, 0.07);
+}
+
+.idui-popover__content {
+    height: 100%;
+    overflow: auto;
+}

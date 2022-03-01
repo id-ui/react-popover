@@ -10,7 +10,4 @@ module.exports = {
       statements: 90,
     },
   },
-  transformIgnorePatterns: [
-    "<rootDir>/node_modules/(?!lodash-es)",
-  ]
 };
