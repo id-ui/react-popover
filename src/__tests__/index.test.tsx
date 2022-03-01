@@ -15,7 +15,7 @@ import { placementPropsGetters } from '../components/Popover/components/Popover/
 import { fixPlacement } from '../components/Popover/components/Popover/hooks/usePosition/helpers';
 import { Popover } from '..';
 
-jest.mock('../components/Popover/components/Popover/styles.css', () => {})
+jest.mock('../components/Popover/components/Popover/styles.css', () => {});
 
 describe('Popover', () => {
   it('accessible', async () => {
