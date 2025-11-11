@@ -70,7 +70,7 @@ const Popover: ForwardRefRenderFunction<HTMLElement, PopoverProps> = (
     width,
     height,
     usePortal,
-    ...rest
+    ...props
   },
   ref
 ) => {
@@ -187,7 +187,7 @@ const Popover: ForwardRefRenderFunction<HTMLElement, PopoverProps> = (
             height: useTriggerHeight ? triggerDimensions.height : height,
             ...containerStyle,
           }}
-          {...rest}
+          {...props}
         >
           {withArrow && (
             <span
@@ -251,7 +251,7 @@ const Popover: ForwardRefRenderFunction<HTMLElement, PopoverProps> = (
               left: '-999px',
               top: '-999px',
             }}
-            {...rest}
+            {...props}
           >
             <div
               className="idui-popover__content"
