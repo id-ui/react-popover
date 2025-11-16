@@ -17,7 +17,7 @@ export interface PopoverContentProps {
   close: () => void;
 }
 
-export interface PopoverProps extends HTMLAttributes<HTMLElement> {
+export interface PopoverProps extends Omit<HTMLAttributes<HTMLElement>, 'onAnimationStart' | 'onDrag' | 'onDragEnd' | 'onDragStart'> {
   /**
    * whether wait for trigger event to initialize popover or not
    * @default true

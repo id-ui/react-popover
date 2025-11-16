@@ -10,7 +10,7 @@ import React, {
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, MotionProps } from 'framer-motion';
 import { isBoolean, isFunction, isNumber, isString } from '../../helpers';
 import { PopoverTriggerType } from '../../enums';
 import { PopoverProps } from '../../types';
