@@ -1,4 +1,9 @@
-import { ReactChild, ReactEventHandler, ReactNode } from 'react';
+import {
+  ReactChild,
+  ReactEventHandler,
+  ReactNode,
+  HTMLAttributes,
+} from 'react';
 import { ArrowPlacement, PopoverTriggerType, PopoverPlacement } from './enums';
 
 export interface PopoverChildrenProps {
@@ -12,7 +17,7 @@ export interface PopoverContentProps {
   close: () => void;
 }
 
-export interface PopoverProps {
+export interface PopoverProps extends HTMLAttributes<HTMLElement> {
   /**
    * whether wait for trigger event to initialize popover or not
    * @default true
